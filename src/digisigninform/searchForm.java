@@ -160,10 +160,7 @@ public class searchForm extends javax.swing.JFrame {
                                   from clients
                                   where client_id = """ + cleanClientID;
 
-            System.out.println(searchInvQue);
-
             ResultSet searchQ = statement.executeQuery(searchInvQue);
-
 
             while (searchQ.next()) {
                 String firstName = searchQ.getString("fname");
@@ -186,7 +183,6 @@ public class searchForm extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
         dispose();
-
     }//GEN-LAST:event_selButtActionPerformed
 
     private void searchFormButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFormButtActionPerformed
@@ -206,28 +202,20 @@ public class searchForm extends javax.swing.JFrame {
                                   from clients
                                   where lname like '""" + txtLName + "'";
 
-            System.out.println(searchInvQue);
-
             Vector<String> resList = new Vector<>();
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
-            if (searchQ.next() == false) {
-                System.out.println("not found");
-            } else {
+            while (searchQ.next()) {
 
-                while (searchQ.next()) {
-                    String firstName = searchQ.getString("fname");
-                    String lastName = searchQ.getString("lname");
-                    String phoneNumber = searchQ.getString("phone");
-                    int clientID = searchQ.getInt("client_id");
-
-                    Collections.addAll(resList, "Client ID: " + clientID + ", Name: " + firstName + ", " + lastName + ", Phone Number: " + phoneNumber);
-
-                }
-
-                searchResult.setListData(resList);
-                searchResult.setSelectedIndex(0);
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone");
+                int clientID = searchQ.getInt("client_id");
+                Collections.addAll(resList, "Client ID: " + clientID + ", Name: " + firstName + ", " + lastName + ", Phone Number: " + phoneNumber);
             }
+
+            searchResult.setListData(resList);
+            searchResult.setSelectedIndex(0);
 
         } catch (SQLException e) {
         }
