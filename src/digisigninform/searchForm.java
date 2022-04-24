@@ -90,7 +90,7 @@ public class searchForm extends javax.swing.JFrame {
 
         jLabel2.setText("Phone Number:");
 
-        lastNameSearch.setNextFocusableComponent(phoneNumberSearch);
+        lastNameSearch.setNextFocusableComponent(searchFormButt);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,12 +108,12 @@ public class searchForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lastNameSearch)
                             .addComponent(phoneNumberSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                         .addComponent(searchFormButt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(selButt)
                         .addGap(12, 12, 12)
-                        .addComponent(jButton2)))
+                        .addComponent(selButt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -170,13 +170,14 @@ public class searchForm extends javax.swing.JFrame {
                 String emailText = searchQ.getString("email");
                 //String companyNameText = searchQ.getString("companyName");
                 //String creationDate = searchQ.getString("creation_date");
-                //int clientID = searchQ.getInt("client_id");
+                String clientID = searchQ.getString("client_id");
 
                 SignInFront.fNameText.setText(firstName);
                 SignInFront.lNameText.setText(lastName);
                 SignInFront.phoneOneText.setText(phoneNumber);
                 SignInFront.cellPhoneText.setText(cellNumber);
                 SignInFront.eMailText.setText(emailText);
+                SignInFront.clientIDText.setText(clientID);
 
             }
 

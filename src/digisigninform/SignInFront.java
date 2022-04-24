@@ -4,11 +4,20 @@
  */
 package digisigninform;
 
+import java.awt.Graphics;
+import java.awt.PrintJob;
+import java.awt.Toolkit;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -33,52 +42,53 @@ public class SignInFront extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        titleText = new javax.swing.JLabel();
+        contactText = new javax.swing.JScrollPane();
         conactInfo = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        workOrderText = new javax.swing.JScrollPane();
         woTextArea = new javax.swing.JTextArea();
         fNameText = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        fnameLabel = new javax.swing.JLabel();
         lNameText = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        phoneLabel = new javax.swing.JLabel();
         phoneOneText = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        cellLabel = new javax.swing.JLabel();
         cellPhoneText = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        equipService = new javax.swing.JLabel();
+        equipmentField = new javax.swing.JScrollPane();
+        equipmentText = new javax.swing.JTextArea();
+        workToDoText = new javax.swing.JLabel();
+        workToDoField = new javax.swing.JScrollPane();
         workToBeDone = new javax.swing.JTextArea();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jLabel8 = new javax.swing.JLabel();
+        checkLaptop = new javax.swing.JCheckBox();
+        checkDesktop = new javax.swing.JCheckBox();
+        checkTablet = new javax.swing.JCheckBox();
+        passLabel = new javax.swing.JLabel();
         passwordText = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        pinLabel = new javax.swing.JLabel();
         pinText = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
+        techLabel = new javax.swing.JLabel();
+        techComboBox = new javax.swing.JComboBox<>();
+        emailLabel = new javax.swing.JLabel();
         eMailText = new javax.swing.JTextField();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jLabel12 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        jLabel13 = new javax.swing.JLabel();
+        checkCharger = new javax.swing.JCheckBox();
+        workPerformedLabel = new javax.swing.JLabel();
+        workPerformedArea = new javax.swing.JScrollPane();
+        workDoneText = new javax.swing.JTextArea();
+        partsUsedLabel = new javax.swing.JLabel();
         partBox = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
-        jLabel15 = new javax.swing.JLabel();
+        minChargeLabel = new javax.swing.JLabel();
+        MinChargeText = new javax.swing.JTextField();
+        legalPane = new javax.swing.JScrollPane();
+        legalText = new javax.swing.JTextArea();
+        SigLabel = new javax.swing.JLabel();
         signText = new javax.swing.JTextField();
         commitButt = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        lastNameLabel = new javax.swing.JLabel();
         searchButt = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        connectButt = new javax.swing.JButton();
+        printButt = new javax.swing.JButton();
+        connectedText = new javax.swing.JLabel();
+        clientIDText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -87,101 +97,110 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Service Work Order");
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jScrollPane1.setBorder(null);
+        titleText.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        titleText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleText.setText("Service Work Order");
+
+        contactText.setBorder(null);
+        contactText.setFocusable(false);
 
         conactInfo.setEditable(false);
         conactInfo.setColumns(20);
         conactInfo.setRows(3);
         conactInfo.setText("102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\nPhone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594\nwww.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
+        conactInfo.setAutoscrolls(false);
         conactInfo.setBorder(null);
-        conactInfo.setOpaque(false);
-        jScrollPane1.setViewportView(conactInfo);
+        contactText.setViewportView(conactInfo);
 
-        jScrollPane2.setBorder(null);
+        workOrderText.setBorder(null);
 
         woTextArea.setColumns(5);
         woTextArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         woTextArea.setRows(2);
         woTextArea.setText("Work Order ID");
         woTextArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jScrollPane2.setViewportView(woTextArea);
+        workOrderText.setViewportView(woTextArea);
 
-        jLabel3.setText("First Name:");
+        fnameLabel.setText("First Name:");
 
-        jLabel4.setText("Phone:");
+        phoneLabel.setText("Phone:");
 
-        jLabel5.setText("Cell:");
+        cellLabel.setText("Cell:");
 
-        jLabel6.setText("Equipment to be serviced:");
+        equipService.setText("Equipment to be serviced:");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(4);
-        jScrollPane3.setViewportView(jTextArea2);
+        equipmentText.setColumns(20);
+        equipmentText.setRows(4);
+        equipmentField.setViewportView(equipmentText);
 
-        jLabel7.setText("Work to be Done:");
+        workToDoText.setText("Work to be Done:");
 
         workToBeDone.setColumns(20);
         workToBeDone.setLineWrap(true);
         workToBeDone.setRows(5);
         workToBeDone.setWrapStyleWord(true);
-        jScrollPane4.setViewportView(workToBeDone);
+        workToDoField.setViewportView(workToBeDone);
 
-        jCheckBox1.setText("Laptop");
+        checkLaptop.setBackground(new java.awt.Color(255, 255, 255));
+        checkLaptop.setText("Laptop");
+        checkLaptop.setBorder(null);
+        checkLaptop.setOpaque(true);
 
-        jCheckBox2.setText("Desktop");
+        checkDesktop.setBackground(new java.awt.Color(255, 255, 255));
+        checkDesktop.setText("Desktop");
 
-        jCheckBox3.setText("Tablet");
+        checkTablet.setBackground(new java.awt.Color(255, 255, 255));
+        checkTablet.setText("Tablet");
 
-        jLabel8.setText("Password:");
+        passLabel.setText("Password:");
 
-        jLabel9.setText("Pin:");
+        pinLabel.setText("Pin:");
 
-        jLabel10.setText("Tech:");
+        techLabel.setText("Tech:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
+        techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
 
-        jLabel11.setText("E-Mail:");
+        emailLabel.setText("E-Mail:");
 
-        jCheckBox4.setText("Charger");
+        checkCharger.setBackground(new java.awt.Color(255, 255, 255));
+        checkCharger.setText("Charger");
 
-        jLabel12.setText("Work Performed:");
+        workPerformedLabel.setText("Work Performed:");
 
-        jScrollPane5.setBorder(null);
+        workPerformedArea.setBorder(null);
 
-        jTextArea3.setColumns(20);
-        jTextArea3.setLineWrap(true);
-        jTextArea3.setRows(5);
-        jTextArea3.setWrapStyleWord(true);
-        jTextArea3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jScrollPane5.setViewportView(jTextArea3);
+        workDoneText.setColumns(20);
+        workDoneText.setLineWrap(true);
+        workDoneText.setRows(5);
+        workDoneText.setWrapStyleWord(true);
+        workDoneText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        workPerformedArea.setViewportView(workDoneText);
 
-        jLabel13.setText("Parts Used:");
+        partsUsedLabel.setText("Parts Used:");
 
         partBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jLabel14.setText("Minimum Charge:");
+        minChargeLabel.setText("Minimum Charge:");
 
-        jTextField1.setText("$50");
+        MinChargeText.setText("$50");
 
-        jScrollPane6.setBorder(null);
+        legalPane.setBorder(null);
 
-        jTextArea4.setEditable(false);
-        jTextArea4.setColumns(20);
-        jTextArea4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jTextArea4.setLineWrap(true);
-        jTextArea4.setRows(5);
-        jTextArea4.setText("I agree to release the above equipment to Nation Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCr is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the lenfth of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
-        jTextArea4.setWrapStyleWord(true);
-        jTextArea4.setBorder(null);
-        jTextArea4.setFocusable(false);
-        jTextArea4.setOpaque(false);
-        jScrollPane6.setViewportView(jTextArea4);
+        legalText.setEditable(false);
+        legalText.setColumns(20);
+        legalText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        legalText.setLineWrap(true);
+        legalText.setRows(5);
+        legalText.setText("I agree to release the above equipment to National Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCr is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the lenfth of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
+        legalText.setWrapStyleWord(true);
+        legalText.setBorder(null);
+        legalText.setFocusable(false);
+        legalText.setOpaque(false);
+        legalPane.setViewportView(legalText);
 
-        jLabel15.setText("Client SIgnature:");
+        SigLabel.setText("Client SIgnature:");
 
         signText.setEditable(false);
         signText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -192,14 +211,14 @@ public class SignInFront extends javax.swing.JFrame {
         signText.setHighlighter(null);
         signText.setOpaque(true);
 
-        commitButt.setText("Commit");
+        commitButt.setText("Save");
         commitButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 commitButtActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Last Name:");
+        lastNameLabel.setText("Last Name:");
 
         searchButt.setText("Search");
         searchButt.setFocusPainted(false);
@@ -209,16 +228,15 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Print");
-
-        connectButt.setText("Connect");
-        connectButt.setFocusPainted(false);
-        connectButt.setFocusable(false);
-        connectButt.addActionListener(new java.awt.event.ActionListener() {
+        printButt.setText("Print");
+        printButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                connectButtActionPerformed(evt);
+                printButtActionPerformed(evt);
             }
         });
+
+        connectedText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        connectedText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -227,13 +245,13 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(legalPane, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cellLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(phoneLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fnameLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -246,72 +264,76 @@ public class SignInFront extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(lNameText)
                                         .addGap(12, 12, 12)))
-                                .addComponent(jScrollPane3))
+                                .addComponent(equipmentField))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(equipService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(workToDoText, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkLaptop, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkCharger, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(6, 6, 6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(passLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                            .addComponent(pinLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(techLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(emailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passwordText)
                             .addComponent(pinText)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(techComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(eMailText)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(workPerformedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(partsUsedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(workPerformedArea, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(minChargeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(partBox)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 25, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(commitButt)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(printButt)
                                 .addGap(23, 23, 23))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(connectButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(searchButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(searchButt, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(connectedText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(clientIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(167, 167, 167))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(workOrderText, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -319,82 +341,84 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(workOrderText, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(connectButt)
-                                .addGap(18, 18, 18)
+                                .addComponent(connectedText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(searchButt)))))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(equipService, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(phoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(7, 7, 7)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cellLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cellPhoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane3))
+                    .addComponent(equipmentField))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(workToDoText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkLaptop, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pinLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pinText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(eMailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(techLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(workPerformedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(partsUsedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(partBox)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
+                    .addComponent(workPerformedArea, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minChargeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(commitButt)
-                    .addComponent(jButton2))
+                    .addComponent(printButt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -415,6 +439,48 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void commitButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitButtActionPerformed
 
+        String connectionUrl
+                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+                + "encrypt=false;"
+                + "databaseName=NCRO_WorkOrders;"
+                + "user=sa;"
+                + "password=S!lver88";
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            //need to add password and pin save and tech
+            String currentClient = clientIDText.getText();
+            String workToDo = workToBeDone.getText();
+            boolean desktop = checkDesktop.isSelected();
+            boolean laptop = checkLaptop.isSelected();
+            boolean tablet = checkTablet.isSelected();
+            boolean charger = checkCharger.isSelected();
+            String clientPass = passwordText.getText();
+            String clientPin = pinText.getText();
+            String techName = techComboBox.getSelectedItem().toString();
+
+            int desktopBool = (desktop) ? 1 : 0;
+            int laptopBool = (laptop) ? 1 : 0;
+            int tabletBool = (tablet) ? 1 : 0;
+            int chargerBool = (charger) ? 1 : 0;
+
+            String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, tech_name, desktop, laptop, tablet, charger)"
+                    + "select " + currentClient + " as client_id,"
+                    + "'" + workToDo + "' as work_to_do,"
+                    + "'" + clientPass + "' as pc_pass,"
+                    + "'" + clientPin + "' as pc_pin,"
+                    + "'" + techName + "' as tech_name,"
+                    + desktopBool + " as desktop,"
+                    + laptopBool + " as laptop,"
+                    + tabletBool + " as tablet,"
+                    + chargerBool + " as charger";
+
+            System.out.println(addClientScript);
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+        }
     }//GEN-LAST:event_commitButtActionPerformed
 
     private void searchButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtActionPerformed
@@ -423,31 +489,6 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
 
     }//GEN-LAST:event_searchButtActionPerformed
-
-    private void connectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtActionPerformed
-        //tests to make sure the computer is talking to the server
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-
-            String selectUser = "select username from users where username = 'Connected'";
-
-            ResultSet uNQuery = statement.executeQuery(selectUser);
-
-            // Print results from select statement
-            while (uNQuery.next()) {
-
-                lNameText.setText("Connected");
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }//GEN-LAST:event_connectButtActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         //generate a new work order number when form is opened, gets max from db + 1  
@@ -461,7 +502,7 @@ public class SignInFront extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String topWorkOrder = """
-                                  select top 1 work_Order_ID + 1 as word_order_id
+                                  select max(work_Order_ID) + 1 as word_order_id
                                   from client_service
                                   """;
 
@@ -476,7 +517,40 @@ public class SignInFront extends javax.swing.JFrame {
 
         } catch (SQLException e) {
         }
+
+        String connectionUrl2
+                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+                + "encrypt=false;"
+                + "databaseName=NCRO_WorkOrders;"
+                + "user=sa;"
+                + "password=S!lver88";
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl2);  Statement statement = connection.createStatement();) {
+
+            String selectUser = "select username from users where username = 'Connected'";
+
+            ResultSet uNQuery = statement.executeQuery(selectUser);
+
+            // Print results from select statement
+            while (uNQuery.next()) {
+
+                connectedText.setText("Connected");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_formWindowActivated
+
+    private void printButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtActionPerformed
+
+        // TODO add your handling code here:
+        Toolkit tkp = jPanel1.getToolkit();
+        PrintJob pjp = tkp.getPrintJob(this, null, null);
+        Graphics g = pjp.getGraphics();
+        jPanel1.print(g);
+        g.dispose();
+        pjp.end();
+    }//GEN-LAST:event_printButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -493,52 +567,53 @@ public class SignInFront extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField MinChargeText;
+    private javax.swing.JLabel SigLabel;
+    private javax.swing.JLabel cellLabel;
     public static javax.swing.JTextField cellPhoneText;
+    private javax.swing.JCheckBox checkCharger;
+    private javax.swing.JCheckBox checkDesktop;
+    private javax.swing.JCheckBox checkLaptop;
+    private javax.swing.JCheckBox checkTablet;
+    public static javax.swing.JLabel clientIDText;
     private javax.swing.JButton commitButt;
     private javax.swing.JTextArea conactInfo;
-    private javax.swing.JButton connectButt;
+    private javax.swing.JLabel connectedText;
+    private javax.swing.JScrollPane contactText;
     public static javax.swing.JTextField eMailText;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JLabel equipService;
+    private javax.swing.JScrollPane equipmentField;
+    private javax.swing.JTextArea equipmentText;
     public static javax.swing.JTextField fNameText;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel fnameLabel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea4;
-    private javax.swing.JTextField jTextField1;
     public static javax.swing.JTextField lNameText;
+    private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JScrollPane legalPane;
+    private javax.swing.JTextArea legalText;
+    private javax.swing.JLabel minChargeLabel;
     private javax.swing.JTextField partBox;
+    private javax.swing.JLabel partsUsedLabel;
+    private javax.swing.JLabel passLabel;
     private javax.swing.JTextField passwordText;
+    private javax.swing.JLabel phoneLabel;
     public static javax.swing.JTextField phoneOneText;
+    private javax.swing.JLabel pinLabel;
     private javax.swing.JTextField pinText;
+    private javax.swing.JButton printButt;
     private javax.swing.JButton searchButt;
     private javax.swing.JTextField signText;
+    private javax.swing.JComboBox<String> techComboBox;
+    private javax.swing.JLabel techLabel;
+    private javax.swing.JLabel titleText;
     public static javax.swing.JTextArea woTextArea;
+    private javax.swing.JTextArea workDoneText;
+    private javax.swing.JScrollPane workOrderText;
+    private javax.swing.JScrollPane workPerformedArea;
+    private javax.swing.JLabel workPerformedLabel;
     private javax.swing.JTextArea workToBeDone;
+    private javax.swing.JScrollPane workToDoField;
+    private javax.swing.JLabel workToDoText;
     // End of variables declaration//GEN-END:variables
 }
