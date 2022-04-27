@@ -7,17 +7,11 @@ package digisigninform;
 import java.awt.Graphics;
 import java.awt.PrintJob;
 import java.awt.Toolkit;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 
 /**
  *
@@ -31,6 +25,13 @@ public class SignInFront extends javax.swing.JFrame {
     public SignInFront() {
         initComponents();
     }
+
+    public String connectionUrl
+            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+            + "encrypt=false;"
+            + "databaseName=NCRO_WorkOrders;"
+            + "user=sa;"
+            + "password=S!lver88";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,8 +90,13 @@ public class SignInFront extends javax.swing.JFrame {
         printButt = new javax.swing.JButton();
         connectedText = new javax.swing.JLabel();
         clientIDText = new javax.swing.JLabel();
+        searchWOButt = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        setSize(new java.awt.Dimension(700, 886));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -119,7 +125,6 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.setColumns(5);
         woTextArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         woTextArea.setRows(2);
-        woTextArea.setText("Work Order ID");
         woTextArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         workOrderText.setViewportView(woTextArea);
 
@@ -153,6 +158,11 @@ public class SignInFront extends javax.swing.JFrame {
 
         checkTablet.setBackground(new java.awt.Color(255, 255, 255));
         checkTablet.setText("Tablet");
+        checkTablet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkTabletActionPerformed(evt);
+            }
+        });
 
         passLabel.setText("Password:");
 
@@ -238,6 +248,19 @@ public class SignInFront extends javax.swing.JFrame {
         connectedText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         connectedText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        searchWOButt.setText("Search WO");
+        searchWOButt.setFocusable(false);
+        searchWOButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchWOButtActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Work Order ID:");
+
+        jButton1.setText("Update");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -268,7 +291,9 @@ public class SignInFront extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(equipService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(equipService, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(searchWOButt, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(workToDoText, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,25 +324,26 @@ public class SignInFront extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(partsUsedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(workPerformedArea, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(minChargeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(partBox)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(commitButt)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(printButt)
-                                .addGap(23, 23, 23))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -327,13 +353,16 @@ public class SignInFront extends javax.swing.JFrame {
                             .addComponent(clientIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(167, 167, 167))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(workOrderText, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(167, 167, 167)))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(workOrderText)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -341,25 +370,29 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(workOrderText, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(connectedText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchButt)))))
-                .addGap(8, 8, 8)
+                        .addComponent(connectedText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButt)
+                        .addGap(8, 8, 8))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(workOrderText, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(equipService, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(fnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchWOButt))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -413,14 +446,15 @@ public class SignInFront extends javax.swing.JFrame {
                     .addComponent(minChargeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(commitButt)
-                    .addComponent(printButt))
+                    .addComponent(printButt)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -439,16 +473,8 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void commitButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commitButtActionPerformed
 
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            //need to add password and pin save and tech
             String currentClient = clientIDText.getText();
             String workToDo = workToBeDone.getText();
             boolean desktop = checkDesktop.isSelected();
@@ -475,8 +501,6 @@ public class SignInFront extends javax.swing.JFrame {
                     + tabletBool + " as tablet,"
                     + chargerBool + " as charger";
 
-            System.out.println(addClientScript);
-
             addWorkOrder.executeUpdate(addClientScript);
 
         } catch (SQLException e) {
@@ -492,12 +516,6 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         //generate a new work order number when form is opened, gets max from db + 1  
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
@@ -511,21 +529,14 @@ public class SignInFront extends javax.swing.JFrame {
             while (searchWO.next()) {
 
                 String woText = searchWO.getString(1);
-                SignInFront.woTextArea.setText(" Work Order ID: \n            " + woText);
+                SignInFront.woTextArea.setText(woText);
                 fNameText.requestFocus();
             }
 
         } catch (SQLException e) {
         }
 
-        String connectionUrl2
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
-        try ( Connection connection = DriverManager.getConnection(connectionUrl2);  Statement statement = connection.createStatement();) {
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String selectUser = "select username from users where username = 'Connected'";
 
@@ -541,9 +552,12 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowActivated
 
+    private void checkTabletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTabletActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkTabletActionPerformed
+
     private void printButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtActionPerformed
 
-        // TODO add your handling code here:
         Toolkit tkp = jPanel1.getToolkit();
         PrintJob pjp = tkp.getPrintJob(this, null, null);
         Graphics g = pjp.getGraphics();
@@ -551,6 +565,61 @@ public class SignInFront extends javax.swing.JFrame {
         g.dispose();
         pjp.end();
     }//GEN-LAST:event_printButtActionPerformed
+
+    private void searchWOButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWOButtActionPerformed
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            String defaultWO = woTextArea.getText();
+            String cleanWO = defaultWO.trim();
+
+            String topWorkOrder = """
+                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+                                  c.fname, c.lname, c.phone, c.phone2, c.email
+                                  from client_service as cs
+                                  inner join clients as c
+                                  on cs.client_id = c.client_id
+                                  where work_order_ID = """
+                    + cleanWO;
+
+            
+
+            ResultSet searchQ = statement.executeQuery(topWorkOrder);
+
+            while (searchQ.next()) {
+                String woToDoText = searchQ.getString("work_to_do");
+                String passText = searchQ.getString("pc_pass"); 
+                String pinText = searchQ.getString("pc_pin");
+                Boolean desktop = searchQ.getBoolean("desktop");
+                Boolean laptop = searchQ.getBoolean("laptop");
+                Boolean tablet = searchQ.getBoolean("tablet");
+                Boolean charger = searchQ.getBoolean("charger");
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone");
+                String cellNumber = searchQ.getString("phone2");
+                String emailText = searchQ.getString("email");
+                String clientID = searchQ.getString("client_id");
+                
+                //add tech
+                
+                SignInFront.clientIDText.setText(clientID);
+                SignInFront.workToBeDone.setText(woToDoText);
+                SignInFront.passwordText.setText(passText);
+                SignInFront.pinText.setText(pinText);
+                SignInFront.checkLaptop.setSelected(laptop);
+                SignInFront.checkDesktop.setSelected(desktop);
+                SignInFront.checkTablet.setSelected(tablet);
+                SignInFront.checkCharger.setSelected(charger);
+                SignInFront.fNameText.setText(firstName);
+                SignInFront.lNameText.setText(lastName);
+                SignInFront.phoneOneText.setText(phoneNumber);
+                SignInFront.cellPhoneText.setText(cellNumber);
+                SignInFront.eMailText.setText(emailText);
+                SignInFront.clientIDText.setText(clientID);
+            }
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchWOButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -571,10 +640,10 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JLabel SigLabel;
     private javax.swing.JLabel cellLabel;
     public static javax.swing.JTextField cellPhoneText;
-    private javax.swing.JCheckBox checkCharger;
-    private javax.swing.JCheckBox checkDesktop;
-    private javax.swing.JCheckBox checkLaptop;
-    private javax.swing.JCheckBox checkTablet;
+    public static javax.swing.JCheckBox checkCharger;
+    public static javax.swing.JCheckBox checkDesktop;
+    public static javax.swing.JCheckBox checkLaptop;
+    public static javax.swing.JCheckBox checkTablet;
     public static javax.swing.JLabel clientIDText;
     private javax.swing.JButton commitButt;
     private javax.swing.JTextArea conactInfo;
@@ -587,6 +656,8 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JTextArea equipmentText;
     public static javax.swing.JTextField fNameText;
     private javax.swing.JLabel fnameLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     public static javax.swing.JTextField lNameText;
     private javax.swing.JLabel lastNameLabel;
@@ -596,13 +667,14 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JTextField partBox;
     private javax.swing.JLabel partsUsedLabel;
     private javax.swing.JLabel passLabel;
-    private javax.swing.JTextField passwordText;
+    public static javax.swing.JTextField passwordText;
     private javax.swing.JLabel phoneLabel;
     public static javax.swing.JTextField phoneOneText;
     private javax.swing.JLabel pinLabel;
-    private javax.swing.JTextField pinText;
+    public static javax.swing.JTextField pinText;
     private javax.swing.JButton printButt;
     private javax.swing.JButton searchButt;
+    private javax.swing.JButton searchWOButt;
     private javax.swing.JTextField signText;
     private javax.swing.JComboBox<String> techComboBox;
     private javax.swing.JLabel techLabel;
@@ -612,7 +684,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JScrollPane workOrderText;
     private javax.swing.JScrollPane workPerformedArea;
     private javax.swing.JLabel workPerformedLabel;
-    private javax.swing.JTextArea workToBeDone;
+    public static javax.swing.JTextArea workToBeDone;
     private javax.swing.JScrollPane workToDoField;
     private javax.swing.JLabel workToDoText;
     // End of variables declaration//GEN-END:variables
