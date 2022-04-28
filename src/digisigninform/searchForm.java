@@ -168,8 +168,6 @@ public class searchForm extends javax.swing.JFrame {
                 String phoneNumber = searchQ.getString("phone");
                 String cellNumber = searchQ.getString("phone2");
                 String emailText = searchQ.getString("email");
-                //String companyNameText = searchQ.getString("companyName");
-                //String creationDate = searchQ.getString("creation_date");
                 String clientID = searchQ.getString("client_id");
 
                 SignInFront.fNameText.setText(firstName);
@@ -178,6 +176,14 @@ public class searchForm extends javax.swing.JFrame {
                 SignInFront.cellPhoneText.setText(cellNumber);
                 SignInFront.eMailText.setText(emailText);
                 SignInFront.clientIDText.setText(clientID);
+                SignInFront.workDoneText.setText("");
+                SignInFront.workToBeDone.setText("");
+                SignInFront.passwordText.setText("");
+                SignInFront.pinText.setText("");
+                SignInFront.checkDesktop.setSelected(false);
+                SignInFront.checkLaptop.setSelected(false);
+                SignInFront.checkTablet.setSelected(false);
+                SignInFront.checkCharger.setSelected(false);
 
             }
 
