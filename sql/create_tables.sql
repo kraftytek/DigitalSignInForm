@@ -38,6 +38,7 @@ create table client_service (
 	work_Order_ID int not null IDENTITY(1,1) PRIMARY KEY,
 	client_id int FOREIGN KEY (client_id) REFERENCES clients(client_id),
 	work_to_do varchar(max),	
+	work_done varchar(max),
 	pc_pass varchar(max),
 	pc_pin varchar(max),
 	sign_in_date datetime Default(getdate()),

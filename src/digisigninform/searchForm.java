@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import static digisigninform.SignInFront.fNameText;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -165,26 +166,60 @@ public class searchForm extends javax.swing.JFrame {
             while (searchQ.next()) {
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone");
-                String cellNumber = searchQ.getString("phone2");
+                String phoneNumber = searchQ.getString("phone").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("-", "");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
+                String compName = searchQ.getString("companyName");
+
+                String phoneFormat;
+                String cellFormat;
+
+                if (phoneNumber.length() > 0) {
+                    phoneFormat = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                } else {
+                    phoneFormat = phoneNumber;
+                };
+
+                if (cellNumber.length() > 0) {
+                    cellFormat = cellNumber.substring(0, 3) + "-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                } else {
+                    cellFormat = cellNumber;
+                };
 
                 SignInFront.fNameText.setText(firstName);
                 SignInFront.lNameText.setText(lastName);
-                SignInFront.phoneOneText.setText(phoneNumber);
-                SignInFront.cellPhoneText.setText(cellNumber);
+                SignInFront.phoneOneText.setText(phoneFormat);
+                SignInFront.cellPhoneText.setText(cellFormat);
                 SignInFront.eMailText.setText(emailText);
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workDoneText.setText("");
                 SignInFront.workToBeDone.setText("");
                 SignInFront.passwordText.setText("");
                 SignInFront.pinText.setText("");
+                SignInFront.companyText.setText(compName);
                 SignInFront.checkDesktop.setSelected(false);
                 SignInFront.checkLaptop.setSelected(false);
                 SignInFront.checkTablet.setSelected(false);
                 SignInFront.checkCharger.setSelected(false);
 
+            }
+
+        } catch (SQLException e) {
+        }
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            String topWorkOrder = """
+                                  select max(work_Order_ID) + 1 as word_order_id
+                                  from client_service
+                                  """;
+
+            ResultSet searchWO = statement.executeQuery(topWorkOrder);
+
+            while (searchWO.next()) {
+
+                String woText = searchWO.getString(1);
+                SignInFront.woTextArea.setText("      " + woText);
+                fNameText.requestFocus();
             }
 
         } catch (SQLException e) {
@@ -250,16 +285,24 @@ public class searchForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(searchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(searchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(searchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(searchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
