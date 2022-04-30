@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import com.sun.tools.javac.Main;
 import java.awt.Graphics;
 import java.awt.PrintJob;
 import java.awt.Toolkit;
@@ -12,6 +13,19 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.awt.Graphics2D;
+import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
+import java.awt.print.PrinterException;
+import javax.swing.JFrame;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.print.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -88,9 +102,12 @@ public class SignInFront extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("National Computer Resource Sign In");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
-        setPreferredSize(new java.awt.Dimension(700, 950));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMaximumSize(new java.awt.Dimension(704, 944));
+        setMinimumSize(new java.awt.Dimension(704, 944));
+        setPreferredSize(new java.awt.Dimension(704, 944));
         setResizable(false);
-        setSize(new java.awt.Dimension(700, 950));
+        setSize(new java.awt.Dimension(704, 944));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -98,6 +115,7 @@ public class SignInFront extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jPanel1.setPreferredSize(new java.awt.Dimension(780, 927));
 
         titleText.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -225,6 +243,7 @@ public class SignInFront extends javax.swing.JFrame {
         commitButt.setBackground(new java.awt.Color(255, 255, 255));
         commitButt.setForeground(new java.awt.Color(0, 0, 0));
         commitButt.setText("Save");
+        commitButt.setToolTipText("Save a work order for the first time.");
         commitButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         commitButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,6 +254,7 @@ public class SignInFront extends javax.swing.JFrame {
         searchButt.setBackground(new java.awt.Color(255, 255, 255));
         searchButt.setForeground(new java.awt.Color(0, 0, 0));
         searchButt.setText("Client Search");
+        searchButt.setToolTipText("Bring up the client search window.");
         searchButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchButt.setFocusPainted(false);
         searchButt.addActionListener(new java.awt.event.ActionListener() {
@@ -246,6 +266,7 @@ public class SignInFront extends javax.swing.JFrame {
         printButt.setBackground(new java.awt.Color(255, 255, 255));
         printButt.setForeground(new java.awt.Color(0, 0, 0));
         printButt.setText("Print");
+        printButt.setToolTipText("Print the work order.");
         printButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         printButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,6 +280,7 @@ public class SignInFront extends javax.swing.JFrame {
         searchWOButt.setBackground(new java.awt.Color(255, 255, 255));
         searchWOButt.setForeground(new java.awt.Color(0, 0, 0));
         searchWOButt.setText("WO Search");
+        searchWOButt.setToolTipText("Search the number currently typed in the field above.");
         searchWOButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchWOButt.setFocusable(false);
         searchWOButt.addActionListener(new java.awt.event.ActionListener() {
@@ -273,6 +295,7 @@ public class SignInFront extends javax.swing.JFrame {
         updateButt.setBackground(new java.awt.Color(255, 255, 255));
         updateButt.setForeground(new java.awt.Color(0, 0, 0));
         updateButt.setText("Update");
+        updateButt.setToolTipText("Update an exising work order with new content.");
         updateButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         updateButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,6 +306,7 @@ public class SignInFront extends javax.swing.JFrame {
         addButt.setBackground(new java.awt.Color(255, 255, 255));
         addButt.setForeground(new java.awt.Color(0, 0, 0));
         addButt.setText("Add");
+        addButt.setToolTipText("Adds the current client info to the database.");
         addButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         addButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -293,6 +317,7 @@ public class SignInFront extends javax.swing.JFrame {
         clearButt.setBackground(new java.awt.Color(255, 255, 255));
         clearButt.setForeground(new java.awt.Color(0, 0, 0));
         clearButt.setText("Clear");
+        clearButt.setToolTipText("Clear the form to prepare for a new entry.");
         clearButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         clearButt.setFocusable(false);
         clearButt.addActionListener(new java.awt.event.ActionListener() {
@@ -351,10 +376,10 @@ public class SignInFront extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(checkLaptop, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(checkDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(checkCharger))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(addButt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,7 +402,7 @@ public class SignInFront extends javax.swing.JFrame {
                             .addComponent(workOrderText, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchWOButt, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(2, 2, 2)))
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,26 +549,6 @@ public class SignInFront extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         //generate a new work order number when form is opened, gets max from db + 1  
 
-        /*
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
-            String topWorkOrder = """
-                                  select max(work_Order_ID) + 1 as word_order_id
-                                  from client_service
-                                  """;
-
-            ResultSet searchWO = statement.executeQuery(topWorkOrder);
-
-            while (searchWO.next()) {
-
-                String woText = searchWO.getString(1);
-                SignInFront.woTextArea.setText("      " + woText);
-                fNameText.requestFocus();
-            }
-
-        } catch (SQLException e) {
-        }
-         */
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String selectUser = "select username from users where username = 'Connected'";
@@ -559,15 +564,65 @@ public class SignInFront extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_formWindowActivated
+   
+    public static class Printer implements Printable {
+
+        final Component comp;
+
+        public Printer(Component comp) {
+            this.comp = comp;
+        }
+
+        @
+                Override
+        public int print(Graphics g, PageFormat format, int page_index)
+                throws PrinterException {
+            if (page_index > 0) {
+                return Printable.NO_SUCH_PAGE;
+            }
+
+            // get the bounds of the component
+            Dimension dim = comp.getSize();
+            double cHeight = dim.getHeight();
+            double cWidth = dim.getWidth();
+
+            // get the bounds of the printable area
+            double pHeight = format.getImageableHeight();
+            double pWidth = format.getImageableWidth();
+
+            double pXStart = format.getImageableX();
+            double pYStart = format.getImageableY();
+
+            double xRatio = pWidth / cWidth;
+            double yRatio = pHeight / cHeight;
+
+            Graphics2D g2 = (Graphics2D) g;
+            g2.translate(pXStart, pYStart);
+            g2.scale(xRatio + 50, yRatio + 50);
+            comp.paint(g2);
+
+            return Printable.PAGE_EXISTS;
+        }
+    }
+
 
     private void printButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtActionPerformed
-
-        Toolkit tkp = jPanel1.getToolkit();
-        PrintJob pjp = tkp.getPrintJob(this, null, null);
-        Graphics g = pjp.getGraphics();
-        jPanel1.print(g);
-        g.dispose();
-        pjp.end();
+        
+        JFrame yourComponent = new JFrame();
+        PrinterJob pjob = PrinterJob.getPrinterJob();
+        PageFormat preformat = pjob.defaultPage();
+        preformat.setOrientation(PageFormat.PORTRAIT);
+        PageFormat postformat = pjob.pageDialog(preformat);
+        if (preformat != postformat) {
+            pjob.setPrintable(new Printer(yourComponent), postformat);
+            if (pjob.printDialog()) {
+                try {
+                    pjob.print();
+                } catch (PrinterException ex) {
+                    Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }//GEN-LAST:event_printButtActionPerformed
 
     private void searchWOButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWOButtActionPerformed
@@ -757,7 +812,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JTextArea equipmentText;
     public static javax.swing.JTextField fNameText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    public javax.swing.JPanel jPanel1;
     public static javax.swing.JTextField lNameText;
     private javax.swing.JScrollPane legalPane;
     private javax.swing.JTextArea legalText;
@@ -766,7 +821,7 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JTextField passwordText;
     public static javax.swing.JTextField phoneOneText;
     public static javax.swing.JTextField pinText;
-    private javax.swing.JButton printButt;
+    public javax.swing.JButton printButt;
     private javax.swing.JButton searchButt;
     private javax.swing.JButton searchWOButt;
     private javax.swing.JTextField signText;
