@@ -176,13 +176,13 @@ public class searchForm extends javax.swing.JFrame {
                 String cellFormat;
 
                 if (phoneNumber.length() > 0) {
-                    phoneFormat = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                    phoneFormat ="(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
                 } else {
                     phoneFormat = phoneNumber;
                 };
 
                 if (cellNumber.length() > 0) {
-                    cellFormat = cellNumber.substring(0, 3) + "-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
                 } else {
                     cellFormat = cellNumber;
                 };
