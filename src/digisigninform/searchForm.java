@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.JList;
 
 /**
  *
@@ -40,17 +39,22 @@ public class searchForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        backGroundPanel = new javax.swing.JPanel();
+        searchExistingButt = new javax.swing.JButton();
+        phoneNumberSearch = new javax.swing.JTextField();
+        lastNameSearch = new javax.swing.JTextField();
+        searchFormButt = new javax.swing.JButton();
+        selButt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         searchResult = new javax.swing.JList<>();
-        selButt = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        searchFormButt = new javax.swing.JButton();
-        lastNameSearch = new javax.swing.JTextField();
-        phoneNumberSearch = new javax.swing.JTextField();
+        selectWorkOrderButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Client");
-        setPreferredSize(new java.awt.Dimension(696, 500));
+        setMinimumSize(new java.awt.Dimension(552, 500));
+        setPreferredSize(new java.awt.Dimension(552, 500));
+        setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -59,83 +63,134 @@ public class searchForm extends javax.swing.JFrame {
             }
         });
 
-        searchResult.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        searchResult.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jScrollPane1.setViewportView(searchResult);
+        backGroundPanel.setBackground(new java.awt.Color(255, 255, 255));
+        backGroundPanel.setPreferredSize(new java.awt.Dimension(552, 500));
 
-        selButt.setBackground(new java.awt.Color(255, 255, 255));
-        selButt.setForeground(new java.awt.Color(0, 0, 0));
-        selButt.setText("Select");
-        selButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        selButt.setFocusPainted(false);
-        selButt.addActionListener(new java.awt.event.ActionListener() {
+        searchExistingButt.setBackground(new java.awt.Color(255, 255, 255));
+        searchExistingButt.setForeground(new java.awt.Color(0, 0, 0));
+        searchExistingButt.setText("Search Existing WO");
+        searchExistingButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchExistingButt.setFocusable(false);
+        searchExistingButt.setOpaque(true);
+        searchExistingButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selButtActionPerformed(evt);
+                searchExistingButtActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Edit");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jButton2.setFocusPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        phoneNumberSearch.setBackground(new java.awt.Color(255, 255, 255));
+        phoneNumberSearch.setForeground(new java.awt.Color(0, 0, 0));
+        phoneNumberSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Phone Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        phoneNumberSearch.setOpaque(true);
+
+        lastNameSearch.setBackground(new java.awt.Color(255, 255, 255));
+        lastNameSearch.setForeground(new java.awt.Color(0, 0, 0));
+        lastNameSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        lastNameSearch.setNextFocusableComponent(searchFormButt);
+        lastNameSearch.setOpaque(true);
 
         searchFormButt.setBackground(new java.awt.Color(255, 255, 255));
         searchFormButt.setForeground(new java.awt.Color(0, 0, 0));
         searchFormButt.setText("Search");
         searchFormButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchFormButt.setFocusPainted(false);
+        searchFormButt.setFocusable(false);
+        searchFormButt.setOpaque(true);
         searchFormButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchFormButtActionPerformed(evt);
             }
         });
 
-        lastNameSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        lastNameSearch.setNextFocusableComponent(searchFormButt);
+        selButt.setBackground(new java.awt.Color(255, 255, 255));
+        selButt.setForeground(new java.awt.Color(0, 0, 0));
+        selButt.setText("Select");
+        selButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        selButt.setFocusPainted(false);
+        selButt.setFocusable(false);
+        selButt.setOpaque(true);
+        selButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selButtActionPerformed(evt);
+            }
+        });
 
-        phoneNumberSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Phone Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        searchResult.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchResult.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jScrollPane1.setViewportView(searchResult);
+
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Edit");
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton2.setFocusPainted(false);
+        jButton2.setFocusable(false);
+        jButton2.setOpaque(true);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        selectWorkOrderButt.setBackground(new java.awt.Color(255, 255, 255));
+        selectWorkOrderButt.setForeground(new java.awt.Color(0, 0, 0));
+        selectWorkOrderButt.setText("Select WO");
+        selectWorkOrderButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        selectWorkOrderButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectWorkOrderButtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout backGroundPanelLayout = new javax.swing.GroupLayout(backGroundPanel);
+        backGroundPanel.setLayout(backGroundPanelLayout);
+        backGroundPanelLayout.setHorizontalGroup(
+            backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backGroundPanelLayout.createSequentialGroup()
+                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(backGroundPanelLayout.createSequentialGroup()
+                        .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+                    .addComponent(lastNameSearch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(phoneNumberSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(backGroundPanelLayout.createSequentialGroup()
+                        .addComponent(searchExistingButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        backGroundPanelLayout.setVerticalGroup(
+            backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backGroundPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lastNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(phoneNumberSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchExistingButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 59, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(phoneNumberSearch, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lastNameSearch))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addComponent(backGroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lastNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(phoneNumberSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+            .addComponent(backGroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -176,16 +231,16 @@ public class searchForm extends javax.swing.JFrame {
                 String cellFormat;
 
                 if (phoneNumber.length() > 0) {
-                    phoneFormat ="(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
                 } else {
                     phoneFormat = phoneNumber;
-                };
+                }
 
                 if (cellNumber.length() > 0) {
                     cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
                 } else {
                     cellFormat = cellNumber;
-                };
+                }
 
                 SignInFront.fNameText.setText(firstName);
                 SignInFront.lNameText.setText(lastName);
@@ -271,6 +326,145 @@ public class searchForm extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void searchExistingButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingButtActionPerformed
+        String selClient = searchResult.getSelectedValue();
+        String cleanClientID = selClient.substring(11, 15);
+
+        String connectionUrl
+                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+                + "encrypt=false;"
+                + "databaseName=NCRO_WorkOrders;"
+                + "user=sa;"
+                + "password=S!lver88";
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String searchInvQue = "select work_order_id, left(work_to_do, 40) as work_to_do, sign_in_date\n"
+                    + "from client_service\n"
+                    + "where client_id = " + cleanClientID;
+
+            Vector<String> resList = new Vector<>();
+            ResultSet searchQ = statement.executeQuery(searchInvQue);
+
+            while (searchQ.next()) {
+
+                String workOrderID = searchQ.getString("work_order_id");
+                String workToDo = searchQ.getString("work_to_do");
+                String signInDate = searchQ.getString("sign_in_date").substring(0, 10);
+                Collections.addAll(resList, "Work Order ID: " + workOrderID + ", Work To Do: " + workToDo + ", Sign In Date: " + signInDate);
+            }
+
+            searchResult.setListData(resList);
+            searchResult.setSelectedIndex(0);
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchExistingButtActionPerformed
+
+    private void selectWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWorkOrderButtActionPerformed
+
+        String selWONum = searchResult.getSelectedValue();
+        String cleanWOID = selWONum.substring(15, 16);
+        System.out.println(selWONum);
+        System.out.println(cleanWOID);
+
+        String connectionUrl
+                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+                + "encrypt=false;"
+                + "databaseName=NCRO_WorkOrders;"
+                + "user=sa;"
+                + "password=S!lver88";
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String searchInvQue = """
+                                  select work_order_id, cs.client_id, work_to_do, work_done, PC_pass, PC_pin, Sign_in_date, Tech_name, desktop, laptop, tablet, charger,
+                                  c.fname, c.lname, c.companyName, c.phone, c.phone2, c.email
+                                  from client_service as cs
+                                  inner join clients as c
+                                  on cs.client_id = c.client_id
+                                  where work_order_id = """ + cleanWOID;
+
+            ResultSet searchQ = statement.executeQuery(searchInvQue);
+
+            while (searchQ.next()) {
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String emailText = searchQ.getString("email");
+                String clientID = searchQ.getString("client_id");
+                String compName = searchQ.getString("companyName");
+                String workOrderID = searchQ.getString("work_order_id");
+                String workToDo = searchQ.getString("work_to_do");
+                String workDone = searchQ.getString("work_done");
+                String workOrderPass = searchQ.getString("PC_pass");
+                String workOrderPin = searchQ.getString("PC_pin");
+                //String signInDate = searchQ.getString("Sign_in_date");
+                //String techName = searchQ.getString("Tech_name");
+                boolean desktopBool = searchQ.getBoolean("desktop");
+                boolean laptopBool = searchQ.getBoolean("laptop");
+                boolean tabletBool = searchQ.getBoolean("tablet");
+                boolean chargerBool = searchQ.getBoolean("charger");
+
+                String phoneFormat;
+                String cellFormat;
+
+                if (phoneNumber.length() > 0) {
+                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                } else {
+                    phoneFormat = phoneNumber;
+                }
+
+                if (cellNumber.length() > 0) {
+                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                } else {
+                    cellFormat = cellNumber;
+                }
+
+                SignInFront.fNameText.setText(firstName);
+                SignInFront.lNameText.setText(lastName);
+                SignInFront.phoneOneText.setText(phoneFormat);
+                SignInFront.cellPhoneText.setText(cellFormat);
+                SignInFront.eMailText.setText(emailText);
+                SignInFront.clientIDText.setText(clientID);
+                SignInFront.workDoneText.setText(workDone);
+                SignInFront.workToBeDone.setText(workToDo);
+                SignInFront.passwordText.setText(workOrderPass);
+                SignInFront.pinText.setText(workOrderPin);
+                SignInFront.woTextArea.setText(workOrderID);
+                //SignInFront.techComboBox.setText(techName);                
+                SignInFront.companyText.setText(compName);
+                SignInFront.checkDesktop.setSelected(desktopBool);
+                SignInFront.checkLaptop.setSelected(laptopBool);
+                SignInFront.checkTablet.setSelected(tabletBool);
+                SignInFront.checkCharger.setSelected(chargerBool);
+
+            }
+
+        } catch (SQLException e) {
+        }
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            String topWorkOrder = """
+                                  select max(work_Order_ID) + 1 as word_order_id
+                                  from client_service
+                                  """;
+
+            ResultSet searchWO = statement.executeQuery(topWorkOrder);
+
+            while (searchWO.next()) {
+
+                String woText = searchWO.getString(1);
+                SignInFront.woTextArea.setText(woText);
+                fNameText.requestFocus();
+            }
+
+        } catch (SQLException e) {
+        }
+        dispose();
+
+    }//GEN-LAST:event_selectWorkOrderButtActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -315,12 +509,15 @@ public class searchForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel backGroundPanel;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lastNameSearch;
     private javax.swing.JTextField phoneNumberSearch;
+    private javax.swing.JButton searchExistingButt;
     private javax.swing.JButton searchFormButt;
     private javax.swing.JList<String> searchResult;
     private javax.swing.JButton selButt;
+    private javax.swing.JButton selectWorkOrderButt;
     // End of variables declaration//GEN-END:variables
 }

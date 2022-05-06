@@ -859,44 +859,51 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_woTextAreaKeyPressed
 
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String firstName = fNameText.getText();
-            String lastName = lNameText.getText();
-            String phoneHome = phoneOneText.getText();
-            String phoneCell = cellPhoneText.getText();
-            String companyString = companyText.getText();
-            String emailString = eMailText.getText();
+        if (fNameText.getText().length() > 0) {
 
-            String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
-                    + "select '"
-                    + firstName + "' as fname, '"
-                    + lastName + "' as lname, '"
-                    + companyString + "' as companyName, '"
-                    + phoneHome + "' as phone, '"
-                    + phoneCell + "' as phone2,'"
-                    + emailString + "' as email,"
-                    + "getdate() as creation_date";
+            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            System.out.println(addClientScript);
+                String firstName = fNameText.getText();
+                String lastName = lNameText.getText();
+                String phoneHome = phoneOneText.getText();
+                String phoneCell = cellPhoneText.getText();
+                String companyString = companyText.getText();
+                String emailString = eMailText.getText();
 
-            addWorkOrder.executeUpdate(addClientScript);
+                String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
+                        + "select '"
+                        + firstName + "' as fname, '"
+                        + lastName + "' as lname, '"
+                        + companyString + "' as companyName, '"
+                        + phoneHome + "' as phone, '"
+                        + phoneCell + "' as phone2,'"
+                        + emailString + "' as email,"
+                        + "getdate() as creation_date";
 
-            String getClientID = "select client_id from clients where fname = '"
-                    + firstName + "' and lname = '"
-                    + lastName + "' and phone = '"
-                    + phoneHome + "'";
+                System.out.println(addClientScript);
 
-            ResultSet searchQ = addWorkOrder.executeQuery(getClientID);
+                addWorkOrder.executeUpdate(addClientScript);
 
-            while (searchQ.next()) {
-                String clientIDString = searchQ.getString("client_id");
-                clientIDText.setText(clientIDString);
+                String getClientID = "select client_id from clients where fname = '"
+                        + firstName + "' and lname = '"
+                        + lastName + "' and phone = '"
+                        + phoneHome + "'";
+
+                ResultSet searchQ = addWorkOrder.executeQuery(getClientID);
+
+                while (searchQ.next()) {
+                    String clientIDString = searchQ.getString("client_id");
+                    clientIDText.setText(clientIDString);
+                }
+                NewClientAddedMessage gui = new NewClientAddedMessage();
+                gui.setVisible(true);
+
+            } catch (SQLException e) {
             }
-            NewClientAddedMessage gui = new NewClientAddedMessage();
+        } else {
+            AddNewClientError gui = new AddNewClientError();
             gui.setVisible(true);
-            
-        } catch (SQLException e) {
         }
     }//GEN-LAST:event_addNewClientButtActionPerformed
 
@@ -1027,7 +1034,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JMenuItem searchExistingClient;
     private javax.swing.JMenuItem searchWorkOrderButt;
     private javax.swing.JTextField signText;
-    private javax.swing.JComboBox<String> techComboBox;
+    public static javax.swing.JComboBox<String> techComboBox;
     private javax.swing.JLabel titleText;
     private javax.swing.JMenuItem updateWorkOrder;
     public static javax.swing.JTextField woTextArea;
