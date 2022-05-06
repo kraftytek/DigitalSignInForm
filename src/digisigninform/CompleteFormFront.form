@@ -134,7 +134,7 @@
                                   <Component id="jButton2" min="-2" pref="80" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jButton3" min="-2" pref="123" max="-2" attributes="0"/>
+                                  <Component id="addItembutt" min="-2" pref="123" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButton4" max="32767" attributes="0"/>
                               </Group>
@@ -192,7 +192,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jButton4" max="32767" attributes="0"/>
-                              <Component id="jButton3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="addItembutt" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -246,9 +246,9 @@
               </Border>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="receivedTextActionPerformed"/>
-          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="fNameText">
           <Properties>
@@ -262,9 +262,6 @@
               </Border>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fNameTextActionPerformed"/>
-          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
@@ -468,9 +465,6 @@
               </Border>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="woTextActionPerformed"/>
-          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
@@ -583,7 +577,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeButtActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="addItembutt">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -599,6 +593,9 @@
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addItembuttActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>

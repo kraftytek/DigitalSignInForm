@@ -51,7 +51,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         closeButt = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        addItembutt = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         eMailText = new javax.swing.JTextField();
         lNameText = new javax.swing.JTextField();
@@ -80,18 +80,8 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         receivedText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Completed Date ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        receivedText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                receivedTextActionPerformed(evt);
-            }
-        });
 
         fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        fNameText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fNameTextActionPerformed(evt);
-            }
-        });
 
         phoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
@@ -147,11 +137,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
         woText.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         woText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         woText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), " Work Order ID ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        woText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                woTextActionPerformed(evt);
-            }
-        });
 
         cellText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Cell", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
@@ -186,11 +171,16 @@ public class CompleteFormFront extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Add Item");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jButton3.setFocusable(false);
+        addItembutt.setBackground(new java.awt.Color(255, 255, 255));
+        addItembutt.setForeground(new java.awt.Color(0, 0, 0));
+        addItembutt.setText("Add Item");
+        addItembutt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        addItembutt.setFocusable(false);
+        addItembutt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItembuttActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
@@ -245,7 +235,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(backgroundLayout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -288,7 +278,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(backgroundLayout.createSequentialGroup()
@@ -317,21 +307,14 @@ public class CompleteFormFront extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fNameTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fNameTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fNameTextActionPerformed
-
-    private void woTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_woTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_woTextActionPerformed
-
     private void closeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtActionPerformed
         dispose();
     }//GEN-LAST:event_closeButtActionPerformed
 
-    private void receivedTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receivedTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_receivedTextActionPerformed
+    private void addItembuttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItembuttActionPerformed
+        PartsUsedFrame gui = new PartsUsedFrame();
+        gui.setVisible(true);
+    }//GEN-LAST:event_addItembuttActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,6 +353,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addItembutt;
     private javax.swing.JPanel background;
     public static javax.swing.JTextField cellText;
     private javax.swing.JButton closeButt;
@@ -378,7 +362,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public static javax.swing.JTextField fNameText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -393,7 +376,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea3;
     public static javax.swing.JTextField lNameText;
     public static javax.swing.JTextField phoneText;
-    private javax.swing.JTextField receivedText;
+    public static javax.swing.JTextField receivedText;
     private javax.swing.JTextArea serTag;
     private javax.swing.JTextArea totalText;
     public static javax.swing.JTextField woText;
