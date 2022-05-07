@@ -10,12 +10,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -198,7 +196,18 @@ public class searchForm extends javax.swing.JFrame {
 
     private void selButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selButtActionPerformed
         String selClient = searchResult.getSelectedValue();
-        String cleanClientID = selClient.substring(11, 15);
+        String selWONum = searchResult.getSelectedValue();
+        Pattern pattern = Pattern.compile("Client ID: ");
+        Matcher matcher = pattern.matcher(selWONum);
+
+        int endWO = 0;
+        while (matcher.find()) {
+            endWO = matcher.end();
+        }
+
+        String cleanClientID = selClient.substring(endWO, selWONum.indexOf(","));
+        System.out.println(cleanClientID);
+
         System.out.println(selClient);
         System.out.println(cleanClientID);
 
@@ -328,7 +337,17 @@ public class searchForm extends javax.swing.JFrame {
 
     private void searchExistingButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingButtActionPerformed
         String selClient = searchResult.getSelectedValue();
-        String cleanClientID = selClient.substring(11, 15);
+        String selWONum = searchResult.getSelectedValue();
+        Pattern pattern = Pattern.compile("Client ID: ");
+        Matcher matcher = pattern.matcher(selWONum);
+
+        int endWO = 0;
+        while (matcher.find()) {
+            endWO = matcher.end();
+        }
+
+        String cleanClientID = selClient.substring(endWO, selWONum.indexOf(","));
+        System.out.println(cleanClientID);
 
         String connectionUrl
                 = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
@@ -364,9 +383,14 @@ public class searchForm extends javax.swing.JFrame {
     private void selectWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWorkOrderButtActionPerformed
 
         String selWONum = searchResult.getSelectedValue();
-        String cleanWOID = selWONum.substring(15, 16);
-        System.out.println(selWONum);
-        System.out.println(cleanWOID);
+        Pattern pattern = Pattern.compile("Work Order ID: ");
+        Matcher matcher = pattern.matcher(selWONum);
+
+        int endWO = 0;
+        while (matcher.find()) {
+            endWO = matcher.end();
+        }
+        String cleanWOID = selWONum.substring(endWO, selWONum.indexOf(","));
 
         String connectionUrl
                 = "jdbc:sqlserver://sql.kraftytek.ca:1433;"

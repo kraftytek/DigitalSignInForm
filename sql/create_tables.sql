@@ -62,4 +62,8 @@ create table client_flags (
 	)
 
 
-	
+create table upc_Codes (
+	upc_id int identity(1,1) PRIMARY KEY,
+	upc_desc varchar(max) not null,
+	upc_cost varchar(max) not null
+	)
