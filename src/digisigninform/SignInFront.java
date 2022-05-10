@@ -13,11 +13,9 @@ import java.sql.Statement;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
-import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.print.*;
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -42,7 +40,7 @@ public class SignInFront extends javax.swing.JFrame {
             = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
-            + "user=sa;"
+            + "user=appUser;"
             + "password=S!lver88";
 
     /**
