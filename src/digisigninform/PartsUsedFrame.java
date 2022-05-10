@@ -5,6 +5,7 @@
 package digisigninform;
 
 import static digisigninform.SignInFront.clientIDText;
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -23,6 +24,15 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
@@ -62,7 +72,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         upcCostText = new javax.swing.JTextField();
         upcDescText = new javax.swing.JLabel();
         upcCombo = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        selectButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -129,10 +139,15 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Select Barcode");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        selectButt.setBackground(new java.awt.Color(255, 255, 255));
+        selectButt.setForeground(new java.awt.Color(0, 0, 0));
+        selectButt.setText("Select Barcode");
+        selectButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        selectButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectButtActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout backGroundPanelLayout = new javax.swing.GroupLayout(backGroundPanel);
         backGroundPanel.setLayout(backGroundPanelLayout);
@@ -147,7 +162,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(makeBarButt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectButt, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBarcodeButt, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
                     .addGroup(backGroundPanelLayout.createSequentialGroup()
@@ -189,7 +204,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(makeBarButt, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveBarcodeButt, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(selectButt, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -210,7 +225,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
         Code39Bean barcodeGenerator = new Code39Bean();
-        BitmapCanvasProvider canvas = new BitmapCanvasProvider(180, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+        BitmapCanvasProvider canvas = new BitmapCanvasProvider(90, BufferedImage.TYPE_BYTE_BINARY, false, 0);
         barcodeGenerator.generateBarcode(canvas, barcodeText);
         return canvas.getBufferedImage();
     }
@@ -228,9 +243,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         try {
             Image newImage = generateCode39BarcodeImage(upcNum);
-            ImageIcon icon = new ImageIcon(newImage);
+            String upcText = upcDesc.getText() + "->$" + upcCostText.getText();
+            ImageIcon icon = new ImageIcon(newImage);            
             barCode.setIcon(icon);
-            upcDescText.setText(upcDesc.getText() + "->$" + upcCostText.getText());
+            upcDescText.setText(upcText);
         } catch (Exception ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -296,7 +312,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             System.out.println(upcList);
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
-            upcCombo.setModel(model);            
+            upcCombo.setModel(model);
 
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -323,7 +339,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
                 String upcCodeText = searchQ.getString("upc_code");
-                String upcCost = searchQ.getString("upc_cost");
+                String upcCost = searchQ.getString("upc_cost").replace("$", "");
 
                 upcCode.setText(upcCodeText);
                 upcDesc.setText(upcDescText);
@@ -336,7 +352,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 Image newImage = generateCode39BarcodeImage(upcNum);
                 ImageIcon icon = new ImageIcon(newImage);
                 barCode.setIcon(icon);
-                upcDescText.setText(upcDesc.getText() + "->$" + upcCostText.getText());
+                upcDescText.setText(upcDesc.getText() + "->" + upcCostText.getText());
+
             } catch (Exception ex) {
                 Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -346,6 +363,19 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_upcComboActionPerformed
+    public Vector<Icon> upcList = new Vector<>();
+    public Vector<String> upcTextList = new Vector<>();
+
+    private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
+
+        Icon selectedUpcIcon = barCode.getIcon();
+        String upcText = upcDescText.getText();
+        Collections.addAll(upcList, selectedUpcIcon);
+        Collections.addAll(upcTextList, upcText);
+        DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);       
+        CompleteFormFront.partsUsedList.setModel(model);
+
+    }//GEN-LAST:event_selectButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -393,10 +423,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backGroundPanel;
     private javax.swing.JLabel barCode;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton makeBarButt;
     private javax.swing.JButton saveBarcodeButt;
+    private javax.swing.JButton selectButt;
     private javax.swing.JTextField upcCode;
     private javax.swing.JComboBox<String> upcCombo;
     private javax.swing.JTextField upcCostText;

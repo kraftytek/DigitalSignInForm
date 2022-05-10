@@ -60,7 +60,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="makeBarButt" min="-2" pref="140" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="146" max="-2" attributes="0"/>
+                          <Component id="selectButt" min="-2" pref="146" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="saveBarcodeButt" pref="142" max="32767" attributes="0"/>
                       </Group>
@@ -111,7 +111,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="makeBarButt" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                       <Component id="saveBarcodeButt" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="selectButt" min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -269,7 +269,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="selectButt">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -284,6 +284,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectButtActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

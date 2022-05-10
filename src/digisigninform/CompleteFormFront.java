@@ -4,6 +4,20 @@
  */
 package digisigninform;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+
 /**
  *
  * @author kraft
@@ -37,8 +51,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
         workToDoText = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         workPerformedText = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         totalText = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -48,13 +60,15 @@ public class CompleteFormFront extends javax.swing.JFrame {
         compName = new javax.swing.JTextField();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        printCompleteButt = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         closeButt = new javax.swing.JButton();
         addItembutt = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         eMailText = new javax.swing.JTextField();
         lNameText = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        partsUsedList = new javax.swing.JList<>();
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
@@ -68,7 +82,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(704, 944));
 
         background.setBackground(new java.awt.Color(255, 255, 255));
-        background.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         background.setForeground(new java.awt.Color(255, 255, 255));
         background.setMinimumSize(new java.awt.Dimension(780, 927));
         background.setPreferredSize(new java.awt.Dimension(780, 927));
@@ -102,15 +115,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
         workPerformedText.setWrapStyleWord(true);
         workPerformedText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed:", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         jScrollPane2.setViewportView(workPerformedText);
-
-        jScrollPane3.setBorder(null);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        jScrollPane3.setViewportView(jTextArea1);
 
         jScrollPane4.setBorder(null);
 
@@ -151,20 +155,31 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jTextArea3.setBorder(null);
         jScrollPane7.setViewportView(jTextArea3);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Print");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        printCompleteButt.setBackground(new java.awt.Color(255, 255, 255));
+        printCompleteButt.setForeground(new java.awt.Color(0, 0, 0));
+        printCompleteButt.setText("Print");
+        printCompleteButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        printCompleteButt.setContentAreaFilled(false);
+        printCompleteButt.setFocusable(false);
+        printCompleteButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printCompleteButtActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Email");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton2.setContentAreaFilled(false);
+        jButton2.setFocusable(false);
 
         closeButt.setBackground(new java.awt.Color(255, 255, 255));
         closeButt.setForeground(new java.awt.Color(0, 0, 0));
         closeButt.setText("Close");
         closeButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        closeButt.setContentAreaFilled(false);
+        closeButt.setFocusable(false);
         closeButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtActionPerformed(evt);
@@ -175,6 +190,8 @@ public class CompleteFormFront extends javax.swing.JFrame {
         addItembutt.setForeground(new java.awt.Color(0, 0, 0));
         addItembutt.setText("Add Item");
         addItembutt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        addItembutt.setContentAreaFilled(false);
+        addItembutt.setFocusPainted(false);
         addItembutt.setFocusable(false);
         addItembutt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,11 +203,21 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Remove Item");
         jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton4.setContentAreaFilled(false);
+        jButton4.setFocusPainted(false);
         jButton4.setFocusable(false);
 
         eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jScrollPane3.setBorder(null);
+        jScrollPane3.setOpaque(false);
+
+        partsUsedList.setBackground(new java.awt.Color(255, 255, 255));
+        partsUsedList.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane3.setViewportView(partsUsedList);
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -226,18 +253,18 @@ public class CompleteFormFront extends javax.swing.JFrame {
                             .addComponent(jScrollPane2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
                                 .addComponent(closeButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(printCompleteButt, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(backgroundLayout.createSequentialGroup()
                                 .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3))))
                 .addContainerGap())
         );
         backgroundLayout.setVerticalGroup(
@@ -286,7 +313,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(printCompleteButt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(closeButt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -297,7 +324,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 666, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 667, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,6 +343,34 @@ public class CompleteFormFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_addItembuttActionPerformed
 
+
+
+    private void printCompleteButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printCompleteButtActionPerformed
+        //JFrame yourComponent = new JFrame();
+        PrinterJob pjob = PrinterJob.getPrinterJob();
+        PageFormat preformat = pjob.defaultPage();
+        preformat.setOrientation(PageFormat.PORTRAIT);
+        Paper paper = new Paper();
+        double margin = 2; // half inch
+        paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()
+                - margin * 2);    
+        PageFormat postformat = pjob.pageDialog(preformat);
+        postformat.setPaper(paper);
+        //If user does not hit cancel then print.
+        if (preformat != postformat) {
+            //Set print component
+            pjob.setPrintable(new PrintForm.Printer(background), postformat);
+            if (pjob.printDialog()) {
+                try {
+                    pjob.print();
+                } catch (PrinterException ex) {
+                    Logger.getLogger(CompleteFormFront.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+    }//GEN-LAST:event_printCompleteButtActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,16 +385,24 @@ public class CompleteFormFront extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CompleteFormFront.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleteFormFront.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CompleteFormFront.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleteFormFront.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CompleteFormFront.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleteFormFront.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CompleteFormFront.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleteFormFront.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -360,7 +423,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public static javax.swing.JTextField compName;
     public static javax.swing.JTextField eMailText;
     public static javax.swing.JTextField fNameText;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -371,11 +433,12 @@ public class CompleteFormFront extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
     public static javax.swing.JTextField lNameText;
+    public static javax.swing.JList<String> partsUsedList;
     public static javax.swing.JTextField phoneText;
+    private javax.swing.JButton printCompleteButt;
     public static javax.swing.JTextField receivedText;
     private javax.swing.JTextArea serTag;
     private javax.swing.JTextArea totalText;
