@@ -246,6 +246,8 @@ public class SignInFront extends javax.swing.JFrame {
         connectedText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         connectedText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         companyText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         companyText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Company:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         companyText.setNextFocusableComponent(eMailText);
@@ -782,7 +784,11 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
 
-        Date date = new Date();
+        String date = sdf3.format(new Date());
+        
+        String dateString = date.toString();
+        String cleanDate = dateString.substring(0,16);
+        
 
         //completion date
         String fname = fNameText.getText();
@@ -806,7 +812,7 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront.workToDoText.setText(workToDo);
         CompleteFormFront.workPerformedText.setText(workPerformed);
         CompleteFormFront.woText.setText(workOrderID);
-        //CompleteFormFront.receivedText.setText(date);
+        CompleteFormFront.receivedText.setText(date);
 
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 

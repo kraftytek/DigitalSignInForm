@@ -1045,6 +1045,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="clientIDText">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>

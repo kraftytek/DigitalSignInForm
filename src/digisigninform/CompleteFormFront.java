@@ -98,6 +98,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jLabel1.setText("Service Work Order");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
+        receivedText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         receivedText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Completed Date ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -382,11 +383,10 @@ public class CompleteFormFront extends javax.swing.JFrame {
     }//GEN-LAST:event_printCompleteButtActionPerformed
 
     private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
+        
         int currentSel = partsUsedList.getSelectedIndex();
-
         DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
         listModel.removeElementAt(currentSel);
-
 
     }//GEN-LAST:event_removeButtActionPerformed
 
