@@ -126,8 +126,10 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jScrollPane4.setBorder(null);
 
         totalText.setEditable(false);
+        totalText.setBackground(new java.awt.Color(255, 255, 255));
         totalText.setColumns(20);
         totalText.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        totalText.setForeground(new java.awt.Color(0, 0, 0));
         totalText.setLineWrap(true);
         totalText.setRows(3);
         totalText.setWrapStyleWord(true);
@@ -460,7 +462,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public static javax.swing.JTextField receivedText;
     private javax.swing.JButton removeButt;
     private javax.swing.JTextArea serTag;
-    private javax.swing.JTextArea totalText;
+    public static javax.swing.JTextArea totalText;
     public static javax.swing.JTextField woText;
     public static javax.swing.JTextArea workPerformedText;
     public static javax.swing.JTextArea workToDoText;

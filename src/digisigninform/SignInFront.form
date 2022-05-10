@@ -722,6 +722,7 @@
               <Properties>
                 <Property name="columns" type="int" value="1"/>
                 <Property name="rows" type="int" value="1"/>
+                <Property name="tabSize" type="int" value="0"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>

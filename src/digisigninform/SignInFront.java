@@ -154,6 +154,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         equipmentText.setColumns(1);
         equipmentText.setRows(1);
+        equipmentText.setTabSize(0);
         equipmentText.setBorder(null);
         equipmentText.setNextFocusableComponent(passwordText);
         equipmentField.setViewportView(equipmentText);

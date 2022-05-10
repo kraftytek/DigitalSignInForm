@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -366,14 +367,29 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     public Vector<Icon> upcList = new Vector<>();
     public Vector<String> upcTextList = new Vector<>();
 
+    public double totalCost;
+    
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
-
+        DecimalFormat f = new DecimalFormat("##.00");
         Icon selectedUpcIcon = barCode.getIcon();
         String upcText = upcDescText.getText();
+        String upcCost = upcCostText.getText().replace("$","");
+        double upcDouble = Double.parseDouble(upcCost);
         Collections.addAll(upcList, selectedUpcIcon);
         Collections.addAll(upcTextList, upcText);
         DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);       
         CompleteFormFront.partsUsedList.setModel(model);
+        totalCost = (totalCost + upcDouble);
+        double totalRound = Math.round(totalCost * 100.0) / 100.0;
+        //String totalText = String.valueOf(totalRound);
+        double totalTax = totalCost * 1.12;
+        double totalTaxRound = Math.round(totalTax * 100.0) / 100.0;
+        double taxAmount = totalTaxRound - totalRound;
+        double taxAmountRound = Math.round(taxAmount * 100.0) / 100.0;
+        //String taxText = String.valueOf(taxAmountRound);
+        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalRound) + "\n" 
+                + "Taxes: $" + f.format(taxAmountRound) + "\n"
+                + "After Taxes: $" + f.format(totalTaxRound));
 
     }//GEN-LAST:event_selectButtActionPerformed
 
