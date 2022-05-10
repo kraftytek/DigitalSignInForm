@@ -14,9 +14,15 @@ import java.awt.print.Printable;
 import static java.awt.print.Printable.NO_SUCH_PAGE;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.ListModel;
 
 /**
  *
@@ -64,7 +70,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         closeButt = new javax.swing.JButton();
         addItembutt = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        removeButt = new javax.swing.JButton();
         eMailText = new javax.swing.JTextField();
         lNameText = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -199,13 +205,18 @@ public class CompleteFormFront extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Remove Item");
-        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jButton4.setContentAreaFilled(false);
-        jButton4.setFocusPainted(false);
-        jButton4.setFocusable(false);
+        removeButt.setBackground(new java.awt.Color(255, 255, 255));
+        removeButt.setForeground(new java.awt.Color(0, 0, 0));
+        removeButt.setText("Remove Item");
+        removeButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        removeButt.setContentAreaFilled(false);
+        removeButt.setFocusPainted(false);
+        removeButt.setFocusable(false);
+        removeButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtActionPerformed(evt);
+            }
+        });
 
         eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
@@ -263,7 +274,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                             .addGroup(backgroundLayout.createSequentialGroup()
                                 .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(removeButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jScrollPane3))))
                 .addContainerGap())
         );
@@ -304,7 +315,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(removeButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -344,7 +355,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
     }//GEN-LAST:event_addItembuttActionPerformed
 
 
-
     private void printCompleteButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printCompleteButtActionPerformed
         //JFrame yourComponent = new JFrame();
         PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -353,7 +363,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         Paper paper = new Paper();
         double margin = 2; // half inch
         paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()
-                - margin * 2);    
+                - margin * 2);
         PageFormat postformat = pjob.pageDialog(preformat);
         postformat.setPaper(paper);
         //If user does not hit cancel then print.
@@ -370,6 +380,15 @@ public class CompleteFormFront extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_printCompleteButtActionPerformed
+
+    private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
+        int currentSel = partsUsedList.getSelectedIndex();
+
+        DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
+        listModel.removeElementAt(currentSel);
+
+
+    }//GEN-LAST:event_removeButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -424,7 +443,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public static javax.swing.JTextField eMailText;
     public static javax.swing.JTextField fNameText;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -440,6 +458,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public static javax.swing.JTextField phoneText;
     private javax.swing.JButton printCompleteButt;
     public static javax.swing.JTextField receivedText;
+    private javax.swing.JButton removeButt;
     private javax.swing.JTextArea serTag;
     private javax.swing.JTextArea totalText;
     public static javax.swing.JTextField woText;
