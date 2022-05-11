@@ -4,9 +4,6 @@
  */
 package digisigninform;
 
-import static digisigninform.SignInFront.clientIDText;
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.sql.Connection;
@@ -15,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,22 +23,10 @@ import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.BarcodeFactory;
-import net.sourceforge.barbecue.BarcodeImageHandler;
+import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
-import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  *
@@ -100,12 +87,16 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         upcDesc.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "UPC Description"));
         upcDesc.setOpaque(true);
 
+        barCode.setBackground(new java.awt.Color(255, 255, 255));
+        barCode.setForeground(new java.awt.Color(0, 0, 0));
         barCode.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        barCode.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         makeBarButt.setBackground(new java.awt.Color(255, 255, 255));
         makeBarButt.setForeground(new java.awt.Color(0, 0, 0));
         makeBarButt.setText("Generate Barcode");
         makeBarButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        makeBarButt.setFocusable(false);
         makeBarButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 makeBarButtActionPerformed(evt);
@@ -116,6 +107,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         saveBarcodeButt.setForeground(new java.awt.Color(0, 0, 0));
         saveBarcodeButt.setText("Save Barcode");
         saveBarcodeButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        saveBarcodeButt.setFocusable(false);
         saveBarcodeButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBarcodeButtActionPerformed(evt);
@@ -144,6 +136,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         selectButt.setForeground(new java.awt.Color(0, 0, 0));
         selectButt.setText("Select Barcode");
         selectButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        selectButt.setFocusable(false);
         selectButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectButtActionPerformed(evt);
@@ -154,36 +147,29 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         backGroundPanel.setLayout(backGroundPanelLayout);
         backGroundPanelLayout.setHorizontalGroup(
             backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(backGroundPanelLayout.createSequentialGroup()
-                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backGroundPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(upcCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(backGroundPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(makeBarButt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectButt, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveBarcodeButt, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-                    .addGroup(backGroundPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(upcCode, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(upcCostText)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(upcDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(backGroundPanelLayout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(upcDescText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(barCode, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backGroundPanelLayout.createSequentialGroup()
+                    .addComponent(makeBarButt, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(selectButt, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(saveBarcodeButt, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backGroundPanelLayout.createSequentialGroup()
+                    .addComponent(upcCode, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(upcCostText)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(upcDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(upcCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backGroundPanelLayout.createSequentialGroup()
+                    .addGap(109, 109, 109)
+                    .addComponent(upcDescText, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backGroundPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(84, 84, 84)
+                .addComponent(barCode, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87))
         );
         backGroundPanelLayout.setVerticalGroup(
             backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,8 +186,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(upcDescText, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(barCode, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(barCode, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(makeBarButt, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveBarcodeButt, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,9 +199,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(backGroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(backGroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,8 +209,14 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
-        Code39Bean barcodeGenerator = new Code39Bean();
-        BitmapCanvasProvider canvas = new BitmapCanvasProvider(90, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+        
+        final int dpi = 100;
+        Code39Bean barcodeGenerator = new Code39Bean();    
+        barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);  
+        barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
+        barcodeGenerator.doQuietZone(false);
+        barcodeGenerator.setFontSize(4);
+        BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
         barcodeGenerator.generateBarcode(canvas, barcodeText);
         return canvas.getBufferedImage();
     }
@@ -245,7 +235,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         try {
             Image newImage = generateCode39BarcodeImage(upcNum);
             String upcText = upcDesc.getText() + "->$" + upcCostText.getText();
-            ImageIcon icon = new ImageIcon(newImage);            
+            ImageIcon icon = new ImageIcon(newImage);
             barCode.setIcon(icon);
             upcDescText.setText(upcText);
         } catch (Exception ex) {
@@ -364,32 +354,38 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_upcComboActionPerformed
-    public Vector<Icon> upcList = new Vector<>();
-    public Vector<String> upcTextList = new Vector<>();
+    public static Vector<Icon> upcList = new Vector<>();
+    public static Vector<String> upcTextList = new Vector<>();
 
-    public double totalCost;
-    
+    //public double totalCost;
+    public static double totalCost = 0;
+    public static List<Double> doubles = new ArrayList<Double>(10);
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
+
         DecimalFormat f = new DecimalFormat("##.00");
+        String upcCost = upcCostText.getText().replace("$", "");
+        double upcDouble = Double.parseDouble(upcCost);
+        doubles.add(upcDouble);
+
         Icon selectedUpcIcon = barCode.getIcon();
         String upcText = upcDescText.getText();
-        String upcCost = upcCostText.getText().replace("$","");
-        double upcDouble = Double.parseDouble(upcCost);
+
         Collections.addAll(upcList, selectedUpcIcon);
+
         Collections.addAll(upcTextList, upcText);
-        DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);       
+        DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
+
         CompleteFormFront.partsUsedList.setModel(model);
-        totalCost = (totalCost + upcDouble);
-        double totalRound = Math.round(totalCost * 100.0) / 100.0;
-        //String totalText = String.valueOf(totalRound);
-        double totalTax = totalCost * 1.12;
-        double totalTaxRound = Math.round(totalTax * 100.0) / 100.0;
-        double taxAmount = totalTaxRound - totalRound;
-        double taxAmountRound = Math.round(taxAmount * 100.0) / 100.0;
-        //String taxText = String.valueOf(taxAmountRound);
-        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalRound) + "\n" 
-                + "Taxes: $" + f.format(taxAmountRound) + "\n"
-                + "After Taxes: $" + f.format(totalTaxRound));
+
+        for (Double i : doubles) {
+            totalCost += i;
+        }
+        double taxAmt = (totalCost * 1.12) - totalCost;
+        double totalAmt = totalCost + taxAmt;
+   
+        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n" 
+                + "Taxes: $" + f.format(taxAmt) + "\n"
+                + "After Taxes: $" + f.format(totalAmt));
 
     }//GEN-LAST:event_selectButtActionPerformed
 
@@ -438,15 +434,15 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backGroundPanel;
-    private javax.swing.JLabel barCode;
+    public static javax.swing.JLabel barCode;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton makeBarButt;
     private javax.swing.JButton saveBarcodeButt;
     private javax.swing.JButton selectButt;
-    private javax.swing.JTextField upcCode;
+    public static javax.swing.JTextField upcCode;
     private javax.swing.JComboBox<String> upcCombo;
-    private javax.swing.JTextField upcCostText;
-    private javax.swing.JTextField upcDesc;
-    private javax.swing.JLabel upcDescText;
+    public static javax.swing.JTextField upcCostText;
+    public static javax.swing.JTextField upcDesc;
+    public static javax.swing.JLabel upcDescText;
     // End of variables declaration//GEN-END:variables
 }

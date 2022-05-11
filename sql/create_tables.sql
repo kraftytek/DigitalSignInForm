@@ -1,19 +1,5 @@
 /**********Generate initial tables**************/
 
-/**
-tables:
-
-	clients: fname, lname, companyName, phone, phone2, email, client_id(primary_key), creation date, flags
-
-	client_service: workorder_ID (primary_key), client_id(foreign_key), work_to_be_done, work_performed, service_fee_id(foreign_key), desktop(boolean), laptop(boolean), tablet(boolean), charger(boolean)
-
-	service_fees: service_fee_id, service_desc_short, service name, service_cost
-
-	service_link: workorder_id(foreign_key), service_fee_id(foreign_key), link_id(primary_key)
-
-	client_flags: flag_description, flag_id(primary_key), flag_name
-
-**/
 
 create table clients (
 	client_id int not null IDENTITY(1,1) PRIMARY KEY,
@@ -62,8 +48,30 @@ create table client_flags (
 	)
 
 
-create table upc_Codes (
+create table upc_codes (
 	upc_id int identity(1,1) PRIMARY KEY,
 	upc_desc varchar(max) not null,
+	upc_code varchar(max) not null,
 	upc_cost varchar(max) not null
 	)
+
+create table users (
+	username varchar(max) not null
+	)
+
+
+/*We need to make a single test entry into the client_services table as well as a Connected user in the users table*/
+
+--insert into users(username)
+values('Connected');
+
+
+--insert into client_service(client_id, work_to_do, work_done)
+values((select top 1 client_id from clients order by client_id desc),
+'test',
+'test')
+
+
+
+
+

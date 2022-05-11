@@ -537,6 +537,11 @@ public class SignInFront extends javax.swing.JFrame {
         jMenuItem9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenuItem9.setOpaque(true);
         jMenuItem9.setPreferredSize(new java.awt.Dimension(172, 26));
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem9);
 
         jMenuItem10.setBackground(new java.awt.Color(255, 255, 255));
@@ -546,6 +551,11 @@ public class SignInFront extends javax.swing.JFrame {
         jMenuItem10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenuItem10.setOpaque(true);
         jMenuItem10.setPreferredSize(new java.awt.Dimension(172, 26));
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem10);
 
         topMenu.add(jMenu4);
@@ -786,10 +796,9 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
 
         String date = sdf3.format(new Date());
-        
+
         String dateString = date.toString();
-        String cleanDate = dateString.substring(0,16);
-        
+        String cleanDate = dateString.substring(0, 16);
 
         //completion date
         String fname = fNameText.getText();
@@ -915,6 +924,16 @@ public class SignInFront extends javax.swing.JFrame {
             gui.setVisible(true);
         }
     }//GEN-LAST:event_addNewClientButtActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        AboutAppFrame gui = new AboutAppFrame();
+        gui.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        AboutCreatorFrame gui = new AboutCreatorFrame();
+        gui.setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     Action action = new AbstractAction() {
         @Override

@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import static digisigninform.PartsUsedFrame.doubles;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -14,9 +15,15 @@ import java.awt.print.Printable;
 import static java.awt.print.Printable.NO_SUCH_PAGE;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -210,7 +217,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
         removeButt.setBackground(new java.awt.Color(255, 255, 255));
         removeButt.setForeground(new java.awt.Color(0, 0, 0));
-        removeButt.setText("Remove Item");
+        removeButt.setText("Clear Items");
         removeButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         removeButt.setContentAreaFilled(false);
         removeButt.setFocusPainted(false);
@@ -384,17 +391,59 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
     }//GEN-LAST:event_printCompleteButtActionPerformed
 
-    private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
-        
-        int currentSel = partsUsedList.getSelectedIndex();
-        DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
-        listModel.removeElementAt(currentSel);
 
+    private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
+
+        //temp workaround to clear list
+        
+        DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
+        listModel.removeAllElements();        
+        partsUsedList.setModel(listModel);        
+        CompleteFormFront.totalText.setText("");
+        /*
+        double totalCost = 0.0;
+
+        //get the current selected upc item
+        int currentSel = partsUsedList.getSelectedIndex();
+        //make a copy of the existing Jlist as listModel
+        DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
+
+        List<Double> doubles = new ArrayList<>(10);
+        doubles.addAll(PartsUsedFrame.doubles);
+        //remove the element from the copy and from the doubles array
+        listModel.removeElementAt(currentSel);
+        doubles.remove(currentSel);
+
+        DecimalFormat f = new DecimalFormat("##.00");
+        String upcCost = PartsUsedFrame.upcCostText.getText().replace("$", "");
+        double upcDouble = Double.parseDouble(upcCost);
+        doubles.add(upcDouble);
+
+        String upcText = PartsUsedFrame.upcDescText.getText();
+        Collections.addAll(PartsUsedFrame.upcTextList, upcText);
+        DefaultComboBoxModel model = new DefaultComboBoxModel(PartsUsedFrame.upcList);
+
+        //set the list with the removed item
+        partsUsedList.setModel(model);
+
+        for (Double i : doubles) {
+            PartsUsedFrame.totalCost += i;
+        }
+        double taxAmt = (totalCost * 1.12) - totalCost;
+        double totalAmt = totalCost + taxAmt;
+
+        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
+                + "Taxes: $" + f.format(taxAmt) + "\n"
+                + "After Taxes: $" + f.format(totalAmt));
+
+        }
+        */
     }//GEN-LAST:event_removeButtActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+        
+        /**
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
