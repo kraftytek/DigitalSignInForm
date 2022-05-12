@@ -4,32 +4,14 @@
  */
 package digisigninform;
 
-import static digisigninform.PartsUsedFrame.doubles;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.awt.print.Printable;
-import static java.awt.print.Printable.NO_SUCH_PAGE;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.ListModel;
 
 /**
  *
@@ -400,6 +382,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         listModel.removeAllElements();        
         partsUsedList.setModel(listModel);        
         CompleteFormFront.totalText.setText("");
+        
         /*
         double totalCost = 0.0;
 

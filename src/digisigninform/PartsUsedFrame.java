@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -209,10 +210,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
-        
-        final int dpi = 100;
-        Code39Bean barcodeGenerator = new Code39Bean();    
-        barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);  
+
+        final int dpi = 70;
+        Code39Bean barcodeGenerator = new Code39Bean();
+        barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);
         barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
         barcodeGenerator.doQuietZone(false);
         barcodeGenerator.setFontSize(4);
@@ -225,7 +226,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
-            + "user=sa;"
+            + "user=appUser;"
             + "password=S!lver88";
 
     private void makeBarButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeBarButtActionPerformed
@@ -356,10 +357,9 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_upcComboActionPerformed
     public static Vector<Icon> upcList = new Vector<>();
     public static Vector<String> upcTextList = new Vector<>();
-
-    //public double totalCost;
     public static double totalCost = 0;
     public static List<Double> doubles = new ArrayList<Double>(10);
+
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
         DecimalFormat f = new DecimalFormat("##.00");
@@ -370,20 +370,23 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         Icon selectedUpcIcon = barCode.getIcon();
         String upcText = upcDescText.getText();
 
-        Collections.addAll(upcList, selectedUpcIcon);
+        Collections.addAll(upcList, selectedUpcIcon);        
 
-        Collections.addAll(upcTextList, upcText);
+        Collections.addAll(upcTextList, upcText);       
+
         DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
-
+        
         CompleteFormFront.partsUsedList.setModel(model);
 
         for (Double i : doubles) {
             totalCost += i;
         }
+        
+        //If tax ever needs to change this is where to change it
         double taxAmt = (totalCost * 1.12) - totalCost;
         double totalAmt = totalCost + taxAmt;
-   
-        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n" 
+
+        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
                 + "Taxes: $" + f.format(taxAmt) + "\n"
                 + "After Taxes: $" + f.format(totalAmt));
 

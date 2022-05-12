@@ -27,6 +27,7 @@ create table client_service (
 	work_done varchar(max),
 	pc_pass varchar(max),
 	pc_pin varchar(max),
+	other_equip varchar(max),
 	sign_in_date datetime Default(getdate()),
 	tech_name varchar(max),
 	desktop BIT,

@@ -194,6 +194,14 @@ public class searchForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public String connectionUrl
+            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+            + "encrypt=false;"
+            + "databaseName=NCRO_WorkOrders;"
+            + "user=appUser;"
+            + "password=S!lver88";
+
+
     private void selButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selButtActionPerformed
         String selClient = searchResult.getSelectedValue();
         String selWONum = searchResult.getSelectedValue();
@@ -210,13 +218,6 @@ public class searchForm extends javax.swing.JFrame {
 
         System.out.println(selClient);
         System.out.println(cleanClientID);
-
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
@@ -294,13 +295,6 @@ public class searchForm extends javax.swing.JFrame {
     private void searchFormButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFormButtActionPerformed
         String txtLName = lastNameSearch.getText();
 
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String searchInvQue = """
@@ -349,13 +343,6 @@ public class searchForm extends javax.swing.JFrame {
         String cleanClientID = selClient.substring(endWO, selWONum.indexOf(","));
         System.out.println(cleanClientID);
 
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String searchInvQue = "select work_order_id, left(work_to_do, 40) as work_to_do, sign_in_date\n"
@@ -392,17 +379,10 @@ public class searchForm extends javax.swing.JFrame {
         }
         String cleanWOID = selWONum.substring(endWO, selWONum.indexOf(","));
 
-        String connectionUrl
-                = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-                + "encrypt=false;"
-                + "databaseName=NCRO_WorkOrders;"
-                + "user=sa;"
-                + "password=S!lver88";
-
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String searchInvQue = """
-                                  select work_order_id, cs.client_id, work_to_do, work_done, PC_pass, PC_pin, Sign_in_date, Tech_name, desktop, laptop, tablet, charger,
+                                  select work_order_id, cs.client_id, work_to_do, work_done, PC_pass, PC_pin, other_equip, Sign_in_date, Tech_name, desktop, laptop, tablet, charger,
                                   c.fname, c.lname, c.companyName, c.phone, c.phone2, c.email
                                   from client_service as cs
                                   inner join clients as c
@@ -424,6 +404,7 @@ public class searchForm extends javax.swing.JFrame {
                 String workDone = searchQ.getString("work_done");
                 String workOrderPass = searchQ.getString("PC_pass");
                 String workOrderPin = searchQ.getString("PC_pin");
+                String otherEquip = searchQ.getString("other_equip");
                 //String signInDate = searchQ.getString("Sign_in_date");
                 //String techName = searchQ.getString("Tech_name");
                 boolean desktopBool = searchQ.getBoolean("desktop");
@@ -457,6 +438,7 @@ public class searchForm extends javax.swing.JFrame {
                 SignInFront.passwordText.setText(workOrderPass);
                 SignInFront.pinText.setText(workOrderPin);
                 SignInFront.woTextArea.setText(workOrderID);
+                SignInFront.equipmentText.setText(otherEquip);
                 //SignInFront.techComboBox.setText(techName);                
                 SignInFront.companyText.setText(compName);
                 SignInFront.checkDesktop.setSelected(desktopBool);

@@ -647,7 +647,7 @@ public class SignInFront extends javax.swing.JFrame {
             String cleanWO = defaultWO.trim();
 
             String topWorkOrder = """
-                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
                                   c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
                                   from client_service as cs
                                   inner join clients as c
@@ -673,6 +673,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
                 String companyString = searchQ.getString("companyName");
+                String otherEquip = searchQ.getString("other_equip");
                 String phoneFormat;
                 String cellFormat;
 
@@ -705,6 +706,7 @@ public class SignInFront extends javax.swing.JFrame {
                 SignInFront.clientIDText.setText("Client ID: " + clientID);
                 SignInFront.workDoneText.setText(workDone);
                 SignInFront.companyText.setText(companyString);
+                SignInFront.equipmentText.setText(otherEquip);
             }
 
         } catch (SQLException e) {
@@ -726,17 +728,19 @@ public class SignInFront extends javax.swing.JFrame {
             String clientPin = pinText.getText();
             String techName = techComboBox.getSelectedItem().toString();
             String workDone = workDoneText.getText();
+            String otherEquip = equipmentText.getText();
 
             int desktopBool = (desktop) ? 1 : 0;
             int laptopBool = (laptop) ? 1 : 0;
             int tabletBool = (tablet) ? 1 : 0;
             int chargerBool = (charger) ? 1 : 0;
 
-            String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, tech_name, desktop, laptop, tablet, charger, work_done)"
+            String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
                     + "select " + currentClient + " as client_id,"
                     + "'" + workToDo + "' as work_to_do,"
                     + "'" + clientPass + "' as pc_pass,"
                     + "'" + clientPin + "' as pc_pin,"
+                    + "'" + otherEquip + "' as other_equip,"
                     + "'" + techName + "' as tech_name,"
                     + desktopBool + " as desktop,"
                     + laptopBool + " as laptop,"
@@ -797,8 +801,8 @@ public class SignInFront extends javax.swing.JFrame {
 
         String date = sdf3.format(new Date());
 
-        String dateString = date.toString();
-        String cleanDate = dateString.substring(0, 16);
+        //String dateString = date.toString();
+        //String cleanDate = dateString.substring(0, 16);
 
         //completion date
         String fname = fNameText.getText();
@@ -943,7 +947,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String cleanWO = defaultWO.trim();
 
                 String topWorkOrder = """
-                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
                                   c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
                                   from client_service as cs
                                   inner join clients as c
@@ -966,6 +970,7 @@ public class SignInFront extends javax.swing.JFrame {
                     String phoneNumber = searchQ.getString("phone").replace("-", "");
                     String cellNumber = searchQ.getString("phone2").replace("-", "");
                     String emailText = searchQ.getString("email");
+                    String otherEquip = searchQ.getString("other_equip");
                     String clientID = searchQ.getString("client_id");
                     String workDone = searchQ.getString("work_done");
                     String companyString = searchQ.getString("companyName");
@@ -998,6 +1003,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.phoneOneText.setText(phoneFormat);
                     SignInFront.cellPhoneText.setText(cellFormat);
                     SignInFront.eMailText.setText(emailText);
+                    SignInFront.equipmentText.setText(otherEquip);
                     SignInFront.clientIDText.setText("Client ID: " + clientID);
                     SignInFront.workDoneText.setText(workDone);
                     SignInFront.companyText.setText(companyString);
@@ -1041,7 +1047,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JScrollPane contactText;
     public static javax.swing.JTextField eMailText;
     private javax.swing.JScrollPane equipmentField;
-    private javax.swing.JTextArea equipmentText;
+    public static javax.swing.JTextArea equipmentText;
     public static javax.swing.JTextField fNameText;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
