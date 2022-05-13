@@ -195,7 +195,7 @@ public class searchForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public String connectionUrl
-            = "jdbc:sqlserver://192.168.1.161:1433;"
+            = "jdbc:sqlserver://localhost;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
             + "user=appUser;"
