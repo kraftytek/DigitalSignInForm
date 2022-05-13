@@ -803,7 +803,6 @@ public class SignInFront extends javax.swing.JFrame {
 
         //String dateString = date.toString();
         //String cleanDate = dateString.substring(0, 16);
-
         //completion date
         String fname = fNameText.getText();
         String lname = lNameText.getText();
@@ -857,7 +856,7 @@ public class SignInFront extends javax.swing.JFrame {
         preformat.setOrientation(PageFormat.PORTRAIT);
         PageFormat postformat = pjob.pageDialog(preformat);
         Paper paper = new Paper();
-        double margin = 2; // half inch
+        double margin = 2; //adjust print margin with this
         paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()
                 - margin * 2);
         postformat.setPaper(paper);
@@ -902,8 +901,6 @@ public class SignInFront extends javax.swing.JFrame {
                         + phoneCell + "' as phone2,'"
                         + emailString + "' as email,"
                         + "getdate() as creation_date";
-
-                System.out.println(addClientScript);
 
                 addWorkOrder.executeUpdate(addClientScript);
 

@@ -70,14 +70,22 @@ where x.entry_count = 2
 
 
 
-
-
 --add client work orders to client_service table
 
-insert into NCRO_WorkOrders.dbo.client_service(client_id, work_to_do, work_done, pc_pass, pc_pin, tech_name, desktop, laptop, tablet, charger)
-
-select *
-from tblWorkOrder
+--insert into NCRO_WorkOrders.dbo.client_service(client_id, work_to_do, work_done, pc_pass, pc_pin, other_equip, desktop, laptop, tablet, charger)
+select cs.client_id,
+tbl.work as work_to_do,
+tbl.performed as work_done,
+tbl.password as pc_pass,
+'' as pc_pin,
+equipment as other_equip,
+0 as desktop,
+0 as laptop,
+0 as tablet,
+0 as charger
+from tblWorkOrder as tbl
+inner join NCRO_WorkOrders.dbo.clients as cs
+on tbl.CustomerID = cs.companyName
 
 
 
