@@ -37,7 +37,7 @@ public class SignInFront extends javax.swing.JFrame {
     }
 
     public String connectionUrl
-            = "jdbc:sqlserver://192.168.1.161;"
+            = "jdbc:sqlserver://192.168.1.161:1433;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
             + "user=appUser;"
