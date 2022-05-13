@@ -37,7 +37,7 @@ public class SignInFront extends javax.swing.JFrame {
     }
 
     public String connectionUrl
-            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
+            = "jdbc:sqlserver://192.168.1.161;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
             + "user=appUser;"
@@ -986,7 +986,6 @@ public class SignInFront extends javax.swing.JFrame {
                         cellFormat = cellNumber;
                     }
 
-                    //add tech
                     SignInFront.clientIDText.setText(clientID);
                     SignInFront.workToBeDone.setText(woToDoText);
                     SignInFront.passwordText.setText(passText);
