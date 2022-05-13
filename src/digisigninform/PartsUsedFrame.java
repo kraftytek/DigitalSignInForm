@@ -223,7 +223,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }
 
     String connectionUrl
-            = "jdbc:sqlserver://192.168.1.161:1433;"
+            = "jdbc:sqlserver://localhost:1433;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
             + "user=appUser;"
