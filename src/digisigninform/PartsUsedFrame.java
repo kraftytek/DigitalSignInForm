@@ -229,8 +229,9 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
+        String userDir = System.getProperty("user.dir");
         try {
-            stream = new FileInputStream("src/settings/config.txt");
+            stream = new FileInputStream(userDir + "/config.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
