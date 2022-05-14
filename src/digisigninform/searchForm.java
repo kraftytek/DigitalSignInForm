@@ -5,11 +5,17 @@
 package digisigninform;
 
 import static digisigninform.SignInFront.fNameText;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -194,12 +200,34 @@ public class searchForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public String connectionUrl
-            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-            + "encrypt=false;"
-            + "databaseName=NCRO_WorkOrders;"
-            + "user=appUser;"
-            + "password=S!lver88";
+    public static ArrayList<String> getValues() {
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream("src/settings/config.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String strLine;
+        ArrayList<String> lines = new ArrayList<String>();
+        try {
+            while ((strLine = reader.readLine()) != null) {
+                String lastWord = strLine.substring(strLine.lastIndexOf(" ") + 1);
+                lines.add(lastWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    public ArrayList<String> configList = getValues();
+    public String connectionUrl = configList.get(0);
 
 
     private void selButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selButtActionPerformed

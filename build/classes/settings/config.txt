@@ -1,0 +1,1 @@
+jdbc:sqlserver://sql.kraftytek.ca:1433;encrypt=false;databaseName=NCRO_WorkOrders;user=appUser;password=S!lver88

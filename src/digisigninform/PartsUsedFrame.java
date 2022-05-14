@@ -6,6 +6,11 @@ package digisigninform;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -221,12 +226,34 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         return canvas.getBufferedImage();
     }
 
-    String connectionUrl
-            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-            + "encrypt=false;"
-            + "databaseName=NCRO_WorkOrders;"
-            + "user=appUser;"
-            + "password=S!lver88";
+    public static ArrayList<String> getValues() {
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream("src/settings/config.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String strLine;
+        ArrayList<String> lines = new ArrayList<String>();
+        try {
+            while ((strLine = reader.readLine()) != null) {
+                String lastWord = strLine.substring(strLine.lastIndexOf(" ") + 1);
+                lines.add(lastWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    public ArrayList<String> configList = getValues();
+    public String connectionUrl = configList.get(0);
 
     private void makeBarButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeBarButtActionPerformed
 

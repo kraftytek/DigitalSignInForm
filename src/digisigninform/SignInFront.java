@@ -16,8 +16,17 @@ import java.awt.print.PrinterException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.print.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -33,16 +42,50 @@ public class SignInFront extends javax.swing.JFrame {
      * Creates new form SignInFront
      */
     public SignInFront() {
+
         initComponents();
     }
     //change this to a config.txt file to make it more end user friendly
+/*
     public String connectionUrl
             = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
             + "encrypt=false;"
             + "databaseName=NCRO_WorkOrders;"
             + "user=appUser;"
             + "password=S!lver88";
+*/
+    public static ArrayList<String> getValues() {
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream("src/settings/config.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String strLine;
+        ArrayList<String> lines = new ArrayList<String>();
+        try {
+            while ((strLine = reader.readLine()) != null) {
+                String lastWord = strLine.substring(strLine.lastIndexOf(" ") + 1);
+                lines.add(lastWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
 
+    public ArrayList<String> configList = getValues();
+    public String connectionUrl = configList.get(0);
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -577,7 +620,7 @@ public class SignInFront extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-
+       
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String selectUser = "select username from users where username = 'Connected'";
@@ -591,6 +634,7 @@ public class SignInFront extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
             System.out.println(e);
+
         }
     }//GEN-LAST:event_formWindowActivated
 
@@ -866,8 +910,10 @@ public class SignInFront extends javax.swing.JFrame {
             if (pjob.printDialog()) {
                 try {
                     pjob.print();
+
                 } catch (PrinterException ex) {
-                    Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SignInFront.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -918,8 +964,6 @@ public class SignInFront extends javax.swing.JFrame {
                 gui.setVisible(true);
 
                 String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
-
-                addWorkOrder.executeUpdate(addClientScript);
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
 
