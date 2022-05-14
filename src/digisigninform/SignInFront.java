@@ -47,8 +47,9 @@ public class SignInFront extends javax.swing.JFrame {
 
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
+        String userDir = System.getProperty("user.dir");
         try {
-            stream = new FileInputStream("C:\\dontDelete\\config.txt");
+            stream = new FileInputStream(userDir + "/config.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -73,10 +74,7 @@ public class SignInFront extends javax.swing.JFrame {
 
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
-    
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -953,7 +951,6 @@ public class SignInFront extends javax.swing.JFrame {
                 }
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
-
 
                 String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
 
