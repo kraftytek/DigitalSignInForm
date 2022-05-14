@@ -380,8 +380,11 @@ public class CompleteFormFront extends javax.swing.JFrame {
         
         DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
         listModel.removeAllElements();        
-        partsUsedList.setModel(listModel);        
+        partsUsedList.setModel(listModel);  
         CompleteFormFront.totalText.setText("");
+        PartsUsedFrame.upcList.removeAllElements();
+        PartsUsedFrame.totalCost = 0.0;
+        PartsUsedFrame.doubles.clear();
         
         /*
         double totalCost = 0.0;

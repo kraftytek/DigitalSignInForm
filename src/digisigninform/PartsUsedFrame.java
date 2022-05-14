@@ -384,32 +384,28 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_upcComboActionPerformed
     public static Vector<Icon> upcList = new Vector<>();
-    public static Vector<String> upcTextList = new Vector<>();
-    public static double totalCost = 0;
+
+    public static double totalCost = 0.0;
     public static List<Double> doubles = new ArrayList<Double>(10);
 
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
         DecimalFormat f = new DecimalFormat("##.00");
         String upcCost = upcCostText.getText().replace("$", "");
+
         double upcDouble = Double.parseDouble(upcCost);
+        System.out.println(upcDouble);
         doubles.add(upcDouble);
 
         Icon selectedUpcIcon = barCode.getIcon();
-        String upcText = upcDescText.getText();
-
-        Collections.addAll(upcList, selectedUpcIcon);        
-
-        Collections.addAll(upcTextList, upcText);       
-
+        Collections.addAll(upcList, selectedUpcIcon);
         DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
-        
         CompleteFormFront.partsUsedList.setModel(model);
 
         for (Double i : doubles) {
             totalCost += i;
         }
-        
+
         //If tax ever needs to change this is where to change it
         double taxAmt = (totalCost * 1.12) - totalCost;
         double totalAmt = totalCost + taxAmt;
@@ -417,6 +413,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
                 + "Taxes: $" + f.format(taxAmt) + "\n"
                 + "After Taxes: $" + f.format(totalAmt));
+
+        doubles.clear();
 
     }//GEN-LAST:event_selectButtActionPerformed
 
