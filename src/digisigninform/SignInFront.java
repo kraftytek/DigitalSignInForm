@@ -17,16 +17,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.print.*;
 import java.io.BufferedReader;
-import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -45,19 +44,11 @@ public class SignInFront extends javax.swing.JFrame {
 
         initComponents();
     }
-    //change this to a config.txt file to make it more end user friendly
-/*
-    public String connectionUrl
-            = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
-            + "encrypt=false;"
-            + "databaseName=NCRO_WorkOrders;"
-            + "user=appUser;"
-            + "password=S!lver88";
-*/
+
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
         try {
-            stream = new FileInputStream("src/settings/config.txt");
+            stream = new FileInputStream("C:\\dontDelete\\config.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -620,7 +611,7 @@ public class SignInFront extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-       
+        //generate a new work order number when form is opened, gets max from db + 1  
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String selectUser = "select username from users where username = 'Connected'";
@@ -962,6 +953,7 @@ public class SignInFront extends javax.swing.JFrame {
                 }
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
+
 
                 String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
 
