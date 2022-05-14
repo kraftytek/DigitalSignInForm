@@ -9,19 +9,17 @@ package digisigninform;
  * @author kraft
  */
 import java.awt.*;
-import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.util.List;
 
 public class FileDropList extends JPanel implements DropTargetListener {
 
     private DefaultListModel listModel = new DefaultListModel();
     private DropTarget dropTarget;
-    private JLabel jLabel1;
+    //private JLabel jLabel1;
     private JScrollPane jScrollPane1;
     private JList list;
 

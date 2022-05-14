@@ -348,7 +348,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
 
     private void printCompleteButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printCompleteButtActionPerformed
-        //JFrame yourComponent = new JFrame();
+
         PrinterJob pjob = PrinterJob.getPrinterJob();
         PageFormat preformat = pjob.defaultPage();
         preformat.setOrientation(PageFormat.PORTRAIT);
@@ -370,7 +370,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
                 }
             }
         }
-
     }//GEN-LAST:event_printCompleteButtActionPerformed
 
 
@@ -422,8 +421,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         }
         */
     }//GEN-LAST:event_removeButtActionPerformed
-
-        
+  
         /**
          * @param args the command line arguments
          */

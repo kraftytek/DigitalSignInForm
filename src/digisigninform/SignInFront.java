@@ -35,7 +35,7 @@ public class SignInFront extends javax.swing.JFrame {
     public SignInFront() {
         initComponents();
     }
-
+    //change this to a config.txt file to make it more end user friendly
     public String connectionUrl
             = "jdbc:sqlserver://sql.kraftytek.ca:1433;"
             + "encrypt=false;"
@@ -577,7 +577,6 @@ public class SignInFront extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        //generate a new work order number when form is opened, gets max from db + 1  
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
@@ -917,6 +916,17 @@ public class SignInFront extends javax.swing.JFrame {
                 }
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
+
+                String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
+
+                addWorkOrder.executeUpdate(addClientScript);
+
+                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
+
+                while (searchT.next()) {
+                    String workOrderText = searchT.getString("work_order_id");
+                    woTextArea.setText(workOrderText);
+                }
 
             } catch (SQLException e) {
             }
