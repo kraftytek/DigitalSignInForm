@@ -304,8 +304,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-            System.out.println(upcList);
-
+           
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
             upcCombo.setSelectedIndex(0);
@@ -384,17 +383,14 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_upcComboActionPerformed
     public static Vector<Icon> upcList = new Vector<>();
-
     public static double totalCost = 0.0;
-    public static List<Double> doubles = new ArrayList<Double>(10);
+    public static List<Double> doubles = new ArrayList<>(10);
 
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
         DecimalFormat f = new DecimalFormat("##.00");
         String upcCost = upcCostText.getText().replace("$", "");
-
         double upcDouble = Double.parseDouble(upcCost);
-        System.out.println(upcDouble);
         doubles.add(upcDouble);
 
         Icon selectedUpcIcon = barCode.getIcon();
@@ -418,12 +414,16 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
             String workOrderTxt = CompleteFormFront.woText.getText();
             String upcText = upcCode.getText();
+            System.out.println(workOrderTxt);
             //add the selected item to the link table
-            String insertQue = "insert into service_link(work_order_ID, service_fee_id)\n"
-                    + "values(\n"
-                    + "'" + workOrderTxt + "',\n"
+            String insertQue = """
+                               insert into service_link(work_order_ID, service_fee_id)
+                               values(
+                               '""" + workOrderTxt + "',\n"
                     + "(select upc_id from upc_codes where upc_code = '" + upcText + "')\n"
                     + ")";
+                       
+            
             System.out.println(insertQue);
             statement.executeUpdate(insertQue);
 

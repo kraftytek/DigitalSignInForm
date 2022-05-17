@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import static digisigninform.PartsUsedFrame.upcList;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +16,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.awt.print.*;
 import java.io.BufferedReader;
 
@@ -26,10 +28,18 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import org.krysalis.barcode4j.ChecksumMode;
+import org.krysalis.barcode4j.impl.code39.Code39Bean;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  *
@@ -824,6 +834,19 @@ public class SignInFront extends javax.swing.JFrame {
 
     private static final SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
+
+        final int dpi = 80;
+        Code39Bean barcodeGenerator = new Code39Bean();
+        barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);
+        barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
+        barcodeGenerator.doQuietZone(false);
+        barcodeGenerator.setFontSize(4);
+        BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+        barcodeGenerator.generateBarcode(canvas, barcodeText);
+        return canvas.getBufferedImage();
+    }
+
 
     private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeWorkOrderActionPerformed
         CompleteFormFront gui = new CompleteFormFront();
@@ -857,6 +880,34 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront.woText.setText(workOrderID);
         CompleteFormFront.receivedText.setText(date);
 
+        //get currently attached parts
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            Vector<Icon> upcVector = new Vector<>();
+
+            String getService = """
+                            select work_order_id, service_fee_id, upc_codes.upc_code
+                            from service_link as sl
+                            inner join upc_codes on sl.service_fee_id = upc_id
+                            where work_order_ID = """ + workOrderID;
+
+            ResultSet searchQ = statement.executeQuery(getService);
+            System.out.println(searchQ);
+            while (searchQ.next()) {
+                String serviceCode = searchQ.getString("upc_code");
+                Image iconImage = generateCode39BarcodeImage(serviceCode);
+                ImageIcon upcCode = new ImageIcon(iconImage);
+                upcVector.add(upcCode);
+
+            }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(upcVector);
+            CompleteFormFront.partsUsedList.setModel(model);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 
     private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed

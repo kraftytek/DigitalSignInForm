@@ -110,9 +110,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jScrollPane6.setViewportView(jTextArea2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(704, 944));
         setMinimumSize(new java.awt.Dimension(704, 944));
-        setPreferredSize(new java.awt.Dimension(704, 944));
         setResizable(false);
         setSize(new java.awt.Dimension(704, 944));
 
@@ -157,7 +155,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         totalText.setEditable(false);
         totalText.setBackground(new java.awt.Color(255, 255, 255));
         totalText.setColumns(20);
-        totalText.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        totalText.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         totalText.setForeground(new java.awt.Color(0, 0, 0));
         totalText.setLineWrap(true);
         totalText.setRows(3);
@@ -260,6 +258,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedList.setBackground(new java.awt.Color(255, 255, 255));
         partsUsedList.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
+        partsUsedList.setVisibleRowCount(4);
         jScrollPane3.setViewportView(partsUsedList);
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
@@ -277,9 +276,9 @@ public class CompleteFormFront extends javax.swing.JFrame {
                         .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lNameText, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cellText, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(eMailText, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(eMailText)
                             .addComponent(compName)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundLayout.createSequentialGroup()
@@ -304,9 +303,9 @@ public class CompleteFormFront extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(backgroundLayout.createSequentialGroup()
-                                .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addItembutt, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(removeButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(removeButt, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane3))))
                 .addContainerGap())
         );
