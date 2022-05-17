@@ -235,6 +235,8 @@ public class SignInFront extends javax.swing.JFrame {
         techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
         techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         techComboBox.setFocusable(false);
+        techComboBox.setRequestFocusEnabled(false);
+        techComboBox.setVerifyInputWhenFocusTarget(false);
 
         eMailText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));

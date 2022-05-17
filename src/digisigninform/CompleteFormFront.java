@@ -258,6 +258,9 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedList.setBackground(new java.awt.Color(255, 255, 255));
         partsUsedList.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
+        partsUsedList.setFocusable(false);
+        partsUsedList.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        partsUsedList.setVerifyInputWhenFocusTarget(false);
         partsUsedList.setVisibleRowCount(4);
         jScrollPane3.setViewportView(partsUsedList);
 
