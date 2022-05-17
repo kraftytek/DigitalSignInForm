@@ -780,8 +780,6 @@ public class SignInFront extends javax.swing.JFrame {
                     + chargerBool + " as charger,"
                     + "'" + workDone + "' as work_done";
 
-            System.out.println(addClientScript);
-
             String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
 
             addWorkOrder.executeUpdate(addClientScript);

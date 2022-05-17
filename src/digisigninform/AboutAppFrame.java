@@ -44,7 +44,7 @@ public class AboutAppFrame extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
-        jTextArea1.setText("This app was mading using Java for all the front end fuctions and SQL for the backend storage of the data. The app is designed to keep track of all clients and the services provided to them.\n\n\n**Provided basic user information**\n");
+        jTextArea1.setText("This app was made using Java for all the front end and SQL for the backend storage of the data. The app is designed to keep track of all clients and the services provided to them.\n\n\n**Provide basic user information**\n");
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jScrollPane1.setViewportView(jTextArea1);

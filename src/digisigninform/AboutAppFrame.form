@@ -106,7 +106,7 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="This app was mading using Java for all the front end fuctions and SQL for the backend storage of the data. The app is designed to keep track of all clients and the services provided to them.&#xa;&#xa;&#xa;**Provided basic user information**&#xa;"/>
+                <Property name="text" type="java.lang.String" value="This app was made using Java for all the front end and SQL for the backend storage of the data. The app is designed to keep track of all clients and the services provided to them.&#xa;&#xa;&#xa;**Provide basic user information**&#xa;"/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">

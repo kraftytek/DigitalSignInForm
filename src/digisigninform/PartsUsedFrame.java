@@ -414,7 +414,25 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 + "Taxes: $" + f.format(taxAmt) + "\n"
                 + "After Taxes: $" + f.format(totalAmt));
 
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String workOrderTxt = CompleteFormFront.woText.getText();
+            String upcText = upcCode.getText();
+            //add the selected item to the link table
+            String insertQue = "insert into service_link(work_order_ID, service_fee_id)\n"
+                    + "values(\n"
+                    + "'" + workOrderTxt + "',\n"
+                    + "(select upc_id from upc_codes where upc_code = '" + upcText + "')\n"
+                    + ")";
+            System.out.println(insertQue);
+            statement.executeUpdate(insertQue);
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
         doubles.clear();
+        dispose();
 
     }//GEN-LAST:event_selectButtActionPerformed
 

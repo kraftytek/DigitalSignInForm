@@ -4,11 +4,21 @@
  */
 package digisigninform;
 
-
+import static digisigninform.PartsUsedFrame.upcCode;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -25,6 +35,36 @@ public class CompleteFormFront extends javax.swing.JFrame {
     public CompleteFormFront() {
         initComponents();
     }
+
+    public static ArrayList<String> getValues() {
+        FileInputStream stream = null;
+        String userDir = System.getProperty("user.dir");
+        try {
+            stream = new FileInputStream(userDir + "/config.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String strLine;
+        ArrayList<String> lines = new ArrayList<String>();
+        try {
+            while ((strLine = reader.readLine()) != null) {
+                String lastWord = strLine.substring(strLine.lastIndexOf(" ") + 1);
+                lines.add(lastWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    public ArrayList<String> configList = getValues();
+    public String connectionUrl = configList.get(0);
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -376,16 +416,29 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
     private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
 
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String workOrderTxt = CompleteFormFront.woText.getText();
+            //String upcText = upcCode.getText();
+            //delete the service items attached to the specified work order
+            String deleteQue = "--delete\n"
+                    + "from service_link\n"
+                    + "where work_order_id like " + workOrderTxt;
+            System.out.println(deleteQue);
+            statement.executeUpdate(deleteQue);
+
+        } catch (SQLException e) {
+        }
+
         //temp workaround to clear list
-        
         DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
-        listModel.removeAllElements();        
-        partsUsedList.setModel(listModel);  
+        listModel.removeAllElements();
+        partsUsedList.setModel(listModel);
         CompleteFormFront.totalText.setText("");
         PartsUsedFrame.upcList.removeAllElements();
         PartsUsedFrame.totalCost = 0.0;
         PartsUsedFrame.doubles.clear();
-        
+
         /*
         double totalCost = 0.0;
 
@@ -423,13 +476,12 @@ public class CompleteFormFront extends javax.swing.JFrame {
                 + "After Taxes: $" + f.format(totalAmt));
 
         }
-        */
+         */
     }//GEN-LAST:event_removeButtActionPerformed
 
-        
-        /**
-         * @param args the command line arguments
-         */
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
