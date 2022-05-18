@@ -380,9 +380,9 @@ public class searchForm extends javax.swing.JFrame {
             while (searchQ.next()) {
 
                 String workOrderID = searchQ.getString("work_order_id");
-                String workToDo = searchQ.getString("work_to_do");
+                //String workToDo = searchQ.getString("work_to_do");
                 String signInDate = searchQ.getString("sign_in_date").substring(0, 10);
-                Collections.addAll(resList, "Work Order ID: " + workOrderID + ", Work To Do: " + workToDo + ", Sign In Date: " + signInDate);
+                Collections.addAll(resList, "Sign In Date: " + signInDate + ", Work Order ID: " + workOrderID);
             }
 
             searchResult.setListData(resList);
@@ -398,11 +398,13 @@ public class searchForm extends javax.swing.JFrame {
         Pattern pattern = Pattern.compile("Work Order ID: ");
         Matcher matcher = pattern.matcher(selWONum);
 
-        int endWO = 0;
+        int endWO = 0;      
         while (matcher.find()) {
             endWO = matcher.end();
         }
-        String cleanWOID = selWONum.substring(endWO, selWONum.indexOf(","));
+        String cleanWOID = selWONum.substring(endWO, selWONum.length());
+        System.out.println(selWONum);
+        System.out.println(cleanWOID);
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
@@ -430,8 +432,6 @@ public class searchForm extends javax.swing.JFrame {
                 String workOrderPass = searchQ.getString("PC_pass");
                 String workOrderPin = searchQ.getString("PC_pin");
                 String otherEquip = searchQ.getString("other_equip");
-                //String signInDate = searchQ.getString("Sign_in_date");
-                //String techName = searchQ.getString("Tech_name");
                 boolean desktopBool = searchQ.getBoolean("desktop");
                 boolean laptopBool = searchQ.getBoolean("laptop");
                 boolean tabletBool = searchQ.getBoolean("tablet");
@@ -474,24 +474,7 @@ public class searchForm extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-        }
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String topWorkOrder = """
-                                  select max(work_Order_ID) + 1 as word_order_id
-                                  from client_service
-                                  """;
-
-            ResultSet searchWO = statement.executeQuery(topWorkOrder);
-
-            while (searchWO.next()) {
-
-                String woText = searchWO.getString(1);
-                SignInFront.woTextArea.setText(woText);
-                fNameText.requestFocus();
-            }
-
-        } catch (SQLException e) {
-        }
+        }        
         dispose();
 
     }//GEN-LAST:event_selectWorkOrderButtActionPerformed

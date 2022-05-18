@@ -122,7 +122,6 @@ public class SignInFront extends javax.swing.JFrame {
         legalText = new javax.swing.JTextArea();
         SigLabel = new javax.swing.JLabel();
         signText = new javax.swing.JTextField();
-        connectedText = new javax.swing.JLabel();
         clientIDText = new javax.swing.JLabel();
         companyText = new javax.swing.JTextField();
         woTextArea = new javax.swing.JTextField();
@@ -151,11 +150,6 @@ public class SignInFront extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(696, 965));
         setResizable(false);
         setSize(new java.awt.Dimension(696, 965));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-        });
 
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setPreferredSize(new java.awt.Dimension(780, 927));
@@ -288,9 +282,6 @@ public class SignInFront extends javax.swing.JFrame {
         signText.setFocusable(false);
         signText.setHighlighter(null);
 
-        connectedText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        connectedText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
         clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         companyText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -352,9 +343,7 @@ public class SignInFront extends javax.swing.JFrame {
                 .addComponent(partBox))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(connectedText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(clientIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(contactText, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
@@ -367,9 +356,7 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(connectedText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -619,25 +606,6 @@ public class SignInFront extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        //generate a new work order number when form is opened, gets max from db + 1  
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-
-            String selectUser = "select username from users where username = 'Connected'";
-
-            ResultSet uNQuery = statement.executeQuery(selectUser);
-
-            // Print results from select statement
-            while (uNQuery.next()) {
-
-                connectedText.setText("Connected");
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-
-        }
-    }//GEN-LAST:event_formWindowActivated
 
     public static class Printer implements Printable {
 
@@ -1134,7 +1102,6 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JTextField companyText;
     private javax.swing.JMenuItem completeWorkOrder;
     private javax.swing.JTextArea conactInfo;
-    private javax.swing.JLabel connectedText;
     private javax.swing.JScrollPane contactText;
     public static javax.swing.JTextField eMailText;
     private javax.swing.JScrollPane equipmentField;
