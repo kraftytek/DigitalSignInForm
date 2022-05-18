@@ -218,7 +218,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
-        barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);
+        barcodeGenerator.setChecksumMode(ChecksumMode.CP_AUTO);
         //barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
         //barcodeGenerator.doQuietZone(true);
         //barcodeGenerator.setQuietZone(0.10f);
@@ -227,6 +227,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         //barcodeGenerator.setExtendedCharSetEnabled(true);
         //barcodeGenerator.setFontSize(4);  
         //barcodeGenerator.setWideFactor(2.5);
+        barcodeGenerator.setDisplayStartStop(true);
         barcodeGenerator.setHeight(10);
         BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
         barcodeGenerator.generateBarcode(canvas, barcodeText);
