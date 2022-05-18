@@ -216,12 +216,18 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
 
-        final int dpi = 70;
+        final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);
-        barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
-        barcodeGenerator.doQuietZone(false);
-        barcodeGenerator.setFontSize(4);
+        //barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
+        //barcodeGenerator.doQuietZone(true);
+        //barcodeGenerator.setQuietZone(0.10f);
+        //barcodeGenerator.setModuleWidth(0.3f);
+        //barcodeGenerator.setIntercharGapWidth(0.1f);
+        //barcodeGenerator.setExtendedCharSetEnabled(true);
+        //barcodeGenerator.setFontSize(4);  
+        //barcodeGenerator.setWideFactor(2.5);
+        barcodeGenerator.setHeight(10);
         BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
         barcodeGenerator.generateBarcode(canvas, barcodeText);
         return canvas.getBufferedImage();

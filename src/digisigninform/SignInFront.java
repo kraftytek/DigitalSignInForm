@@ -838,7 +838,7 @@ public class SignInFront extends javax.swing.JFrame {
 
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
 
-        final int dpi = 80;
+        final int dpi = 70;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_ADD);
         barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
@@ -889,8 +889,8 @@ public class SignInFront extends javax.swing.JFrame {
 
             String getService = """
                             select work_order_id, service_fee_id, upc_codes.upc_code
-                            from service_link as sl
-                            inner join upc_codes on sl.service_fee_id = upc_id
+                            from service_link
+                            inner join upc_codes on service_link.service_fee_id = upc_id
                             where work_order_ID = """ + workOrderID;
 
             ResultSet searchQ = statement.executeQuery(getService);

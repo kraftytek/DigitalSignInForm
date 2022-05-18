@@ -243,10 +243,6 @@ public class searchForm extends javax.swing.JFrame {
         }
 
         String cleanClientID = selClient.substring(endWO, selWONum.indexOf(","));
-        System.out.println(cleanClientID);
-
-        System.out.println(selClient);
-        System.out.println(cleanClientID);
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 

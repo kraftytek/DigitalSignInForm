@@ -421,12 +421,10 @@ public class CompleteFormFront extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String workOrderTxt = CompleteFormFront.woText.getText();
-            //String upcText = upcCode.getText();
             //delete the service items attached to the specified work order
-            String deleteQue = "--delete\n"
+            String deleteQue = "delete\n"
                     + "from service_link\n"
                     + "where work_order_id like " + workOrderTxt;
-            System.out.println(deleteQue);
             statement.executeUpdate(deleteQue);
 
         } catch (SQLException e) {
