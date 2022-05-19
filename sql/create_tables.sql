@@ -13,13 +13,6 @@ create table clients (
 	flags varchar(max)
 	)
 
-create table service_fees (
-	service_fee_id int not null IDENTITY(1,1) PRIMARY KEY,
-	service_desc_short varchar(max),
-	service_name varchar(max),
-	service_cost decimal(5,2)
-	)
-
 create table client_service (
 	work_Order_ID int not null IDENTITY(1,1) PRIMARY KEY,
 	client_id int FOREIGN KEY (client_id) REFERENCES clients(client_id),
@@ -39,7 +32,7 @@ create table client_service (
 create table service_link (
 	link_id int not null IDENTITY(1,1) PRIMARY KEY,
 	work_Order_ID int FOREIGN KEY (work_Order_ID) REFERENCES client_service(work_Order_ID),
-	service_fee_id int FOREIGN KEY (service_fee_id) REFERENCES service_fees(service_fee_id)
+	service_fee_id int FOREIGN KEY (service_fee_id) REFERENCES upc_codes(upc_id)
 	)
 
 create table client_flags (
