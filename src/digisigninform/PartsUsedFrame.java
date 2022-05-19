@@ -288,13 +288,33 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             String upcCodeText = upcCode.getText();
             String upcPriceText = upcCostText.getText();
 
-            String addUpcScript = "insert into upc_codes(upc_desc, upc_code, upc_cost)\n"
-                    + "values('"
+            String upcExists = """
+                               select 1 as exist
+                               from upc_codes
+                               where upc_code = """ + upcCodeText;
+
+            String addUpcScript = """
+                                  insert into upc_codes(upc_desc, upc_code, upc_cost)
+                                  values('"""
                     + upcDescText + "','"
                     + upcCodeText + "','"
                     + upcPriceText + "')";
 
-            statement.executeUpdate(addUpcScript);
+            ResultSet searchRe = statement.executeQuery(upcExists);
+
+            while (searchRe.next()) {
+                int exist = searchRe.getInt("exist");
+
+                if (exist == 1) {
+                    //make popup
+                    UpcExistsMessage gui = new UpcExistsMessage();
+                    gui.setVisible(true);
+                    System.out.println("UPC exists");
+                } else {
+                    statement.executeUpdate(addUpcScript);
+                }
+
+            }
 
         } catch (SQLException e) {
         }
@@ -311,7 +331,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-           
+
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
             upcCombo.setSelectedIndex(0);
@@ -429,8 +449,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                '""" + workOrderTxt + "',\n"
                     + "(select upc_id from upc_codes where upc_code = '" + upcText + "')\n"
                     + ")";
-                       
-            
+
             System.out.println(insertQue);
             statement.executeUpdate(insertQue);
 
