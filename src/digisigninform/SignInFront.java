@@ -898,7 +898,6 @@ public class SignInFront extends javax.swing.JFrame {
                             where work_order_ID = """ + workOrderID;
 
             ResultSet searchQ = statement.executeQuery(getService);
-            System.out.println(searchQ);
             while (searchQ.next()) {
                 String serviceCode = searchQ.getString("upc_code");
                 Image iconImage = generateCode39BarcodeImage(serviceCode);
