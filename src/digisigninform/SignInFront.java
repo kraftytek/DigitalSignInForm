@@ -4,7 +4,6 @@
  */
 package digisigninform;
 
-import static digisigninform.PartsUsedFrame.upcList;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,10 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.print.*;
 import java.io.BufferedReader;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -39,22 +36,23 @@ import javax.swing.ImageIcon;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
-import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  *
- * @author kraft
+ * @author kraft (Chris Reid)
  */
 public class SignInFront extends javax.swing.JFrame {
 
     /**
      * Creates new form SignInFront
+     *
      */
     public SignInFront() {
 
         initComponents();
     }
 
+    //Get the server connection information from the cofig file, should move to src/resources/config.txt
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
         String userDir = System.getProperty("user.dir");
@@ -617,6 +615,7 @@ public class SignInFront extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Create the print function to call.
     public static class Printer implements Printable {
 
         final Component comp;
@@ -657,12 +656,12 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }
 
-
+    //open the client search form
     private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingClientActionPerformed
         searchForm gui = new searchForm();
         gui.setVisible(true);
     }//GEN-LAST:event_searchExistingClientActionPerformed
-
+    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
     private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
             String defaultWO = woTextArea.getText();
@@ -711,7 +710,7 @@ public class SignInFront extends javax.swing.JFrame {
                     cellFormat = cellNumber;
                 };
 
-                //add tech
+                //add tech field eventually, low priority 
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workToBeDone.setText(woToDoText);
                 SignInFront.passwordText.setText(passText);
@@ -740,52 +739,71 @@ public class SignInFront extends javax.swing.JFrame {
         //perform a check first to make sure that the work order does not exist already by matching string content and return popup with try update button instead
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String currentClient = clientIDText.getText();
-            String workToDo = workToBeDone.getText();
-            boolean desktop = checkDesktop.isSelected();
-            boolean laptop = checkLaptop.isSelected();
-            boolean tablet = checkTablet.isSelected();
-            boolean charger = checkCharger.isSelected();
-            String clientPass = passwordText.getText();
-            String clientPin = pinText.getText();
-            String techName = techComboBox.getSelectedItem().toString();
-            String workDone = workDoneText.getText();
-            String otherEquip = equipmentText.getText();
+            String clientID = clientIDText.getText();
+            String workToDoString = workToBeDone.getText();
 
-            int desktopBool = (desktop) ? 1 : 0;
-            int laptopBool = (laptop) ? 1 : 0;
-            int tabletBool = (tablet) ? 1 : 0;
-            int chargerBool = (charger) ? 1 : 0;
+            String workOrderExist = "select max(1) from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '%"
+                    + workToDoString + "%'";
 
-            String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                    + "select " + currentClient + " as client_id,"
-                    + "'" + workToDo + "' as work_to_do,"
-                    + "'" + clientPass + "' as pc_pass,"
-                    + "'" + clientPin + "' as pc_pin,"
-                    + "'" + otherEquip + "' as other_equip,"
-                    + "'" + techName + "' as tech_name,"
-                    + desktopBool + " as desktop,"
-                    + laptopBool + " as laptop,"
-                    + tabletBool + " as tablet,"
-                    + chargerBool + " as charger,"
-                    + "'" + workDone + "' as work_done";
+            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
-            String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
+            if (!searchQ.isBeforeFirst()) {
 
-            addWorkOrder.executeUpdate(addClientScript);
+                String currentClient = clientIDText.getText();
+                String workToDo = workToBeDone.getText();
+                boolean desktop = checkDesktop.isSelected();
+                boolean laptop = checkLaptop.isSelected();
+                boolean tablet = checkTablet.isSelected();
+                boolean charger = checkCharger.isSelected();
+                String clientPass = passwordText.getText();
+                String clientPin = pinText.getText();
+                String techName = techComboBox.getSelectedItem().toString();
+                String workDone = workDoneText.getText();
+                String otherEquip = equipmentText.getText();
 
-            ResultSet searchQ = addWorkOrder.executeQuery(getWorkOrder);
+                int desktopBool = (desktop) ? 1 : 0;
+                int laptopBool = (laptop) ? 1 : 0;
+                int tabletBool = (tablet) ? 1 : 0;
+                int chargerBool = (charger) ? 1 : 0;
 
-            while (searchQ.next()) {
-                String workOrderText = searchQ.getString("work_order_id");
-                woTextArea.setText(workOrderText);
+                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                        + "select " + currentClient + " as client_id,"
+                        + "'" + workToDo + "' as work_to_do,"
+                        + "'" + clientPass + "' as pc_pass,"
+                        + "'" + clientPin + "' as pc_pin,"
+                        + "'" + otherEquip + "' as other_equip,"
+                        + "'" + techName + "' as tech_name,"
+                        + desktopBool + " as desktop,"
+                        + laptopBool + " as laptop,"
+                        + tabletBool + " as tablet,"
+                        + chargerBool + " as charger,"
+                        + "'" + workDone + "' as work_done";
+
+                String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
+
+                addWorkOrder.executeUpdate(addClientScript);
+
+                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
+
+                while (searchT.next()) {
+                    String workOrderText = searchT.getString("work_order_id");
+                    woTextArea.setText(workOrderText);
+                }
+
+                SaveCompleteMessage gui = new SaveCompleteMessage();
+                gui.setVisible(true);
+
+            } else {
+                //open WorkOrderExistsError frame
+                WorkOrderExistsError gui = new WorkOrderExistsError();
+                gui.setVisible(true);
+
             }
-
-            SaveCompleteMessage gui = new SaveCompleteMessage();
-            gui.setVisible(true);
 
         } catch (SQLException e) {
         }
+
     }//GEN-LAST:event_saveNewWorkOrderActionPerformed
 
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
@@ -977,7 +995,7 @@ public class SignInFront extends javax.swing.JFrame {
         PageFormat preformat = pjob.defaultPage();
         preformat.setOrientation(PageFormat.PORTRAIT);
         Paper paper = new Paper();
-        double margin = 2; // half inch
+        double margin = 2;
         paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()
                 - margin * 2);
         PageFormat postformat = pjob.pageDialog(preformat);
@@ -1093,6 +1111,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_workToBeDoneFocusLost
 
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
+        //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText();
