@@ -4,6 +4,8 @@
  */
 package digisigninform;
 
+import static digisigninform.PartsUsedFrame.upcList;
+import static digisigninform.PartsUsedFrame.upcTxt;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -33,6 +36,9 @@ import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -890,9 +896,10 @@ public class SignInFront extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             Vector<Icon> upcVector = new Vector<>();
+            Vector<String> upcTxt = new Vector<>();
 
             String getService = """
-                            select work_order_id, service_fee_id, upc_codes.upc_code
+                            select work_order_id, service_fee_id, upc_codes.upc_code, upc_desc, upc_cost
                             from service_link
                             inner join upc_codes on service_link.service_fee_id = upc_id
                             where work_order_ID = """ + workOrderID;
@@ -902,10 +909,22 @@ public class SignInFront extends javax.swing.JFrame {
                 String serviceCode = searchQ.getString("upc_code");
                 Image iconImage = generateCode39BarcodeImage(serviceCode);
                 ImageIcon upcCode = new ImageIcon(iconImage);
+                String upcText = searchQ.getString("upc_desc");
+                String upcCost = searchQ.getString("upc_cost");
+                String allText = upcText + " -> " + upcCost;
                 upcVector.add(upcCode);
-
+                upcTxt.add(allText);
             }
-            DefaultComboBoxModel model = new DefaultComboBoxModel(upcVector);
+            Vector<Vector> allData = new Vector<Vector>();
+            allData.addElement(upcTxt);
+            allData.addElement(upcList);
+
+            Vector<String> columnNames = new Vector<String>();
+            columnNames.addElement("Desc");
+            columnNames.addElement("UPC");
+
+            JTable backTable = new JTable(allData, columnNames);
+            DefaultTableModel model = (DefaultTableModel) (backTable.getModel());
             CompleteFormFront.partsUsedList.setModel(model);
 
         } catch (SQLException ex) {

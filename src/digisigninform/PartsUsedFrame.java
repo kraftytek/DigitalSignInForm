@@ -4,9 +4,13 @@
  */
 package digisigninform;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,8 +30,19 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -426,19 +441,37 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_upcComboActionPerformed
     public static Vector<Icon> upcList = new Vector<>();
+    public static Vector<String> upcTxt = new Vector<>();
     public static double totalCost = 0.0;
     public static List<Double> doubles = new ArrayList<>(10);
 
+
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
+        String upcText = upcDesc.getText();
+        String upcCostTxt = upcCostText.getText();
+        String allText = upcText + " -> " + upcCostTxt;
         DecimalFormat f = new DecimalFormat("##.00");
         String upcCost = upcCostText.getText().replace("$", "");
         double upcDouble = Double.parseDouble(upcCost);
         doubles.add(upcDouble);
 
         Icon selectedUpcIcon = barCode.getIcon();
+        Collections.addAll(upcTxt, allText);
         Collections.addAll(upcList, selectedUpcIcon);
-        DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
+
+        Vector<Vector> allData = new Vector<Vector>();
+        allData.addElement(upcTxt);
+        allData.addElement(upcList);
+
+        Vector<String> columnNames = new Vector<String>();
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+
+        JTable backTable = new JTable(allData, columnNames);
+   
+        DefaultTableModel model = (DefaultTableModel) (backTable.getModel());
+        
         CompleteFormFront.partsUsedList.setModel(model);
 
         for (Double i : doubles) {
@@ -456,14 +489,14 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String workOrderTxt = CompleteFormFront.woText.getText();
-            String upcText = upcCode.getText();
+            String upcCodeText = upcCode.getText();
             System.out.println(workOrderTxt);
             //add the selected item to the link table
             String insertQue = """
                                insert into service_link(work_order_ID, service_fee_id)
                                values(
                                '""" + workOrderTxt + "',\n"
-                    + "(select upc_id from upc_codes where upc_code = '" + upcText + "')\n"
+                    + "(select upc_id from upc_codes where upc_code = '" + upcCodeText + "')\n"
                     + ")";
 
             statement.executeUpdate(insertQue);
@@ -508,7 +541,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             upcCombo.setModel(model);
 
         } catch (SQLException ex) {
-            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_editButtActionPerformed
 
