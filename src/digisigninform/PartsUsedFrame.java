@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -32,7 +31,6 @@ import javax.swing.ImageIcon;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
-import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  *
@@ -246,14 +244,6 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_AUTO);
-        //barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
-        //barcodeGenerator.doQuietZone(true);
-        //barcodeGenerator.setQuietZone(0.10f);
-        //barcodeGenerator.setModuleWidth(0.3f);
-        //barcodeGenerator.setIntercharGapWidth(0.1f);
-        //barcodeGenerator.setExtendedCharSetEnabled(true);
-        //barcodeGenerator.setFontSize(4);  
-        //barcodeGenerator.setWideFactor(2.5);
         barcodeGenerator.setDisplayStartStop(true);
         barcodeGenerator.setHeight(10);
         BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
@@ -382,7 +372,6 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-            System.out.println(upcList);
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
@@ -491,26 +480,41 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     private void editButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtActionPerformed
         //apply update to upc table based on changes in the 3 fields.
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String upcCodeTxt = upcCode.getText();
-            String upcCostTxt = upcCostText.getText();            
-            
+            String upcCostTxt = upcCostText.getText();
+
             String updateUPC = "update upc_codes set upc_cost = '"
-                    + upcCostTxt +"'\n"
+                    + upcCostTxt + "'\n"
                     + "from upc_codes\n"
                     + "where upc_code = '"
-                    + upcCodeTxt + "'";       
-             
-            statement.executeUpdate(updateUPC);           
-            
+                    + upcCodeTxt + "'";
+
+            statement.executeUpdate(updateUPC);
+
+            String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
+            Vector<String> upcList = new Vector<>();
+            ResultSet searchQ = statement.executeQuery(populateList);
+
+            while (searchQ.next()) {
+                String upcDescText = searchQ.getString("upc_desc");
+                String upcCodeText = searchQ.getString("upc_code");
+                String upcCostText = searchQ.getString("upc_cost");
+
+                Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
+            upcCombo.setModel(model);
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_editButtActionPerformed
 
     /**
-         * @param args the command line arguments
-         */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
