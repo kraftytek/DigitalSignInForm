@@ -203,6 +203,11 @@ public class SignInFront extends javax.swing.JFrame {
         workToBeDone.setRows(5);
         workToBeDone.setWrapStyleWord(true);
         workToBeDone.setBorder(null);
+        workToBeDone.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                workToBeDoneFocusLost(evt);
+            }
+        });
         workToDoField.setViewportView(workToBeDone);
 
         checkLaptop.setBackground(new java.awt.Color(255, 255, 255));
@@ -247,6 +252,11 @@ public class SignInFront extends javax.swing.JFrame {
         workDoneText.setRows(5);
         workDoneText.setWrapStyleWord(true);
         workDoneText.setBorder(null);
+        workDoneText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                workDoneTextFocusLost(evt);
+            }
+        });
         workPerformedArea.setViewportView(workDoneText);
 
         partBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used:"));
@@ -910,14 +920,67 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
 
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String clientID = clientIDText.getText();
+            String workToDoString = workToBeDone.getText();
+
+            String workOrderExist = "select max(1) from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '%"
+                    + workToDoString + "%'";
+
+            ResultSet searchQ = statement.executeQuery(workOrderExist);
+
+            if (!searchQ.isBeforeFirst()) {
+
+                String currentClient = clientIDText.getText();
+                String workToDo = workToBeDone.getText();
+                boolean desktop = checkDesktop.isSelected();
+                boolean laptop = checkLaptop.isSelected();
+                boolean tablet = checkTablet.isSelected();
+                boolean charger = checkCharger.isSelected();
+                String clientPass = passwordText.getText();
+                String clientPin = pinText.getText();
+                String techName = techComboBox.getSelectedItem().toString();
+                String workDone = workDoneText.getText();
+                String otherEquip = equipmentText.getText();
+
+                int desktopBool = (desktop) ? 1 : 0;
+                int laptopBool = (laptop) ? 1 : 0;
+                int tabletBool = (tablet) ? 1 : 0;
+                int chargerBool = (charger) ? 1 : 0;
+
+                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                        + "select " + currentClient + " as client_id,"
+                        + "'" + workToDo + "' as work_to_do,"
+                        + "'" + clientPass + "' as pc_pass,"
+                        + "'" + clientPin + "' as pc_pin,"
+                        + "'" + otherEquip + "' as other_equip,"
+                        + "'" + techName + "' as tech_name,"
+                        + desktopBool + " as desktop,"
+                        + laptopBool + " as laptop,"
+                        + tabletBool + " as tablet,"
+                        + chargerBool + " as charger,"
+                        + "'" + workDone + "' as work_done";
+
+                statement.executeUpdate(addClientScript);
+            } else {
+                System.out.println("work order was saved");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //JFrame yourComponent = new JFrame();
         PrinterJob pjob = PrinterJob.getPrinterJob();
         PageFormat preformat = pjob.defaultPage();
         preformat.setOrientation(PageFormat.PORTRAIT);
-        PageFormat postformat = pjob.pageDialog(preformat);
         Paper paper = new Paper();
-        double margin = 2; //adjust print margin with this
+        double margin = 2; // half inch
         paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()
                 - margin * 2);
+        PageFormat postformat = pjob.pageDialog(preformat);
         postformat.setPaper(paper);
         //If user does not hit cancel then print.
         if (preformat != postformat) {
@@ -926,14 +989,11 @@ public class SignInFront extends javax.swing.JFrame {
             if (pjob.printDialog()) {
                 try {
                     pjob.print();
-
                 } catch (PrinterException ex) {
-                    Logger.getLogger(SignInFront.class
-                            .getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CompleteFormFront.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-
     }//GEN-LAST:event_printWorkOrderActionPerformed
 
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_woTextAreaKeyPressed
@@ -1005,6 +1065,56 @@ public class SignInFront extends javax.swing.JFrame {
         AboutCreatorFrame gui = new AboutCreatorFrame();
         gui.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
+        //execute a update work order when focus is lost
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText();
+            String clientPass = passwordText.getText();
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText();
+            String workOrderID = woTextArea.getText();
+
+            String addClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            System.out.println(addClientScript);
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+        }
+
+    }//GEN-LAST:event_workToBeDoneFocusLost
+
+    private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText();
+            String clientPass = passwordText.getText();
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText();
+            String workOrderID = woTextArea.getText();
+
+            String addClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            System.out.println(addClientScript);
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_workDoneTextFocusLost
 
     Action action = new AbstractAction() {
         @Override
