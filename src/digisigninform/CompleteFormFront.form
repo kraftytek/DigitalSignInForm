@@ -52,7 +52,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="background" alignment="1" min="-2" pref="910" max="-2" attributes="0"/>
+          <Component id="background" alignment="0" pref="917" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -95,10 +95,6 @@
                               <Component id="compName" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="partsUsedPane" min="-2" pref="256" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="receivedText" min="-2" pref="144" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -110,10 +106,7 @@
                           <Component id="woText" min="-2" pref="133" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane5" max="32767" attributes="0"/>
-                              <Component id="jScrollPane2" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane5" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jScrollPane4" pref="0" max="32767" attributes="0"/>
@@ -132,6 +125,11 @@
                           </Group>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane2" min="-2" pref="353" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="partsUsedPane" min="-2" pref="333" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -189,14 +187,11 @@
                               <Component id="addItembutt" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane4" min="-2" pref="127" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="321" max="-2" attributes="0"/>
+                          <Component id="jScrollPane4" min="-2" pref="122" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPane5" min="-2" pref="163" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jScrollPane5" min="-2" pref="163" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="printCompleteButt" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -681,9 +676,10 @@
                     <Column editable="true" title="UPC" type="java.lang.Object"/>
                   </Table>
                 </Property>
-                <Property name="autoResizeMode" type="int" value="4"/>
+                <Property name="autoResizeMode" type="int" value="3"/>
                 <Property name="autoscrolls" type="boolean" value="false"/>
                 <Property name="columnSelectionAllowed" type="boolean" value="true"/>
+                <Property name="fillsViewportHeight" type="boolean" value="true"/>
                 <Property name="rowHeight" type="int" value="30"/>
                 <Property name="showGrid" type="boolean" value="false"/>
               </Properties>

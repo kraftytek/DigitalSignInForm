@@ -485,7 +485,11 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         };
         Object[] rowData = {allText, selectedUpcIcon};
         model.addRow(rowData);
+        
         CompleteFormFront.partsUsedList.setModel(model);
+        CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon)model.getValueAt(0, 1)).getIconHeight());
+        CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+        CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
 
         /**
          * ***************************************************************************************************************
