@@ -307,6 +307,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedList.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         partsUsedList.setAutoscrolls(false);
         partsUsedList.setColumnSelectionAllowed(true);
+        partsUsedList.setRowHeight(30);
         partsUsedList.setShowGrid(false);
         partsUsedPane.setViewportView(partsUsedList);
         JTableHeader header = partsUsedList.getTableHeader();
@@ -595,7 +596,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea3;
     public static javax.swing.JTextField lNameText;
     public static javax.swing.JTable partsUsedList;
-    private javax.swing.JScrollPane partsUsedPane;
+    public static javax.swing.JScrollPane partsUsedPane;
     public static javax.swing.JTextField phoneText;
     private javax.swing.JButton printCompleteButt;
     public static javax.swing.JTextField receivedText;
