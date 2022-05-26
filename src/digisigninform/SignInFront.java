@@ -688,8 +688,8 @@ public class SignInFront extends javax.swing.JFrame {
                 Boolean charger = searchQ.getBoolean("charger");
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String phoneNumber = searchQ.getString("phone").replace("-", "").replace("(", "").replace(")","");
+                String cellNumber = searchQ.getString("phone2").replace("-", "").replace("(", "").replace(")","");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
