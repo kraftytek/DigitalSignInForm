@@ -754,7 +754,7 @@ public class SignInFront extends javax.swing.JFrame {
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
-            if (!searchQ.isBeforeFirst()) {
+            if (searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
                 String workToDo = workToBeDone.getText();
