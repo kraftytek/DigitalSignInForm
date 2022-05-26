@@ -751,7 +751,10 @@ public class SignInFront extends javax.swing.JFrame {
             if (searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
+                //make worktodo and workdone handle words with '
                 String workToDo = workToBeDone.getText();
+                String workToDoFix = workToDo.replace("'","''");
+                System.out.println(workToDoFix);
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
@@ -769,7 +772,7 @@ public class SignInFront extends javax.swing.JFrame {
 
                 String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
                         + "select " + currentClient + " as client_id,"
-                        + "'" + workToDo + "' as work_to_do,"
+                        + "'" + workToDoFix + "' as work_to_do,"
                         + "'" + clientPass + "' as pc_pass,"
                         + "'" + clientPin + "' as pc_pin,"
                         + "'" + otherEquip + "' as other_equip,"
@@ -809,10 +812,10 @@ public class SignInFront extends javax.swing.JFrame {
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText();
+            String workToDo = workToBeDone.getText().replace("'","''");
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
+            String workDone = workDoneText.getText().replace("'","''");
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
@@ -951,7 +954,7 @@ public class SignInFront extends javax.swing.JFrame {
             if (!searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText();
+                String workToDo = workToBeDone.getText().replace("'","''");
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
@@ -959,7 +962,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String clientPass = passwordText.getText();
                 String clientPin = pinText.getText();
                 String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText();
+                String workDone = workDoneText.getText().replace("'","''");
                 String otherEquip = equipmentText.getText();
 
                 int desktopBool = (desktop) ? 1 : 0;
@@ -1087,10 +1090,10 @@ public class SignInFront extends javax.swing.JFrame {
         //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText();
+            String workToDo = workToBeDone.getText().replace("'","''");
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
+            String workDone = workDoneText.getText().replace("'","''");
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
@@ -1113,10 +1116,10 @@ public class SignInFront extends javax.swing.JFrame {
         //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText();
+            String workToDo = workToBeDone.getText().replace("'","''");
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
+            String workDone = workDoneText.getText().replace("'","''");
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
