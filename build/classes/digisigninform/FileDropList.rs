@@ -1,2 +1,0 @@
-digisigninform.FileListCellRenderer
-digisigninform.FileDropList

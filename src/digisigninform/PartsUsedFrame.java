@@ -257,7 +257,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public static BufferedImage generateCode39BarcodeImage(String barcodeText) throws Exception {
-        
+
         final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_AUTO);
@@ -267,7 +267,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         barcodeGenerator.generateBarcode(canvas, barcodeText);
         return canvas.getBufferedImage();
     }
-    
+
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
         String userDir = System.getProperty("user.dir");
@@ -294,14 +294,14 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         }
         return lines;
     }
-    
+
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
 
     private void makeBarButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeBarButtActionPerformed
-        
+
         String upcNum = upcCode.getText();
-        
+
         try {
             Image newImage = generateCode39BarcodeImage(upcNum);
             String upcText = upcDesc.getText() + "->$" + upcCostText.getText();
@@ -315,30 +315,30 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_makeBarButtActionPerformed
 
     private void saveBarcodeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBarcodeButtActionPerformed
-        
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String upcDescText = upcDesc.getText();
             String upcCodeText = upcCode.getText();
             String upcPriceText = upcCostText.getText();
-            
+
             String upcExists = """
                                select 1 as exist
                                from upc_codes
                                where upc_code = """ + upcCodeText;
-            
+
             String addUpcScript = """
                                   insert into upc_codes(upc_desc, upc_code, upc_cost)
                                   values('"""
                     + upcDescText + "','"
                     + upcCodeText + "','"
                     + upcPriceText + "')";
-            
+
             ResultSet searchRe = statement.executeQuery(upcExists);
-            
+
             while (searchRe.next()) {
                 int exist = searchRe.getInt("exist");
-                
+
                 if (exist == 1) {
                     //make popup
                     UpcExistsMessage gui = new UpcExistsMessage();
@@ -347,29 +347,29 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 } else {
                     statement.executeUpdate(addUpcScript);
                 }
-                
+
             }
-            
+
         } catch (SQLException e) {
         }
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
             Vector<String> upcList = new Vector<>();
             ResultSet searchQ = statement.executeQuery(populateList);
-            
+
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
                 String upcCodeText = searchQ.getString("upc_code");
                 String upcCostText = searchQ.getString("upc_cost");
-                
+
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-            
+
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
             upcCombo.setSelectedIndex(0);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -377,22 +377,22 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
             Vector<String> upcList = new Vector<>();
             ResultSet searchQ = statement.executeQuery(populateList);
-            
+
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
                 String upcCodeText = searchQ.getString("upc_code");
                 String upcCostText = searchQ.getString("upc_cost");
-                
+
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-            
+
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -402,41 +402,41 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         String selectedItem = (String) upcCombo.getSelectedItem();
         Pattern pattern = Pattern.compile("UPC Code: ");
         Matcher matcher = pattern.matcher(selectedItem);
-        
+
         int endWO = 0;
         while (matcher.find()) {
             endWO = matcher.end();
         }
         String cleanUpcCode = selectedItem.substring(endWO, selectedItem.indexOf(","));
-        
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String getUpcScript = "select upc_desc, upc_code, upc_cost from upc_codes where upc_code like '"
                     + cleanUpcCode + "'";
-            
+
             ResultSet searchQ = statement.executeQuery(getUpcScript);
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
                 String upcCodeText = searchQ.getString("upc_code");
                 String upcCost = searchQ.getString("upc_cost").replace("$", "");
-                
+
                 upcCode.setText(upcCodeText);
                 upcDesc.setText(upcDescText);
                 upcCostText.setText("$" + upcCost);
             }
-            
+
             String upcNum = upcCode.getText();
-            
+
             try {
                 Image newImage = generateCode39BarcodeImage(upcNum);
                 ImageIcon icon = new ImageIcon(newImage);
                 barCode.setIcon(icon);
                 upcDescText.setText(upcDesc.getText() + "->" + upcCostText.getText());
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -446,7 +446,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     public static Vector<String> upcTxt = new Vector<>();
     public static double totalCost = 0.0;
     public static List<Double> doubles = new ArrayList<>(10);
-    
+
 
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
         /**
@@ -462,17 +462,15 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         upcTxt.addElement(allText);
         upcList.addElement(selectedUpcIcon);
-        
+
         Vector<Vector> allData = new Vector<Vector>();
-        allData.addElement(upcTxt);
-        allData.addElement(upcList);
-        
-        Object[] rowData = {upcTxt, upcList};
-        
+        //allData.addElement(upcTxt);
+        //allData.addElement(upcList);
+
         Vector<String> columnNames = new Vector<>();
         columnNames.addElement("Desc");
         columnNames.addElement("UPC");
-        
+
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public Class<?> getColumnClass(int column) {
@@ -482,10 +480,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                         return getValueAt(0, column).getClass();
                     }
                 }
-                
                 return super.getColumnClass(column);
             }
         };
+        Object[] rowData = {allText, selectedUpcIcon};
         model.addRow(rowData);
         CompleteFormFront.partsUsedList.setModel(model);
 
@@ -497,7 +495,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         String upcCost = upcCostText.getText().replace("$", "");
         double upcDouble = Double.parseDouble(upcCost);
         doubles.add(upcDouble);
-        
+
         for (Double i : doubles) {
             totalCost += i;
         }
@@ -505,13 +503,13 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         //If tax ever needs to change this is where to change it
         double taxAmt = (totalCost * 1.12) - totalCost;
         double totalAmt = totalCost + taxAmt;
-        
+
         CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
                 + "Taxes: $" + f.format(taxAmt) + "\n"
                 + "After Taxes: $" + f.format(totalAmt));
-        
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String workOrderTxt = CompleteFormFront.woText.getText();
             String upcCodeText = upcCode.getText();
 
@@ -522,13 +520,13 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                '""" + workOrderTxt + "',\n"
                     + "(select upc_id from upc_codes where upc_code = '" + upcCodeText + "')\n"
                     + ")";
-            
+
             statement.executeUpdate(insertQue);
-            
+
         } catch (SQLException e) {
             System.out.println(e);
         }
-        
+
         doubles.clear();
         dispose();
 
@@ -537,33 +535,33 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     private void editButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtActionPerformed
         //apply update to upc table based on changes in the 3 fields.
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String upcCodeTxt = upcCode.getText();
             String upcCostTxt = upcCostText.getText();
-            
+
             String updateUPC = "update upc_codes set upc_cost = '"
                     + upcCostTxt + "'\n"
                     + "from upc_codes\n"
                     + "where upc_code = '"
                     + upcCodeTxt + "'";
-            
+
             statement.executeUpdate(updateUPC);
-            
+
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
             Vector<String> upcList = new Vector<>();
             ResultSet searchQ = statement.executeQuery(populateList);
-            
+
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
                 String upcCodeText = searchQ.getString("upc_code");
                 String upcCostText = searchQ.getString("upc_cost");
-                
+
                 Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
             }
-            
+
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -584,21 +582,21 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(PartsUsedFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(PartsUsedFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(PartsUsedFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PartsUsedFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
