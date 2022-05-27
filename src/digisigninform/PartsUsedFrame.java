@@ -316,6 +316,9 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                     + upcDescText + "','"
                     + upcCodeText + "','"
                     + upcPriceText + "')";
+            
+            System.out.println(upcExists);
+            System.out.println(addUpcScript);
 
             ResultSet searchRe = statement.executeQuery(upcExists);
 
@@ -330,16 +333,17 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 } else {
                     statement.executeUpdate(addUpcScript);
                 }
-
             }
 
         } catch (SQLException e) {
         }
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+        
+        
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
 
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
             Vector<String> upcList = new Vector<>();
-            ResultSet searchQ = statement.executeQuery(populateList);
+            ResultSet searchQ = statement2.executeQuery(populateList);
 
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
