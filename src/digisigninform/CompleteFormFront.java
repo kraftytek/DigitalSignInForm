@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -274,23 +275,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
         partsUsedList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Desc", "UPC"
@@ -299,9 +284,16 @@ public class CompleteFormFront extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         partsUsedList.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -480,10 +472,23 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
         } catch (SQLException e) {
         }
+        Vector<String> columnNames = new Vector<>();
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 
-        //temp workaround to clear list
-       JTable backTable = new JTable();
-        DefaultTableModel model = (DefaultTableModel)(backTable.getModel());
+            @Override
+
+            public Class<?> getColumnClass(int column) {
+                if (getRowCount() > 0) {
+                    Object value = getValueAt(0, column);
+                    if (value != null) {
+                        return getValueAt(0, column).getClass();
+                    }
+                }
+                return super.getColumnClass(column);
+            }
+        };   
         CompleteFormFront.partsUsedList.setModel(model);
         CompleteFormFront.totalText.setText("");
         PartsUsedFrame.upcList.removeAllElements();
