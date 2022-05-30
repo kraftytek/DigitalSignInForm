@@ -898,7 +898,7 @@ public class SignInFront extends javax.swing.JFrame {
         //get currently attached parts
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String workOrderText = CompleteFormFront.woText.getText();
+            String workOrderText = woTextArea.getText();
 
             String getUPCs = """
                          select upc.upc_desc, upc.upc_cost, upc.upc_code
@@ -909,8 +909,10 @@ public class SignInFront extends javax.swing.JFrame {
                          """ + workOrderText;
 
             ResultSet searchQ = statement.executeQuery(getUPCs);
-            if (searchQ.next()) {
 
+            if (searchQ.isBeforeFirst()) {
+                System.out.println("no results found");
+            } else {
                 while (searchQ.next()) {
                     String upcDescText = searchQ.getString("upc_desc");
                     String upcCostText = searchQ.getString("upc_cost");
@@ -922,12 +924,12 @@ public class SignInFront extends javax.swing.JFrame {
                     Object[] rowData = {completeText, icon};
                     model.addRow(rowData);
                 }
-
-                CompleteFormFront.partsUsedList.setModel(model);
-                CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
-                CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
-                CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
             }
+            CompleteFormFront.partsUsedList.setModel(model);
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
+
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
