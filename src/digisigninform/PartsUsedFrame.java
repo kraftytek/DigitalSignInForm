@@ -28,8 +28,10 @@ import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
@@ -47,6 +49,27 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     public PartsUsedFrame() {
         initComponents();
     }
+    Vector<String> columnNames = new Vector<>();
+
+    {
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+    }
+
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+
+        @Override
+
+        public Class<?> getColumnClass(int column) {
+            if (getRowCount() > 0) {
+                Object value = getValueAt(0, column);
+                if (value != null) {
+                    return getValueAt(0, column).getClass();
+                }
+            }
+            return super.getColumnClass(column);
+        }
+    };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -435,56 +458,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
 
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
-        /**
-         * Currently working for single entry, but is not adding more items,
-         * just wipes previously
-         * ***************************************************************************************************************
-         */
 
-        String upcText = upcDesc.getText();
-        String upcCostTxt = upcCostText.getText();
-        String allText = upcText + " -> " + upcCostTxt;
-        ImageIcon selectedUpcIcon = (ImageIcon) barCode.getIcon();
-        int rowCount = CompleteFormFront.partsUsedList.getModel().getRowCount();
-        Vector<String> columnNames = new Vector<>();
-        columnNames.addElement("Desc");
-        columnNames.addElement("UPC");
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-
-            @Override
-
-            public Class<?> getColumnClass(int column) {
-                if (getRowCount() > 0) {
-                    Object value = getValueAt(0, column);
-                    if (value != null) {
-                        return getValueAt(0, column).getClass();
-                    }
-                }
-                return super.getColumnClass(column);
-            }
-        };
-
-        System.out.println("Row Count " + rowCount);
-        System.out.println(CompleteFormFront.partsUsedList.getValueAt(0, 0));
-        if (CompleteFormFront.partsUsedList.getValueAt(0, 0) != null) {
-            for (int i = 0; i <= rowCount; i++) {
-                Object[] rowData = {allText, selectedUpcIcon};
-                model.addRow(rowData);
-            }
-        } else {
-            Object[] rowData = {allText, selectedUpcIcon};
-            model.addRow(rowData);
-        }
-
-        CompleteFormFront.partsUsedList.setModel(model);
-        CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) model.getValueAt(0, 1)).getIconHeight());
-        CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
-        CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
-
-        /**
-         * ***************************************************************************************************************
-         */
-        //Billing stuff below
+//******************************************************Billing stuff*******************************************************************************//
         DecimalFormat f = new DecimalFormat("##.00");
         String upcCost = upcCostText.getText().replace("$", "");
         double upcDouble = Double.parseDouble(upcCost);
@@ -519,6 +494,44 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             System.out.println(e);
+        }
+
+//***********************************************************End of Billing stuff*************************************************************************//        
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String workOrderText = CompleteFormFront.woText.getText();
+
+            String getUPCs = """
+                         select upc.upc_desc, upc.upc_cost, upc.upc_code
+                         from service_link as sl
+                         inner join upc_codes as upc
+                         on sl.service_fee_id = upc.upc_id
+                         where work_Order_ID =
+                         """ + workOrderText;
+
+            ResultSet searchQ = statement.executeQuery(getUPCs);
+
+            while (searchQ.next()) {
+                String upcDescText = searchQ.getString("upc_desc");
+                String upcCostText = searchQ.getString("upc_cost");
+                String upcCodeText = searchQ.getString("upc_code");
+                String completeText = upcDescText + " -> $" + upcCostText;
+                Image newImage = generateCode39BarcodeImage(upcCodeText);
+                ImageIcon icon = new ImageIcon(newImage);
+
+                Object[] rowData = {completeText, icon};
+                model.addRow(rowData);
+            }
+
+            CompleteFormFront.partsUsedList.setModel(model);
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         doubles.clear();

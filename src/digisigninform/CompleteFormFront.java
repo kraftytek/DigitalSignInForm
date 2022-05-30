@@ -36,6 +36,27 @@ import javax.swing.table.TableModel;
  */
 public class CompleteFormFront extends javax.swing.JFrame {
 
+    Vector<String> columnNames = new Vector<>();
+    {
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+    }
+
+     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+
+        @Override
+
+        public Class<?> getColumnClass(int column) {
+            if (getRowCount() > 0) {
+                Object value = getValueAt(0, column);
+                if (value != null) {
+                    return getValueAt(0, column).getClass();
+                }
+            }
+            return super.getColumnClass(column);
+        }
+    };
+
     /**
      * Creates new form FormFront
      */
@@ -275,7 +296,8 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
         partsUsedList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null},
+                {null, null}
             },
             new String [] {
                 "Desc", "UPC"
@@ -488,7 +510,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
                 }
                 return super.getColumnClass(column);
             }
-        };   
+        };
         CompleteFormFront.partsUsedList.setModel(model);
         CompleteFormFront.totalText.setText("");
         PartsUsedFrame.upcList.removeAllElements();

@@ -4,8 +4,6 @@
  */
 package digisigninform;
 
-import static digisigninform.PartsUsedFrame.upcList;
-import static digisigninform.PartsUsedFrame.upcTxt;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,19 +24,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -85,6 +79,28 @@ public class SignInFront extends javax.swing.JFrame {
         }
         return lines;
     }
+
+    Vector<String> columnNames = new Vector<>();
+
+    {
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+    }
+
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+
+        @Override
+
+        public Class<?> getColumnClass(int column) {
+            if (getRowCount() > 0) {
+                Object value = getValueAt(0, column);
+                if (value != null) {
+                    return getValueAt(0, column).getClass();
+                }
+            }
+            return super.getColumnClass(column);
+        }
+    };
 
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
@@ -843,15 +859,6 @@ public class SignInFront extends javax.swing.JFrame {
         final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_AUTO);
-        //barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
-        //barcodeGenerator.doQuietZone(true);
-        //barcodeGenerator.setQuietZone(0.10f);
-        //barcodeGenerator.setModuleWidth(0.3f);
-        //barcodeGenerator.setIntercharGapWidth(0.1f);
-        //barcodeGenerator.setExtendedCharSetEnabled(true);
-        //barcodeGenerator.setFontSize(4);  
-        //barcodeGenerator.setWideFactor(2.5);   
-        //barcodeGenerator.setPattern("_______");
         barcodeGenerator.setDisplayStartStop(true);
         barcodeGenerator.setHeight(10);
         BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
@@ -865,10 +872,6 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
 
         String date = sdf3.format(new Date());
-
-        //String dateString = date.toString();
-        //String cleanDate = dateString.substring(0, 16);
-        //completion date
         String fname = fNameText.getText();
         String lname = lNameText.getText();
         String companyName = companyText.getText();
@@ -895,43 +898,42 @@ public class SignInFront extends javax.swing.JFrame {
         //get currently attached parts
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            Vector<Icon> upcVector = new Vector<>();
-            Vector<String> upcTxt = new Vector<>();
+            String workOrderText = CompleteFormFront.woText.getText();
 
-            String getService = """
-                            select work_order_id, service_fee_id, upc_codes.upc_code, upc_desc, upc_cost
-                            from service_link
-                            inner join upc_codes on service_link.service_fee_id = upc_id
-                            where work_order_ID = """ + workOrderID;
+            String getUPCs = """
+                         select upc.upc_desc, upc.upc_cost, upc.upc_code
+                         from service_link as sl
+                         inner join upc_codes as upc
+                         on sl.service_fee_id = upc.upc_id
+                         where work_Order_ID =
+                         """ + workOrderText;
 
-            ResultSet searchQ = statement.executeQuery(getService);
-            while (searchQ.next()) {
-                String serviceCode = searchQ.getString("upc_code");
-                Image iconImage = generateCode39BarcodeImage(serviceCode);
-                ImageIcon upcCode = new ImageIcon(iconImage);
-                String upcText = searchQ.getString("upc_desc");
-                String upcCost = searchQ.getString("upc_cost");
-                String allText = upcText + " -> " + upcCost;
-                upcVector.add(upcCode);
-                upcTxt.add(allText);
+            ResultSet searchQ = statement.executeQuery(getUPCs);
+            if (searchQ.next()) {
+
+                while (searchQ.next()) {
+                    String upcDescText = searchQ.getString("upc_desc");
+                    String upcCostText = searchQ.getString("upc_cost");
+                    String upcCodeText = searchQ.getString("upc_code");
+                    String completeText = upcDescText + " -> $" + upcCostText;
+                    Image newImage = generateCode39BarcodeImage(upcCodeText);
+                    ImageIcon icon = new ImageIcon(newImage);
+
+                    Object[] rowData = {completeText, icon};
+                    model.addRow(rowData);
+                }
+
+                CompleteFormFront.partsUsedList.setModel(model);
+                CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+                CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+                CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
             }
-            Vector<Vector> allData = new Vector<Vector>();
-            allData.addElement(upcTxt);
-            allData.addElement(upcList);
-
-            Vector<String> columnNames = new Vector<String>();
-            columnNames.addElement("Desc");
-            columnNames.addElement("UPC");
-
-            JTable backTable = new JTable(allData, columnNames);
-            DefaultTableModel model = (DefaultTableModel) (backTable.getModel());
-            CompleteFormFront.partsUsedList.setModel(model);
-
         } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 
     private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
