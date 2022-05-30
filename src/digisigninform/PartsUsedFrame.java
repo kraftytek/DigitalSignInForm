@@ -324,43 +324,41 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_makeBarButtActionPerformed
 
     private void saveBarcodeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBarcodeButtActionPerformed
+        String upcDescText = upcDesc.getText();
+        String upcCodeText = upcCode.getText();
+        String upcPriceText = upcCostText.getText();
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-
-            String upcDescText = upcDesc.getText();
-            String upcCodeText = upcCode.getText();
-            String upcPriceText = upcCostText.getText();
-
-            String upcExists = """
+        String upcExists = """
                                select 1 as exist
                                from upc_codes
                                where upc_code = """ + upcCodeText;
 
-            String addUpcScript = """
+        String addUpcScript = """
                                   insert into upc_codes(upc_desc, upc_code, upc_cost)
                                   values('"""
-                    + upcDescText + "','"
-                    + upcCodeText + "','"
-                    + upcPriceText + "')";
+                + upcDescText + "','"
+                + upcCodeText + "','"
+                + upcPriceText + "')";
+
+        System.out.println("upc Check query: " + upcExists);
+        System.out.println("add upc query " + addUpcScript);
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             ResultSet searchRe = statement.executeQuery(upcExists);
 
-            while (searchRe.next()) {
-                int exist = searchRe.getInt("exist");
+            while (searchRe.isBeforeFirst()) {
 
-                if (exist == 1) {
-                    //make popup
-                    UpcExistsMessage gui = new UpcExistsMessage();
-                    gui.setVisible(true);
-                    System.out.println("UPC exists");
-                } else {
-                    statement.executeUpdate(addUpcScript);
-                }
-
+                UpcExistsMessage gui = new UpcExistsMessage();
+                gui.setVisible(true);
+                System.out.println("UPC exists");
+                break;
             }
+            statement.executeUpdate(addUpcScript);
 
         } catch (SQLException e) {
         }
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
@@ -368,11 +366,11 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             ResultSet searchQ = statement.executeQuery(populateList);
 
             while (searchQ.next()) {
-                String upcDescText = searchQ.getString("upc_desc");
-                String upcCodeText = searchQ.getString("upc_code");
-                String upcCostText = searchQ.getString("upc_cost");
+                String upcDescTxt = searchQ.getString("upc_desc");
+                String upcCodeTxt = searchQ.getString("upc_code");
+                String upcCostTxt = searchQ.getString("upc_cost");
 
-                Collections.addAll(upcList, "UPC Code: " + upcCodeText + ", Description: " + upcDescText + ", Cost: $" + upcCostText);
+                Collections.addAll(upcList, "UPC Code: " + upcCodeTxt + ", Description: " + upcDescTxt + ", Cost: $" + upcCostTxt);
             }
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
