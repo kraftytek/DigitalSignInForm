@@ -256,8 +256,8 @@ public class searchForm extends javax.swing.JFrame {
             while (searchQ.next()) {
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "").replace("(", "").replace(")","");
-                String cellNumber = searchQ.getString("phone2").replace("-", "").replace("(", "").replace(")","");
+                String phoneNumber = searchQ.getString("phone").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("-", "");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String compName = searchQ.getString("companyName");

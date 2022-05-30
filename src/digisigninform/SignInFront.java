@@ -30,9 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -79,6 +79,28 @@ public class SignInFront extends javax.swing.JFrame {
         }
         return lines;
     }
+
+    Vector<String> columnNames = new Vector<>();
+
+    {
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+    }
+
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+
+        @Override
+
+        public Class<?> getColumnClass(int column) {
+            if (getRowCount() > 0) {
+                Object value = getValueAt(0, column);
+                if (value != null) {
+                    return getValueAt(0, column).getClass();
+                }
+            }
+            return super.getColumnClass(column);
+        }
+    };
 
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
@@ -688,8 +710,8 @@ public class SignInFront extends javax.swing.JFrame {
                 Boolean charger = searchQ.getBoolean("charger");
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "").replace("(", "").replace(")","");
-                String cellNumber = searchQ.getString("phone2").replace("-", "").replace("(", "").replace(")","");
+                String phoneNumber = searchQ.getString("phone").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("-", "");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
@@ -751,10 +773,7 @@ public class SignInFront extends javax.swing.JFrame {
             if (searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
-                //make worktodo and workdone handle words with '
                 String workToDo = workToBeDone.getText();
-                String workToDoFix = workToDo.replace("'","''");
-                System.out.println(workToDoFix);
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
@@ -772,7 +791,7 @@ public class SignInFront extends javax.swing.JFrame {
 
                 String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
                         + "select " + currentClient + " as client_id,"
-                        + "'" + workToDoFix + "' as work_to_do,"
+                        + "'" + workToDo + "' as work_to_do,"
                         + "'" + clientPass + "' as pc_pass,"
                         + "'" + clientPin + "' as pc_pin,"
                         + "'" + otherEquip + "' as other_equip,"
@@ -812,10 +831,10 @@ public class SignInFront extends javax.swing.JFrame {
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText().replace("'","''");
+            String workToDo = workToBeDone.getText();
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'","''");
+            String workDone = workDoneText.getText();
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
@@ -840,15 +859,6 @@ public class SignInFront extends javax.swing.JFrame {
         final int dpi = 180;
         Code39Bean barcodeGenerator = new Code39Bean();
         barcodeGenerator.setChecksumMode(ChecksumMode.CP_AUTO);
-        //barcodeGenerator.setModuleWidth(UnitConv.in2mm(1.0f / dpi));
-        //barcodeGenerator.doQuietZone(true);
-        //barcodeGenerator.setQuietZone(0.10f);
-        //barcodeGenerator.setModuleWidth(0.3f);
-        //barcodeGenerator.setIntercharGapWidth(0.1f);
-        //barcodeGenerator.setExtendedCharSetEnabled(true);
-        //barcodeGenerator.setFontSize(4);  
-        //barcodeGenerator.setWideFactor(2.5);   
-        //barcodeGenerator.setPattern("_______");
         barcodeGenerator.setDisplayStartStop(true);
         barcodeGenerator.setHeight(10);
         BitmapCanvasProvider canvas = new BitmapCanvasProvider(dpi, BufferedImage.TYPE_BYTE_BINARY, false, 0);
@@ -862,10 +872,6 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
 
         String date = sdf3.format(new Date());
-
-        //String dateString = date.toString();
-        //String cleanDate = dateString.substring(0, 16);
-        //completion date
         String fname = fNameText.getText();
         String lname = lNameText.getText();
         String companyName = companyText.getText();
@@ -892,30 +898,44 @@ public class SignInFront extends javax.swing.JFrame {
         //get currently attached parts
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            Vector<Icon> upcVector = new Vector<>();
+            String workOrderText = woTextArea.getText();
 
-            String getService = """
-                            select work_order_id, service_fee_id, upc_codes.upc_code
-                            from service_link
-                            inner join upc_codes on service_link.service_fee_id = upc_id
-                            where work_order_ID = """ + workOrderID;
+            String getUPCs = """
+                         select upc.upc_desc, upc.upc_cost, upc.upc_code
+                         from service_link as sl
+                         inner join upc_codes as upc
+                         on sl.service_fee_id = upc.upc_id
+                         where work_Order_ID =
+                         """ + workOrderText;
 
-            ResultSet searchQ = statement.executeQuery(getService);
-            while (searchQ.next()) {
-                String serviceCode = searchQ.getString("upc_code");
-                Image iconImage = generateCode39BarcodeImage(serviceCode);
-                ImageIcon upcCode = new ImageIcon(iconImage);
-                upcVector.add(upcCode);
+            ResultSet searchQ = statement.executeQuery(getUPCs);
+            System.out.println(searchQ.isBeforeFirst());
+            if (!searchQ.isBeforeFirst()) {
+                System.out.println("no results found");
+            } else {
+                while (searchQ.next()) {
+                    String upcDescText = searchQ.getString("upc_desc");
+                    String upcCostText = searchQ.getString("upc_cost");
+                    String upcCodeText = searchQ.getString("upc_code");
+                    String completeText = upcDescText + " -> $" + upcCostText;
+                    Image newImage = generateCode39BarcodeImage(upcCodeText);
+                    ImageIcon icon = new ImageIcon(newImage);
 
+                    Object[] rowData = {completeText, icon};
+                    model.addRow(rowData);
+                }
             }
-            DefaultComboBoxModel model = new DefaultComboBoxModel(upcVector);
             CompleteFormFront.partsUsedList.setModel(model);
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
 
         } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 
     private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
@@ -954,7 +974,7 @@ public class SignInFront extends javax.swing.JFrame {
             if (!searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText().replace("'","''");
+                String workToDo = workToBeDone.getText();
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
@@ -962,7 +982,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String clientPass = passwordText.getText();
                 String clientPin = pinText.getText();
                 String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText().replace("'","''");
+                String workDone = workDoneText.getText();
                 String otherEquip = equipmentText.getText();
 
                 int desktopBool = (desktop) ? 1 : 0;
@@ -1090,10 +1110,10 @@ public class SignInFront extends javax.swing.JFrame {
         //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText().replace("'","''");
+            String workToDo = workToBeDone.getText();
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'","''");
+            String workDone = workDoneText.getText();
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
@@ -1116,10 +1136,10 @@ public class SignInFront extends javax.swing.JFrame {
         //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText().replace("'","''");
+            String workToDo = workToBeDone.getText();
             String clientPass = passwordText.getText();
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'","''");
+            String workDone = workDoneText.getText();
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"

@@ -26,8 +26,13 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -44,6 +49,27 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     public PartsUsedFrame() {
         initComponents();
     }
+    Vector<String> columnNames = new Vector<>();
+
+    {
+        columnNames.addElement("Desc");
+        columnNames.addElement("UPC");
+    }
+
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+
+        @Override
+
+        public Class<?> getColumnClass(int column) {
+            if (getRowCount() > 0) {
+                Object value = getValueAt(0, column);
+                if (value != null) {
+                    return getValueAt(0, column).getClass();
+                }
+            }
+            return super.getColumnClass(column);
+        }
+    };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -316,9 +342,6 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                     + upcDescText + "','"
                     + upcCodeText + "','"
                     + upcPriceText + "')";
-            
-            System.out.println(upcExists);
-            System.out.println(addUpcScript);
 
             ResultSet searchRe = statement.executeQuery(upcExists);
 
@@ -333,17 +356,16 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                 } else {
                     statement.executeUpdate(addUpcScript);
                 }
+
             }
 
         } catch (SQLException e) {
         }
-        
-        
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
             Vector<String> upcList = new Vector<>();
-            ResultSet searchQ = statement2.executeQuery(populateList);
+            ResultSet searchQ = statement.executeQuery(populateList);
 
             while (searchQ.next()) {
                 String upcDescText = searchQ.getString("upc_desc");
@@ -429,21 +451,19 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_upcComboActionPerformed
-    public static Vector<Icon> upcList = new Vector<>();
+    public static Vector<ImageIcon> upcList = new Vector<>();
+    public static Vector<String> upcTxt = new Vector<>();
     public static double totalCost = 0.0;
     public static List<Double> doubles = new ArrayList<>(10);
 
+
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
+//******************************************************Billing stuff*******************************************************************************//
         DecimalFormat f = new DecimalFormat("##.00");
         String upcCost = upcCostText.getText().replace("$", "");
         double upcDouble = Double.parseDouble(upcCost);
         doubles.add(upcDouble);
-
-        Icon selectedUpcIcon = barCode.getIcon();
-        Collections.addAll(upcList, selectedUpcIcon);
-        DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
-        CompleteFormFront.partsUsedList.setModel(model);
 
         for (Double i : doubles) {
             totalCost += i;
@@ -460,20 +480,58 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String workOrderTxt = CompleteFormFront.woText.getText();
-            String upcText = upcCode.getText();
-            System.out.println(workOrderTxt);
+            String upcCodeText = upcCode.getText();
+
             //add the selected item to the link table
             String insertQue = """
                                insert into service_link(work_order_ID, service_fee_id)
                                values(
                                '""" + workOrderTxt + "',\n"
-                    + "(select upc_id from upc_codes where upc_code = '" + upcText + "')\n"
+                    + "(select upc_id from upc_codes where upc_code = '" + upcCodeText + "')\n"
                     + ")";
 
             statement.executeUpdate(insertQue);
 
         } catch (SQLException e) {
             System.out.println(e);
+        }
+
+//***********************************************************End of Billing stuff*************************************************************************//        
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String workOrderText = CompleteFormFront.woText.getText();
+
+            String getUPCs = """
+                         select upc.upc_desc, upc.upc_cost, upc.upc_code
+                         from service_link as sl
+                         inner join upc_codes as upc
+                         on sl.service_fee_id = upc.upc_id
+                         where work_Order_ID =
+                         """ + workOrderText;
+
+            ResultSet searchQ = statement.executeQuery(getUPCs);
+
+            while (searchQ.next()) {
+                String upcDescText = searchQ.getString("upc_desc");
+                String upcCostText = searchQ.getString("upc_cost");
+                String upcCodeText = searchQ.getString("upc_code");
+                String completeText = upcDescText + " -> $" + upcCostText;
+                Image newImage = generateCode39BarcodeImage(upcCodeText);
+                ImageIcon icon = new ImageIcon(newImage);
+
+                Object[] rowData = {completeText, icon};
+                model.addRow(rowData);
+            }
+
+            CompleteFormFront.partsUsedList.setModel(model);
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         doubles.clear();
@@ -512,8 +570,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             upcCombo.setModel(model);
 
         } catch (SQLException ex) {
-            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_editButtActionPerformed
 
     /**
