@@ -49,7 +49,7 @@ public class AboutAppFrame extends javax.swing.JFrame {
         jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
-        jTextArea1.setText("This app was made using Java for all the front end and SQL for the backend storage of the data. The app is designed to keep track of all clients and the services provided to them.\n\n\n**Provide basic user information**\n");
+        jTextArea1.setText("Made with Java and SQL\n\n1. Search if client exists, if they do select them, if not type out their basic demographic and save as a new client.\n\n2. Add the current service information, the form is designed to save when you click out of a given field, you can save manually under work order menu.\n\n3. select Complete work order from the top menu to produce the finished work order, then add any parts used to the work order and print.\n\nVersion 1.0.1\n");
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jScrollPane1.setViewportView(jTextArea1);
