@@ -151,7 +151,6 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Rockwell", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Service Work Order");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         receivedText.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         receivedText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -221,7 +220,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
 
         jTextArea3.setColumns(14);
         jTextArea3.setRows(4);
-        jTextArea3.setText("       102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n     Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594\n     www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
+        jTextArea3.setText("              102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n           Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594\n           www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
         jTextArea3.setBorder(null);
         jScrollPane7.setViewportView(jTextArea3);
 
@@ -500,20 +499,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         Vector<String> columnNames = new Vector<>();
         columnNames.addElement("Desc");
         columnNames.addElement("UPC");
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-
-            @Override
-
-            public Class<?> getColumnClass(int column) {
-                if (getRowCount() > 0) {
-                    Object value = getValueAt(0, column);
-                    if (value != null) {
-                        return getValueAt(0, column).getClass();
-                    }
-                }
-                return super.getColumnClass(column);
-            }
-        };
+        
         CompleteFormFront.partsUsedList.setModel(model);
         CompleteFormFront.totalText.setText("");
         PartsUsedFrame.upcList.removeAllElements();

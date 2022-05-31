@@ -28,13 +28,16 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
@@ -187,7 +190,7 @@ public class SignInFront extends javax.swing.JFrame {
         conactInfo.setEditable(false);
         conactInfo.setColumns(20);
         conactInfo.setRows(3);
-        conactInfo.setText("  102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594\n www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
+        conactInfo.setText("         102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n       Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594\n       www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
         conactInfo.setAutoscrolls(false);
         conactInfo.setBorder(null);
         contactText.setViewportView(conactInfo);
@@ -886,6 +889,8 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
 
+        model.setRowCount(0);
+
         String date = sdf3.format(new Date());
         String fname = fNameText.getText();
         String lname = lNameText.getText();
@@ -924,7 +929,6 @@ public class SignInFront extends javax.swing.JFrame {
                          """ + workOrderText;
 
             ResultSet searchQ = statement.executeQuery(getUPCs);
-            System.out.println(searchQ.isBeforeFirst());
             if (!searchQ.isBeforeFirst()) {
                 System.out.println("no results found");
             } else {
@@ -951,9 +955,13 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
-
+        
+        
+        
+        
+        if (model.getRowCount() > 0) {
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+        }
         //update cost total
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
             String workOrderText2 = woTextArea.getText();
@@ -979,11 +987,8 @@ public class SignInFront extends javax.swing.JFrame {
             }
             DecimalFormat df = new DecimalFormat("#.##");
             String roundSum = df.format(sum);
-            //String totalCost = Double.toString(sum);
-            System.out.println(roundSum);
-            //String cleanCost = String.format("%.2f", totalCost);
 
-            CompleteFormFront.totalText.setText("Total before tax: " + roundSum);
+            CompleteFormFront.totalText.setText("Total before tax: $" + roundSum);
 
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
