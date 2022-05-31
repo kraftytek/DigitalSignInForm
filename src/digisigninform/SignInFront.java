@@ -22,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -866,7 +869,15 @@ public class SignInFront extends javax.swing.JFrame {
         return canvas.getBufferedImage();
     }
 
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
 
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
     private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeWorkOrderActionPerformed
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
@@ -923,10 +934,11 @@ public class SignInFront extends javax.swing.JFrame {
 
                     Object[] rowData = {completeText, icon};
                     model.addRow(rowData);
+                    CompleteFormFront.partsUsedList.setModel(model);
+                    CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
                 }
             }
-            CompleteFormFront.partsUsedList.setModel(model);
-            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+
             CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
             CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
 
@@ -935,6 +947,44 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+
+        //update cost total
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
+            String workOrderText2 = woTextArea.getText();
+            String getWorkCost = """
+                                 select upc.upc_cost, upc.upc_code
+                                 from service_link as sl
+                                 inner join upc_codes as upc
+                                 on sl.service_fee_id = upc.upc_id
+                                 where work_Order_ID ="""
+                    + workOrderText2;
+
+            ResultSet searchQ = statement2.executeQuery(getWorkCost);
+            ArrayList<Double> list = new ArrayList<>();
+            while (searchQ.next()) {
+                String costText = searchQ.getString("upc_cost");
+                Double costDouble = Double.parseDouble(costText.replace("$", ""));
+
+                list.add(costDouble);
+            }
+            double sum = 0;
+            for (int i = 0; i <= list.size() - 1; i++) {
+                sum += list.get(i);
+            }
+            DecimalFormat df = new DecimalFormat("#.##");
+            String roundSum = df.format(sum);
+            //String totalCost = Double.toString(sum);
+            System.out.println(roundSum);
+            //String cleanCost = String.format("%.2f", totalCost);
+
+            CompleteFormFront.totalText.setText("Total before tax: " + roundSum);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 
