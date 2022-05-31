@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import static digisigninform.SignInFront.woTextArea;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -458,23 +459,6 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     private void selectButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtActionPerformed
 
 //******************************************************Billing stuff*******************************************************************************//
-        DecimalFormat f = new DecimalFormat("##.00");
-        String upcCost = upcCostText.getText().replace("$", "");
-        double upcDouble = Double.parseDouble(upcCost);
-        doubles.add(upcDouble);
-
-        for (Double i : doubles) {
-            totalCost += i;
-        }
-
-        //If tax ever needs to change this is where to change it
-        double taxAmt = (totalCost * 1.12) - totalCost;
-        double totalAmt = totalCost + taxAmt;
-
-        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
-                + "Taxes: $" + f.format(taxAmt) + "\n"
-                + "After Taxes: $" + f.format(totalAmt));
-
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String workOrderTxt = CompleteFormFront.woText.getText();
@@ -492,6 +476,37 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             System.out.println(e);
+        }
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
+            String workOrderText2 = CompleteFormFront.woText.getText();
+            String getWorkCost = """
+                                 select upc.upc_cost, upc.upc_code
+                                 from service_link as sl
+                                 inner join upc_codes as upc
+                                 on sl.service_fee_id = upc.upc_id
+                                 where work_Order_ID ="""
+                    + workOrderText2;
+
+            ResultSet searchQ = statement2.executeQuery(getWorkCost);
+            ArrayList<Double> list = new ArrayList<>();
+            while (searchQ.next()) {
+                String costText = searchQ.getString("upc_cost");
+
+                Double costDouble = Double.parseDouble(costText.replace("$", ""));
+
+                list.add(costDouble);
+            }
+            double sum = 0;
+            for (int i = 0; i <= list.size() - 1; i++) {
+                sum += list.get(i);
+            }
+            DecimalFormat df = new DecimalFormat("#.##");
+            String roundSum = df.format(sum);
+
+            CompleteFormFront.totalText.setText("Total before tax: $" + roundSum);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 //***********************************************************End of Billing stuff*************************************************************************//        
