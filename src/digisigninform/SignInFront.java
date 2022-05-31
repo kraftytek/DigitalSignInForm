@@ -177,7 +177,7 @@ public class SignInFront extends javax.swing.JFrame {
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setPreferredSize(new java.awt.Dimension(780, 927));
 
-        titleText.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        titleText.setFont(new java.awt.Font("Rockwell", 0, 20)); // NOI18N
         titleText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleText.setText("Service Work Order");
 
@@ -193,21 +193,21 @@ public class SignInFront extends javax.swing.JFrame {
         contactText.setViewportView(conactInfo);
 
         fNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         fNameText.setNextFocusableComponent(lNameText);
 
         lNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         lNameText.setNextFocusableComponent(phoneOneText);
 
         phoneOneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Home Phone:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Home Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         phoneOneText.setNextFocusableComponent(cellPhoneText);
 
         cellPhoneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Cell Phone:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Cell Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
-        equipmentField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Other Equipment:"));
+        equipmentField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Other Equipment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         equipmentField.setNextFocusableComponent(passwordText);
         equipmentField.setOpaque(false);
 
@@ -218,7 +218,7 @@ public class SignInFront extends javax.swing.JFrame {
         equipmentText.setNextFocusableComponent(passwordText);
         equipmentField.setViewportView(equipmentText);
 
-        workToDoField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work to be Done:"));
+        workToDoField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work to be Done", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         workToDoField.setOpaque(false);
 
         workToBeDone.setColumns(20);
@@ -234,40 +234,44 @@ public class SignInFront extends javax.swing.JFrame {
         workToDoField.setViewportView(workToBeDone);
 
         checkLaptop.setBackground(new java.awt.Color(255, 255, 255));
+        checkLaptop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkLaptop.setText("Laptop");
         checkLaptop.setBorder(null);
         checkLaptop.setOpaque(true);
 
         checkDesktop.setBackground(new java.awt.Color(255, 255, 255));
+        checkDesktop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkDesktop.setText("Desktop");
 
         checkTablet.setBackground(new java.awt.Color(255, 255, 255));
+        checkTablet.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkTablet.setText("Tablet");
 
         passwordText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         passwordText.setNextFocusableComponent(pinText);
 
         pinText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pinText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Pin:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        pinText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Pin", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         pinText.setNextFocusableComponent(workToBeDone);
 
         techComboBox.setBackground(new java.awt.Color(255, 255, 255));
         techComboBox.setForeground(new java.awt.Color(0, 0, 0));
         techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
-        techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         techComboBox.setFocusable(false);
         techComboBox.setRequestFocusEnabled(false);
         techComboBox.setVerifyInputWhenFocusTarget(false);
 
         eMailText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         eMailText.setNextFocusableComponent(equipmentText);
 
         checkCharger.setBackground(new java.awt.Color(255, 255, 255));
+        checkCharger.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkCharger.setText("Charger");
 
-        workPerformedArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed:"));
+        workPerformedArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         workPerformedArea.setOpaque(false);
 
         workDoneText.setColumns(20);
@@ -282,12 +286,12 @@ public class SignInFront extends javax.swing.JFrame {
         });
         workPerformedArea.setViewportView(workDoneText);
 
-        partBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used:"));
+        partBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         partBox.setOpaque(true);
 
         MinChargeText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MinChargeText.setText("$50");
-        MinChargeText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Sign In Fee:", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        MinChargeText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Sign In Fee", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
         legalPane.setBorder(null);
         legalPane.setOpaque(false);
@@ -318,12 +322,12 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         companyText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        companyText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Company:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        companyText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Company", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         companyText.setNextFocusableComponent(eMailText);
 
         woTextArea.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         woTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 woTextAreaKeyPressed(evt);
@@ -453,7 +457,7 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu1.setForeground(new java.awt.Color(0, 0, 0));
         jMenu1.setText("Client Options");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jMenu1.setMinimumSize(new java.awt.Dimension(140, 24));
         jMenu1.setPreferredSize(new java.awt.Dimension(172, 26));
 
@@ -491,7 +495,7 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu2.setForeground(new java.awt.Color(0, 0, 0));
         jMenu2.setText("Work Order Options");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu2.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jMenu2.setPreferredSize(new java.awt.Dimension(172, 26));
 
         searchWorkOrderButt.setBackground(new java.awt.Color(255, 255, 255));
@@ -570,7 +574,7 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu3.setForeground(new java.awt.Color(0, 0, 0));
         jMenu3.setText("Print Options");
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu3.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jMenu3.setPreferredSize(new java.awt.Dimension(172, 26));
 
         printWorkOrder.setBackground(new java.awt.Color(255, 255, 255));
@@ -591,7 +595,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         jMenu4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu4.setText("Other Options");
-        jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu4.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jMenu4.setPreferredSize(new java.awt.Dimension(172, 26));
 
         jMenuItem9.setBackground(new java.awt.Color(255, 255, 255));
