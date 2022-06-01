@@ -32,8 +32,13 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
@@ -133,7 +138,6 @@ public class SignInFront extends javax.swing.JFrame {
         checkTablet = new javax.swing.JCheckBox();
         passwordText = new javax.swing.JTextField();
         pinText = new javax.swing.JTextField();
-        techComboBox = new javax.swing.JComboBox<>();
         eMailText = new javax.swing.JTextField();
         checkCharger = new javax.swing.JCheckBox();
         workPerformedArea = new javax.swing.JScrollPane();
@@ -256,12 +260,20 @@ public class SignInFront extends javax.swing.JFrame {
         pinText.setNextFocusableComponent(workToBeDone);
 
         techComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        techComboBox.setEditable(true);
         techComboBox.setForeground(new java.awt.Color(0, 0, 0));
         techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
         techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         techComboBox.setFocusable(false);
         techComboBox.setRequestFocusEnabled(false);
         techComboBox.setVerifyInputWhenFocusTarget(false);
+        for (int i = 0; i < techComboBox.getComponentCount(); i++)
+        {
+            if (techComboBox.getComponent(i) instanceof JComponent) {
+                ((JComponent) techComboBox.getComponent(i)).setBorder(new EmptyBorder(0, 0,0,0));
+            }
+        }
+        ((JLabel)techComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         eMailText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
@@ -1393,7 +1405,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JMenuItem searchExistingClient;
     private javax.swing.JMenuItem searchWorkOrderButt;
     private javax.swing.JTextField signText;
-    public static javax.swing.JComboBox<String> techComboBox;
+    public static final javax.swing.JComboBox<String> techComboBox = new javax.swing.JComboBox<>();
     private javax.swing.JLabel titleText;
     private javax.swing.JMenuBar topMenu;
     private javax.swing.JMenuItem updateWorkOrder;
