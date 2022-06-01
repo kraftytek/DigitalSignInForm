@@ -147,6 +147,7 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText = new javax.swing.JLabel();
         companyText = new javax.swing.JTextField();
         woTextArea = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
         topMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addNewClientButt = new javax.swing.JMenuItem();
@@ -302,7 +303,7 @@ public class SignInFront extends javax.swing.JFrame {
         legalText.setRows(5);
         legalText.setText("I agree to release the above equipment to National Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCR is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the length of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
         legalText.setWrapStyleWord(true);
-        legalText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        legalText.setBorder(null);
         legalText.setFocusable(false);
         legalPane.setViewportView(legalText);
 
@@ -332,6 +333,9 @@ public class SignInFront extends javax.swing.JFrame {
                 woTextAreaKeyPressed(evt);
             }
         });
+
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -386,6 +390,7 @@ public class SignInFront extends javax.swing.JFrame {
                     .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25)
                 .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
         );
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -440,12 +445,14 @@ public class SignInFront extends javax.swing.JFrame {
                         .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(partBox, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(159, 159, 159))
+                .addGap(173, 173, 173))
         );
 
         topMenu.setBackground(new java.awt.Color(255, 255, 255));
@@ -1373,6 +1380,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JSeparator jSeparator1;
     public static javax.swing.JTextField lNameText;
     private javax.swing.JScrollPane legalPane;
     private javax.swing.JTextArea legalText;

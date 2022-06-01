@@ -498,6 +498,7 @@
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="woTextArea" min="-2" pref="148" max="-2" attributes="0"/>
               </Group>
+              <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -568,13 +569,15 @@
                       <Component id="partBox" min="-2" pref="253" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="legalPane" min="-2" pref="124" max="-2" attributes="0"/>
+                  <Component id="jSeparator1" min="-2" pref="8" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="legalPane" min="-2" pref="112" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="SigLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                       <Component id="signText" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="159" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -1033,9 +1036,7 @@
                 <Property name="text" type="java.lang.String" value="I agree to release the above equipment to National Computer Resource (&quot;NCR&quot;) for evaluation and/or repair. I agree that NCR is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the length of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR."/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder thickness="2"/>
-                  </Border>
+                  <Border info="null"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
@@ -1122,6 +1123,16 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
