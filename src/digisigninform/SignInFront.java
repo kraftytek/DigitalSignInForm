@@ -1169,10 +1169,55 @@ public class SignInFront extends javax.swing.JFrame {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
                 }
+                String clientID = clientIDText.getText();
+                String workToDoString = workToBeDone.getText();
+
+                String workOrderExist = "select max(1) from client_service where client_id = '"
+                        + clientID + "' and work_to_do like '%"
+                        + workToDoString + "%'";
+
+                ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+
+                if (searchQ.isBeforeFirst()) {
+
+                    String currentClient = clientIDText.getText();
+                    String workToDo = workToBeDone.getText().replace("'", "''");
+                    boolean desktop = checkDesktop.isSelected();
+                    boolean laptop = checkLaptop.isSelected();
+                    boolean tablet = checkTablet.isSelected();
+                    boolean charger = checkCharger.isSelected();
+                    String clientPass = passwordText.getText().replace("'", "''");
+                    String clientPin = pinText.getText();
+                    String techName = techComboBox.getSelectedItem().toString();
+                    String workDone = workDoneText.getText().replace("'", "''");
+                    String otherEquip = equipmentText.getText().replace("'", "''");
+
+                    int desktopBool = (desktop) ? 1 : 0;
+                    int laptopBool = (laptop) ? 1 : 0;
+                    int tabletBool = (tablet) ? 1 : 0;
+                    int chargerBool = (charger) ? 1 : 0;
+
+                    String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                            + "select " + currentClient + " as client_id,"
+                            + "'" + workToDo + "' as work_to_do,"
+                            + "'" + clientPass + "' as pc_pass,"
+                            + "'" + clientPin + "' as pc_pin,"
+                            + "'" + otherEquip + "' as other_equip,"
+                            + "'" + techName + "' as tech_name,"
+                            + desktopBool + " as desktop,"
+                            + laptopBool + " as laptop,"
+                            + tabletBool + " as tablet,"
+                            + chargerBool + " as charger,"
+                            + "'" + workDone + "' as work_done";
+                    
+                    addWorkOrder.executeUpdate(addClientScript);
+                }
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
     }//GEN-LAST:event_workToBeDoneFocusGained
 
