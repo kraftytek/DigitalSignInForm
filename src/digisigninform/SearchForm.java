@@ -57,6 +57,7 @@ public class SearchForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Client");
         setMinimumSize(new java.awt.Dimension(552, 500));
+        setPreferredSize(new java.awt.Dimension(552, 500));
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
