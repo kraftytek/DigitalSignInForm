@@ -693,7 +693,7 @@ public class SignInFront extends javax.swing.JFrame {
 
     //open the client search form
     private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingClientActionPerformed
-        searchForm gui = new searchForm();
+        SearchForm gui = new SearchForm();
         gui.setVisible(true);
     }//GEN-LAST:event_searchExistingClientActionPerformed
     //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?

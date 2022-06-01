@@ -25,12 +25,12 @@ import java.util.regex.Pattern;
  *
  * @author kraft
  */
-public class searchForm extends javax.swing.JFrame {
+public class SearchForm extends javax.swing.JFrame {
 
     /**
      * Creates new form searchForm
      */
-    public searchForm() {
+    public SearchForm() {
         initComponents();
     }
 
@@ -57,7 +57,6 @@ public class searchForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Client");
         setMinimumSize(new java.awt.Dimension(552, 500));
-        setPreferredSize(new java.awt.Dimension(552, 500));
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
@@ -497,27 +496,28 @@ public class searchForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class
+            java.util.logging.Logger.getLogger(SearchForm.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class
+            java.util.logging.Logger.getLogger(SearchForm.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class
+            java.util.logging.Logger.getLogger(SearchForm.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(searchForm.class
+            java.util.logging.Logger.getLogger(SearchForm.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new searchForm().setVisible(true);
+                new SearchForm().setVisible(true);
             }
         });
     }
