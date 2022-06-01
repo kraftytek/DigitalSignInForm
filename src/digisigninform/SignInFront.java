@@ -1027,6 +1027,7 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setText("");
         woTextArea.setText("");
         companyText.setText("");
+        saveCheck = 0;
     }//GEN-LAST:event_clearWorkOrderActionPerformed
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
@@ -1164,6 +1165,7 @@ public class SignInFront extends javax.swing.JFrame {
             AddNewClientError gui = new AddNewClientError();
             gui.setVisible(true);
         }
+        saveCheck = -1;
     }//GEN-LAST:event_addNewClientButtActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -1176,10 +1178,12 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
+    public int saveCheck = -1;
+
     private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
             String text = workToBeDone.getText().trim();
-            if (text.equals("")) {
+            if (saveCheck == -1) {
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
@@ -1188,49 +1192,40 @@ public class SignInFront extends javax.swing.JFrame {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
                 }
-                String clientID = clientIDText.getText();
-                String workToDoString = workToBeDone.getText();
 
-                String workOrderExist = "select max(1) from client_service where client_id = '"
-                        + clientID + "' and work_to_do like '%"
-                        + workToDoString + "%'";
+                String currentClient = clientIDText.getText();
+                String workToDo = workToBeDone.getText().replace("'", "''");
+                boolean desktop = checkDesktop.isSelected();
+                boolean laptop = checkLaptop.isSelected();
+                boolean tablet = checkTablet.isSelected();
+                boolean charger = checkCharger.isSelected();
+                String clientPass = passwordText.getText().replace("'", "''");
+                String clientPin = pinText.getText();
+                String techName = techComboBox.getSelectedItem().toString();
+                String workDone = workDoneText.getText().replace("'", "''");
+                String otherEquip = equipmentText.getText().replace("'", "''");
 
-                ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+                int desktopBool = (desktop) ? 1 : 0;
+                int laptopBool = (laptop) ? 1 : 0;
+                int tabletBool = (tablet) ? 1 : 0;
+                int chargerBool = (charger) ? 1 : 0;
 
-                if (searchQ.isBeforeFirst()) {
+                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                        + "select " + currentClient + " as client_id,"
+                        + "'" + workToDo + "' as work_to_do,"
+                        + "'" + clientPass + "' as pc_pass,"
+                        + "'" + clientPin + "' as pc_pin,"
+                        + "'" + otherEquip + "' as other_equip,"
+                        + "'" + techName + "' as tech_name,"
+                        + desktopBool + " as desktop,"
+                        + laptopBool + " as laptop,"
+                        + tabletBool + " as tablet,"
+                        + chargerBool + " as charger,"
+                        + "'" + workDone + "' as work_done";
 
-                    String currentClient = clientIDText.getText();
-                    String workToDo = workToBeDone.getText().replace("'", "''");
-                    boolean desktop = checkDesktop.isSelected();
-                    boolean laptop = checkLaptop.isSelected();
-                    boolean tablet = checkTablet.isSelected();
-                    boolean charger = checkCharger.isSelected();
-                    String clientPass = passwordText.getText().replace("'", "''");
-                    String clientPin = pinText.getText();
-                    String techName = techComboBox.getSelectedItem().toString();
-                    String workDone = workDoneText.getText().replace("'", "''");
-                    String otherEquip = equipmentText.getText().replace("'", "''");
+                addWorkOrder.executeUpdate(addClientScript);
 
-                    int desktopBool = (desktop) ? 1 : 0;
-                    int laptopBool = (laptop) ? 1 : 0;
-                    int tabletBool = (tablet) ? 1 : 0;
-                    int chargerBool = (charger) ? 1 : 0;
-
-                    String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                            + "select " + currentClient + " as client_id,"
-                            + "'" + workToDo + "' as work_to_do,"
-                            + "'" + clientPass + "' as pc_pass,"
-                            + "'" + clientPin + "' as pc_pin,"
-                            + "'" + otherEquip + "' as other_equip,"
-                            + "'" + techName + "' as tech_name,"
-                            + desktopBool + " as desktop,"
-                            + laptopBool + " as laptop,"
-                            + tabletBool + " as tablet,"
-                            + chargerBool + " as charger,"
-                            + "'" + workDone + "' as work_done";
-                    
-                    addWorkOrder.executeUpdate(addClientScript);
-                }
+                saveCheck = 0;
 
             }
         } catch (SQLException ex) {
