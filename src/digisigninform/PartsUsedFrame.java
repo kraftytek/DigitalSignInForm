@@ -4,7 +4,7 @@
  */
 package digisigninform;
 
-import static digisigninform.SignInFront.woTextArea;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -27,13 +27,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
-
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
-
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -325,7 +320,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_makeBarButtActionPerformed
 
     private void saveBarcodeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBarcodeButtActionPerformed
-        String upcDescText = upcDesc.getText();
+        String upcDescText = upcDesc.getText().replace("'", "''");
         String upcCodeText = upcCode.getText();
         String upcPriceText = upcCostText.getText();
 
@@ -485,7 +480,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                  inner join upc_codes as upc
                                  on sl.service_fee_id = upc.upc_id
                                  where work_Order_ID ="""
-                    + workOrderText2;
+                    + workOrderText2; 
 
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
             ArrayList<Double> list = new ArrayList<>();

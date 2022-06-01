@@ -28,17 +28,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -230,8 +226,8 @@ public class SignInFront extends javax.swing.JFrame {
         workToBeDone.setWrapStyleWord(true);
         workToBeDone.setBorder(null);
         workToBeDone.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                workToBeDoneFocusLost(evt);
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                workToBeDoneFocusGained(evt);
             }
         });
         workToDoField.setViewportView(workToBeDone);
@@ -343,7 +339,7 @@ public class SignInFront extends javax.swing.JFrame {
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(legalPane)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -637,7 +633,7 @@ public class SignInFront extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -783,16 +779,16 @@ public class SignInFront extends javax.swing.JFrame {
             if (searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText();
+                String workToDo = workToBeDone.getText().replace("'", "''");
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
                 boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText();
+                String clientPass = passwordText.getText().replace("'", "''");
                 String clientPin = pinText.getText();
                 String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText();
-                String otherEquip = equipmentText.getText();
+                String workDone = workDoneText.getText().replace("'", "''");
+                String otherEquip = equipmentText.getText().replace("'", "''");
 
                 int desktopBool = (desktop) ? 1 : 0;
                 int laptopBool = (laptop) ? 1 : 0;
@@ -812,7 +808,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
 
-                String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
+                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 addWorkOrder.executeUpdate(addClientScript);
 
@@ -841,10 +837,10 @@ public class SignInFront extends javax.swing.JFrame {
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText();
-            String clientPass = passwordText.getText();
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
             String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
             String workOrderID = woTextArea.getText();
 
             String addClientScript = "update client_service"
@@ -955,10 +951,7 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
+
         if (model.getRowCount() > 0) {
             CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
         }
@@ -1033,16 +1026,16 @@ public class SignInFront extends javax.swing.JFrame {
             if (!searchQ.isBeforeFirst()) {
 
                 String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText();
+                String workToDo = workToBeDone.getText().replace("'", "''");
                 boolean desktop = checkDesktop.isSelected();
                 boolean laptop = checkLaptop.isSelected();
                 boolean tablet = checkTablet.isSelected();
                 boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText();
+                String clientPass = passwordText.getText().replace("'", "''");
                 String clientPin = pinText.getText();
                 String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText();
-                String otherEquip = equipmentText.getText();
+                String workDone = workDoneText.getText().replace("'", "''");
+                String otherEquip = equipmentText.getText().replace("'", "''");
 
                 int desktopBool = (desktop) ? 1 : 0;
                 int laptopBool = (laptop) ? 1 : 0;
@@ -1071,7 +1064,6 @@ public class SignInFront extends javax.swing.JFrame {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //JFrame yourComponent = new JFrame();
         PrinterJob pjob = PrinterJob.getPrinterJob();
         PageFormat preformat = pjob.defaultPage();
         preformat.setOrientation(PageFormat.PORTRAIT);
@@ -1105,11 +1097,11 @@ public class SignInFront extends javax.swing.JFrame {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-                String firstName = fNameText.getText();
-                String lastName = lNameText.getText();
-                String phoneHome = phoneOneText.getText();
-                String phoneCell = cellPhoneText.getText();
-                String companyString = companyText.getText();
+                String firstName = fNameText.getText().replace("'", "''");
+                String lastName = lNameText.getText().replace("'", "''");
+                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "");
+                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "");
+                String companyString = companyText.getText().replace("'", "''");
                 String emailString = eMailText.getText();
 
                 String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
@@ -1121,7 +1113,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + phoneCell + "' as phone2,'"
                         + emailString + "' as email,"
                         + "getdate() as creation_date";
-
+                System.out.println(addClientScript);
                 addWorkOrder.executeUpdate(addClientScript);
 
                 String getClientID = "select client_id from clients where fname = '"
@@ -1138,7 +1130,7 @@ public class SignInFront extends javax.swing.JFrame {
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
 
-                String getWorkOrder = "select top 1 work_order_id from client_service order by 1 desc";
+                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
 
@@ -1165,52 +1157,57 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
-        //execute a update work order when focus is lost
+    private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+            String text = workToBeDone.getText().trim();
+            if (text.equals("")) {
+                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
-            String workToDo = workToBeDone.getText();
-            String clientPass = passwordText.getText();
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
-            String workOrderID = woTextArea.getText();
+                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
 
-            String addClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-            System.out.println(addClientScript);
-
-            addWorkOrder.executeUpdate(addClientScript);
-
-        } catch (SQLException e) {
+                while (searchT.next()) {
+                    String workOrderText = searchT.getString("work_order_id");
+                    woTextArea.setText(workOrderText);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_workToBeDoneFocusLost
+    }//GEN-LAST:event_workToBeDoneFocusGained
 
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
-        //execute a update work order when focus is lost
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String workToDo = workToBeDone.getText();
-            String clientPass = passwordText.getText();
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText();
-            String workOrderID = woTextArea.getText();
+            String clientID = clientIDText.getText();
+            String workDoneString = workDoneText.getText();
 
-            String addClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+            String workOrderExist = "select max(1) from client_service where client_id = '"
+                    + clientID + "' and work_done like '%"
+                    + workDoneString + "%'";
 
-            System.out.println(addClientScript);
+            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
-            addWorkOrder.executeUpdate(addClientScript);
+            if (searchQ.isBeforeFirst()) {
+
+                String workToDo = workToBeDone.getText().replace("'", "''");
+                String clientPass = passwordText.getText().replace("'", "''");
+                String clientPin = pinText.getText();
+                String workDone = workDoneText.getText().replace("'", "''");
+                String workOrderID = woTextArea.getText();
+
+                String addClientScript = "update client_service"
+                        + " set work_to_do = '" + workToDo + "', "
+                        + "pc_pass = '" + clientPass + "', "
+                        + "pc_pin = '" + clientPin + "', "
+                        + "work_done = '" + workDone + "'"
+                        + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+                System.out.println(addClientScript);
+
+                addWorkOrder.executeUpdate(addClientScript);
+
+            }
 
         } catch (SQLException e) {
         }

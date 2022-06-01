@@ -4,7 +4,6 @@
  */
 package digisigninform;
 
-import static digisigninform.PartsUsedFrame.upcCode;
 import java.awt.Color;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -23,12 +22,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -505,45 +500,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         PartsUsedFrame.upcList.removeAllElements();
         PartsUsedFrame.totalCost = 0.0;
         PartsUsedFrame.doubles.clear();
-
-        /*
-        double totalCost = 0.0;
-
-        //get the current selected upc item
-        int currentSel = partsUsedList.getSelectedIndex();
-        //make a copy of the existing Jlist as listModel
-        DefaultComboBoxModel listModel = (DefaultComboBoxModel) partsUsedList.getModel();
-
-        List<Double> doubles = new ArrayList<>(10);
-        doubles.addAll(PartsUsedFrame.doubles);
-        //remove the element from the copy and from the doubles array
-        listModel.removeElementAt(currentSel);
-        doubles.remove(currentSel);
-
-        DecimalFormat f = new DecimalFormat("##.00");
-        String upcCost = PartsUsedFrame.upcCostText.getText().replace("$", "");
-        double upcDouble = Double.parseDouble(upcCost);
-        doubles.add(upcDouble);
-
-        String upcText = PartsUsedFrame.upcDescText.getText();
-        Collections.addAll(PartsUsedFrame.upcTextList, upcText);
-        DefaultComboBoxModel model = new DefaultComboBoxModel(PartsUsedFrame.upcList);
-
-        //set the list with the removed item
-        partsUsedList.setModel(model);
-
-        for (Double i : doubles) {
-            PartsUsedFrame.totalCost += i;
-        }
-        double taxAmt = (totalCost * 1.12) - totalCost;
-        double totalAmt = totalCost + taxAmt;
-
-        CompleteFormFront.totalText.setText("Initial Cost: $" + f.format(totalCost) + "\n"
-                + "Taxes: $" + f.format(taxAmt) + "\n"
-                + "After Taxes: $" + f.format(totalAmt));
-
-        }
-         */
+       
     }//GEN-LAST:event_removeButtActionPerformed
 
     /**
