@@ -152,6 +152,7 @@ public class SignInFront extends javax.swing.JFrame {
         companyText = new javax.swing.JTextField();
         woTextArea = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        logo = new javax.swing.JLabel();
         topMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addNewClientButt = new javax.swing.JMenuItem();
@@ -197,7 +198,7 @@ public class SignInFront extends javax.swing.JFrame {
         contactText.setViewportView(conactInfo);
 
         fNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         fNameText.setNextFocusableComponent(lNameText);
 
         lNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -241,15 +242,18 @@ public class SignInFront extends javax.swing.JFrame {
         checkLaptop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkLaptop.setText("Laptop");
         checkLaptop.setBorder(null);
+        checkLaptop.setFocusPainted(false);
         checkLaptop.setOpaque(true);
 
         checkDesktop.setBackground(new java.awt.Color(255, 255, 255));
         checkDesktop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkDesktop.setText("Desktop");
+        checkDesktop.setFocusPainted(false);
 
         checkTablet.setBackground(new java.awt.Color(255, 255, 255));
         checkTablet.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkTablet.setText("Tablet");
+        checkTablet.setFocusPainted(false);
 
         passwordText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
@@ -282,6 +286,7 @@ public class SignInFront extends javax.swing.JFrame {
         checkCharger.setBackground(new java.awt.Color(255, 255, 255));
         checkCharger.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkCharger.setText("Charger");
+        checkCharger.setFocusPainted(false);
 
         workPerformedArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         workPerformedArea.setOpaque(false);
@@ -349,15 +354,13 @@ public class SignInFront extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/digisigninform/logo-Scaled_inverted.png"))); // NOI18N
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(legalPane)
-            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -395,7 +398,7 @@ public class SignInFront extends javax.swing.JFrame {
                 .addComponent(partBox))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(clientIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(contactText, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
@@ -403,6 +406,12 @@ public class SignInFront extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backgroundPanelLayout.createSequentialGroup()
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clientIDText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,12 +420,13 @@ public class SignInFront extends javax.swing.JFrame {
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(contactText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -464,7 +474,9 @@ public class SignInFront extends javax.swing.JFrame {
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(173, 173, 173))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(142, 142, 142))
         );
 
         topMenu.setBackground(new java.awt.Color(255, 255, 255));
@@ -1391,6 +1403,7 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JTextField lNameText;
     private javax.swing.JScrollPane legalPane;
     private javax.swing.JTextArea legalText;
+    private javax.swing.JLabel logo;
     private javax.swing.JTextField partBox;
     public static javax.swing.JTextField passwordText;
     public static javax.swing.JTextField phoneOneText;

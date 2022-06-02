@@ -439,11 +439,6 @@
           <Group type="103" groupAlignment="1" attributes="0">
               <Component id="legalPane" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
-                  <Component id="SigLabel" pref="137" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="signText" min="-2" pref="553" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -489,7 +484,7 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="clientIDText" max="32767" attributes="0"/>
+                  <Component id="logo" min="-2" pref="161" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="contactText" pref="350" max="32767" attributes="0"/>
@@ -499,6 +494,14 @@
                   <Component id="woTextArea" min="-2" pref="148" max="-2" attributes="0"/>
               </Group>
               <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="clientIDText" alignment="0" max="32767" attributes="0"/>
+                      <Component id="SigLabel" pref="137" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="signText" min="-2" pref="553" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -508,14 +511,15 @@
                       <Group type="102" attributes="0">
                           <Component id="titleText" min="-2" pref="34" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="contactText" min="-2" max="-2" attributes="0"/>
-                              <Component id="clientIDText" min="-2" pref="34" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="contactText" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="woTextArea" min="-2" pref="82" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                          <Component id="logo" min="-2" pref="77" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -577,7 +581,9 @@
                       <Component id="SigLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                       <Component id="signText" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="clientIDText" min="-2" pref="19" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -626,7 +632,7 @@
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder justification="2" title="First Name">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder thickness="2"/>
+                    <LineBorder roundedCorners="true" thickness="2"/>
                   </Border>
                   <Font PropertyName="font" name="Rockwell" size="12" style="0"/>
                 </TitledBorder>
@@ -792,6 +798,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
+            <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <AuxValues>
@@ -807,6 +814,7 @@
               <Font name="Rockwell" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Desktop"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
@@ -821,6 +829,7 @@
               <Font name="Rockwell" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Tablet"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
@@ -936,6 +945,7 @@
               <Font name="Rockwell" size="12" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Charger"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
@@ -1133,6 +1143,13 @@
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="logo">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/digisigninform/logo-Scaled_inverted.png"/>
             </Property>
           </Properties>
         </Component>
