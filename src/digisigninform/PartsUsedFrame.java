@@ -466,6 +466,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                '""" + workOrderTxt + "',\n"
                     + "(select upc_id from upc_codes where upc_code = '" + upcCodeText + "')\n"
                     + ")";
+            
+                    System.out.println(insertQue);
 
             statement.executeUpdate(insertQue);
 

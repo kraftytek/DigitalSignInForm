@@ -111,6 +111,8 @@ public class SignInFront extends javax.swing.JFrame {
 
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
+    //public String workOrderText = woTextArea.getText();
+    public String workOrderText = "0";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -334,11 +336,6 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         woTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
-        woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                woTextAreaKeyPressed(evt);
-            }
-        });
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
@@ -835,6 +832,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
 
+                /*
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 addWorkOrder.executeUpdate(addClientScript);
@@ -845,7 +843,7 @@ public class SignInFront extends javax.swing.JFrame {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
                 }
-
+                 */
                 SaveCompleteMessage gui = new SaveCompleteMessage();
                 gui.setVisible(true);
 
@@ -860,6 +858,7 @@ public class SignInFront extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_saveNewWorkOrderActionPerformed
+
 
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
@@ -941,8 +940,7 @@ public class SignInFront extends javax.swing.JFrame {
         //get currently attached parts
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String workOrderText = woTextArea.getText();
-
+            //String workOrderText = woTextArea.getText();
             String getUPCs = """
                          select upc.upc_desc, upc.upc_cost, upc.upc_code
                          from service_link as sl
@@ -984,14 +982,14 @@ public class SignInFront extends javax.swing.JFrame {
         }
         //update cost total
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
-            String workOrderText2 = woTextArea.getText();
+            //String workOrderText2 = woTextArea.getText();
             String getWorkCost = """
                                  select upc.upc_cost, upc.upc_code
                                  from service_link as sl
                                  inner join upc_codes as upc
                                  on sl.service_fee_id = upc.upc_id
                                  where work_Order_ID ="""
-                    + workOrderText2;
+                    + workOrderText;
 
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
             ArrayList<Double> list = new ArrayList<>();
@@ -1035,7 +1033,7 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setText("");
         woTextArea.setText("");
         companyText.setText("");
-        saveCheck = 0;
+
     }//GEN-LAST:event_clearWorkOrderActionPerformed
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
@@ -1115,10 +1113,6 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_printWorkOrderActionPerformed
 
-    private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_woTextAreaKeyPressed
-        woTextArea.addActionListener(action);
-    }//GEN-LAST:event_woTextAreaKeyPressed
-
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
 
         if (fNameText.getText().length() > 0) {
@@ -1173,7 +1167,7 @@ public class SignInFront extends javax.swing.JFrame {
             AddNewClientError gui = new AddNewClientError();
             gui.setVisible(true);
         }
-        saveCheck = -1;
+
     }//GEN-LAST:event_addNewClientButtActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -1186,12 +1180,13 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    public static int saveCheck = -1;
 
     private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-            String text = workToBeDone.getText().trim();
-            if (saveCheck == -1) {
+            System.out.println(woTextArea.getText());
+
+            if (1 == 2) {
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
@@ -1233,14 +1228,10 @@ public class SignInFront extends javax.swing.JFrame {
 
                 addWorkOrder.executeUpdate(addClientScript);
 
-                saveCheck = 0;
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_workToBeDoneFocusGained
 
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
@@ -1254,7 +1245,7 @@ public class SignInFront extends javax.swing.JFrame {
                     + workDoneString + "%'";
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-
+            System.out.println("Is Before First " + searchQ.isBeforeFirst());
             if (searchQ.isBeforeFirst()) {
 
                 String workToDo = workToBeDone.getText().replace("'", "''");
