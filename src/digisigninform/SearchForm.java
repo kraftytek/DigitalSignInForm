@@ -371,6 +371,7 @@ public class SearchForm extends javax.swing.JFrame {
 
         } catch (SQLException e) {
         }
+        SignInFront.saveCheck = -1;
     }//GEN-LAST:event_searchExistingButtActionPerformed
 
     private void selectWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWorkOrderButtActionPerformed

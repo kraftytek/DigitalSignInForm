@@ -1186,7 +1186,7 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    public int saveCheck = -1;
+    public static int saveCheck = -1;
 
     private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
