@@ -792,15 +792,26 @@ public class SignInFront extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String clientID = clientIDText.getText();
-            String workToDoString = workToBeDone.getText();
+            String workToDoString = workToBeDone.getText().trim();
 
-            String workOrderExist = "select max(1) from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '%"
-                    + workToDoString + "%'";
+            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '"
+                    + workToDoString + "'";
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+            System.out.println(workOrderExist);
 
-            if (searchQ.isBeforeFirst()) {
+            Boolean isDupe = true;
+            if (searchQ.next()) {
+                int dupeCheck = searchQ.getInt("checkDupe");
+                System.out.println(dupeCheck);
+                if (dupeCheck == 2) {
+                    isDupe = false;
+                    System.out.println(isDupe);
+                }
+            }
+
+            if (isDupe == false) {
 
                 String currentClient = clientIDText.getText();
                 String workToDo = workToBeDone.getText().replace("'", "''");
@@ -831,32 +842,20 @@ public class SignInFront extends javax.swing.JFrame {
                         + tabletBool + " as tablet,"
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
-
-                /*
-                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
+                System.out.println(addClientScript);
 
                 addWorkOrder.executeUpdate(addClientScript);
-
-                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
-
-                while (searchT.next()) {
-                    String workOrderText = searchT.getString("work_order_id");
-                    woTextArea.setText(workOrderText);
-                }
-                 */
                 SaveCompleteMessage gui = new SaveCompleteMessage();
                 gui.setVisible(true);
-
-            } else {
-                //open WorkOrderExistsError frame
+            }
+            if (isDupe == true) {
                 WorkOrderExistsError gui = new WorkOrderExistsError();
                 gui.setVisible(true);
-
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_saveNewWorkOrderActionPerformed
 
 
@@ -972,9 +971,12 @@ public class SignInFront extends javax.swing.JFrame {
             CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
 
         } catch (SQLException ex) {
-            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (Exception ex) {
-            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PartsUsedFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         if (model.getRowCount() > 0) {
@@ -1009,7 +1011,8 @@ public class SignInFront extends javax.swing.JFrame {
             CompleteFormFront.totalText.setText("Total before tax: $" + roundSum);
 
         } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignInFront.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -1038,18 +1041,29 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String clientID = clientIDText.getText();
-            String workToDoString = workToBeDone.getText();
+            String workToDoString = workToBeDone.getText().trim();
 
-            String workOrderExist = "select max(1) from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '%"
-                    + workToDoString + "%'";
+            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '"
+                    + workToDoString + "'";
 
-            ResultSet searchQ = statement.executeQuery(workOrderExist);
+            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+            System.out.println(workOrderExist);
 
-            if (!searchQ.isBeforeFirst()) {
+            Boolean isDupe = true;
+            if (searchQ.next()) {
+                int dupeCheck = searchQ.getInt("checkDupe");
+                System.out.println(dupeCheck);
+                if (dupeCheck == 2) {
+                    isDupe = false;
+                    System.out.println(isDupe);
+                }
+            }
+
+            if (isDupe == false) {
 
                 String currentClient = clientIDText.getText();
                 String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1080,10 +1094,15 @@ public class SignInFront extends javax.swing.JFrame {
                         + tabletBool + " as tablet,"
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
+                System.out.println(addClientScript);
 
-                statement.executeUpdate(addClientScript);
-            } else {
-                System.out.println("work order was saved");
+                addWorkOrder.executeUpdate(addClientScript);
+                //SaveCompleteMessage gui = new SaveCompleteMessage();
+                //gui.setVisible(true);
+            }
+            if (isDupe == true) {
+                //WorkOrderExistsError gui = new WorkOrderExistsError();
+               // gui.setVisible(true);
             }
 
         } catch (SQLException ex) {
@@ -1106,8 +1125,10 @@ public class SignInFront extends javax.swing.JFrame {
             if (pjob.printDialog()) {
                 try {
                     pjob.print();
+
                 } catch (PrinterException ex) {
-                    Logger.getLogger(CompleteFormFront.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CompleteFormFront.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -1184,17 +1205,28 @@ public class SignInFront extends javax.swing.JFrame {
     private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-            System.out.println(woTextArea.getText());
 
-            if (1 == 2) {
-                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
+            String clientID = clientIDText.getText();
+            String workToDoString = workToBeDone.getText().trim();
 
-                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
+            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '"
+                    + workToDoString + "'";
 
-                while (searchT.next()) {
-                    String workOrderText = searchT.getString("work_order_id");
-                    woTextArea.setText(workOrderText);
+            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+            System.out.println(workOrderExist);
+
+            Boolean isDupe = true;
+            if (searchQ.next()) {
+                int dupeCheck = searchQ.getInt("checkDupe");
+                System.out.println(dupeCheck);
+                if (dupeCheck == 2) {
+                    isDupe = false;
+                    System.out.println(isDupe);
                 }
+            }
+
+            if (isDupe == false) {
 
                 String currentClient = clientIDText.getText();
                 String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1225,10 +1257,17 @@ public class SignInFront extends javax.swing.JFrame {
                         + tabletBool + " as tablet,"
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
+                System.out.println(addClientScript);
 
                 addWorkOrder.executeUpdate(addClientScript);
-
+                //SaveCompleteMessage gui = new SaveCompleteMessage();
+                //gui.setVisible(true);
             }
+            if (isDupe == true) {
+                //WorkOrderExistsError gui = new WorkOrderExistsError();
+                //gui.setVisible(true);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1238,36 +1277,69 @@ public class SignInFront extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String clientID = clientIDText.getText();
-            String workDoneString = workDoneText.getText();
+            String workToDoString = workToBeDone.getText().trim();
 
-            String workOrderExist = "select max(1) from client_service where client_id = '"
-                    + clientID + "' and work_done like '%"
-                    + workDoneString + "%'";
+            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                    + clientID + "' and work_to_do like '"
+                    + workToDoString + "'";
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-            System.out.println("Is Before First " + searchQ.isBeforeFirst());
-            if (searchQ.isBeforeFirst()) {
+            System.out.println(workOrderExist);
 
+            Boolean isDupe = true;
+            if (searchQ.next()) {
+                int dupeCheck = searchQ.getInt("checkDupe");
+                System.out.println(dupeCheck);
+                if (dupeCheck == 2) {
+                    isDupe = false;
+                    System.out.println(isDupe);
+                }
+            }
+
+            if (isDupe == false) {
+
+                String currentClient = clientIDText.getText();
                 String workToDo = workToBeDone.getText().replace("'", "''");
+                boolean desktop = checkDesktop.isSelected();
+                boolean laptop = checkLaptop.isSelected();
+                boolean tablet = checkTablet.isSelected();
+                boolean charger = checkCharger.isSelected();
                 String clientPass = passwordText.getText().replace("'", "''");
                 String clientPin = pinText.getText();
+                String techName = techComboBox.getSelectedItem().toString();
                 String workDone = workDoneText.getText().replace("'", "''");
-                String workOrderID = woTextArea.getText();
+                String otherEquip = equipmentText.getText().replace("'", "''");
 
-                String addClientScript = "update client_service"
-                        + " set work_to_do = '" + workToDo + "', "
-                        + "pc_pass = '" + clientPass + "', "
-                        + "pc_pin = '" + clientPin + "', "
-                        + "work_done = '" + workDone + "'"
-                        + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+                int desktopBool = (desktop) ? 1 : 0;
+                int laptopBool = (laptop) ? 1 : 0;
+                int tabletBool = (tablet) ? 1 : 0;
+                int chargerBool = (charger) ? 1 : 0;
 
+                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                        + "select " + currentClient + " as client_id,"
+                        + "'" + workToDo + "' as work_to_do,"
+                        + "'" + clientPass + "' as pc_pass,"
+                        + "'" + clientPin + "' as pc_pin,"
+                        + "'" + otherEquip + "' as other_equip,"
+                        + "'" + techName + "' as tech_name,"
+                        + desktopBool + " as desktop,"
+                        + laptopBool + " as laptop,"
+                        + tabletBool + " as tablet,"
+                        + chargerBool + " as charger,"
+                        + "'" + workDone + "' as work_done";
                 System.out.println(addClientScript);
 
                 addWorkOrder.executeUpdate(addClientScript);
-
+                //SaveCompleteMessage gui = new SaveCompleteMessage();
+                //gui.setVisible(true);
+            }
+            if (isDupe == true) {
+                //WorkOrderExistsError gui = new WorkOrderExistsError();
+                //gui.setVisible(true);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_workDoneTextFocusLost
 
