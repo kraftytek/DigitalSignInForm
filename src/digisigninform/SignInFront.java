@@ -336,6 +336,11 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         woTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                woTextAreaKeyPressed(evt);
+            }
+        });
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
@@ -713,78 +718,11 @@ public class SignInFront extends javax.swing.JFrame {
         SearchForm gui = new SearchForm();
         gui.setVisible(true);
     }//GEN-LAST:event_searchExistingClientActionPerformed
-    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
-    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String defaultWO = woTextArea.getText();
-            String cleanWO = defaultWO.trim();
 
-            String topWorkOrder = """
-                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
-                                  c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
-                                  from client_service as cs
-                                  inner join clients as c
-                                  on cs.client_id = c.client_id
-                                  where work_order_ID = """
-                    + cleanWO;
+    private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_woTextAreaKeyPressed
+        woTextArea.addActionListener(action);
+    }
 
-            ResultSet searchQ = statement.executeQuery(topWorkOrder);
-
-            while (searchQ.next()) {
-                String woToDoText = searchQ.getString("work_to_do");
-                String passText = searchQ.getString("pc_pass");
-                String pinText = searchQ.getString("pc_pin");
-                Boolean desktop = searchQ.getBoolean("desktop");
-                Boolean laptop = searchQ.getBoolean("laptop");
-                Boolean tablet = searchQ.getBoolean("tablet");
-                Boolean charger = searchQ.getBoolean("charger");
-                String firstName = searchQ.getString("fname");
-                String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("-", "");
-                String emailText = searchQ.getString("email");
-                String clientID = searchQ.getString("client_id");
-                String workDone = searchQ.getString("work_done");
-                String companyString = searchQ.getString("companyName");
-                String otherEquip = searchQ.getString("other_equip");
-                String phoneFormat;
-                String cellFormat;
-
-                if (phoneNumber.length() > 0) {
-                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
-                } else {
-                    phoneFormat = phoneNumber;
-                };
-
-                if (cellNumber.length() > 0) {
-                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
-                } else {
-                    cellFormat = cellNumber;
-                };
-
-                //add tech field eventually, low priority 
-                SignInFront.clientIDText.setText(clientID);
-                SignInFront.workToBeDone.setText(woToDoText);
-                SignInFront.passwordText.setText(passText);
-                SignInFront.pinText.setText(pinText);
-                SignInFront.checkLaptop.setSelected(laptop);
-                SignInFront.checkDesktop.setSelected(desktop);
-                SignInFront.checkTablet.setSelected(tablet);
-                SignInFront.checkCharger.setSelected(charger);
-                SignInFront.fNameText.setText(firstName);
-                SignInFront.lNameText.setText(lastName);
-                SignInFront.phoneOneText.setText(phoneFormat);
-                SignInFront.cellPhoneText.setText(cellFormat);
-                SignInFront.eMailText.setText(emailText);
-                SignInFront.clientIDText.setText("Client ID: " + clientID);
-                SignInFront.workDoneText.setText(workDone);
-                SignInFront.companyText.setText(companyString);
-                SignInFront.equipmentText.setText(otherEquip);
-            }
-
-        } catch (SQLException e) {
-        }
-    }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void saveNewWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewWorkOrderActionPerformed
 
@@ -1102,7 +1040,7 @@ public class SignInFront extends javax.swing.JFrame {
             }
             if (isDupe == true) {
                 //WorkOrderExistsError gui = new WorkOrderExistsError();
-               // gui.setVisible(true);
+                // gui.setVisible(true);
             }
 
         } catch (SQLException ex) {
@@ -1274,6 +1212,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_workToBeDoneFocusGained
 
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String clientID = clientIDText.getText();
@@ -1343,13 +1282,86 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_workDoneTextFocusLost
 
+    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
+    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            String defaultWO = woTextArea.getText();
+            String cleanWO = defaultWO.trim();
+
+            String topWorkOrder = """
+            select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+            c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
+            from client_service as cs
+            inner join clients as c
+            on cs.client_id = c.client_id
+            where work_order_ID = """
+                    + cleanWO;
+
+            ResultSet searchQ = statement.executeQuery(topWorkOrder);
+
+            while (searchQ.next()) {
+                String woToDoText = searchQ.getString("work_to_do");
+                String passText = searchQ.getString("pc_pass");
+                String pinText = searchQ.getString("pc_pin");
+                Boolean desktop = searchQ.getBoolean("desktop");
+                Boolean laptop = searchQ.getBoolean("laptop");
+                Boolean tablet = searchQ.getBoolean("tablet");
+                Boolean charger = searchQ.getBoolean("charger");
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String emailText = searchQ.getString("email");
+                String clientID = searchQ.getString("client_id");
+                String workDone = searchQ.getString("work_done");
+                String companyString = searchQ.getString("companyName");
+                String otherEquip = searchQ.getString("other_equip");
+                String phoneFormat;
+                String cellFormat;
+
+                if (phoneNumber.length() > 0) {
+                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                } else {
+                    phoneFormat = phoneNumber;
+                }
+
+                if (cellNumber.length() > 0) {
+                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                } else {
+                    cellFormat = cellNumber;
+                }
+
+                //add tech field eventually, low priority
+                SignInFront.clientIDText.setText(clientID);
+                SignInFront.workToBeDone.setText(woToDoText);
+                SignInFront.passwordText.setText(passText);
+                SignInFront.pinText.setText(pinText);
+                SignInFront.checkLaptop.setSelected(laptop);
+                SignInFront.checkDesktop.setSelected(desktop);
+                SignInFront.checkTablet.setSelected(tablet);
+                SignInFront.checkCharger.setSelected(charger);
+                SignInFront.fNameText.setText(firstName);
+                SignInFront.lNameText.setText(lastName);
+                SignInFront.phoneOneText.setText(phoneFormat);
+                SignInFront.cellPhoneText.setText(cellFormat);
+                SignInFront.eMailText.setText(emailText);
+                SignInFront.clientIDText.setText("Client ID: " + clientID);
+                SignInFront.workDoneText.setText(workDone);
+                SignInFront.companyText.setText(companyString);
+                SignInFront.equipmentText.setText(otherEquip);
+            }
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchWorkOrderButtActionPerformed
+
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
                 String defaultWO = woTextArea.getText();
                 String cleanWO = defaultWO.trim();
-
+                System.out.println("Enter was pressed");
                 String topWorkOrder = """
                                   select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
                                   c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
