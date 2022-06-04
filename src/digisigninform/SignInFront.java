@@ -226,6 +226,9 @@ public class SignInFront extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 workToBeDoneFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                workToBeDoneFocusLost(evt);
+            }
         });
         workToDoField.setViewportView(workToBeDone);
 
@@ -979,74 +982,6 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String clientID = clientIDText.getText();
-            String workToDoString = workToBeDone.getText().trim();
-
-            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '"
-                    + workToDoString + "'";
-
-            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-            System.out.println(workOrderExist);
-
-            Boolean isDupe = true;
-            if (searchQ.next()) {
-                int dupeCheck = searchQ.getInt("checkDupe");
-                System.out.println(dupeCheck);
-                if (dupeCheck == 2) {
-                    isDupe = false;
-                    System.out.println(isDupe);
-                }
-            }
-
-            if (isDupe == false) {
-
-                String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText().replace("'", "''");
-                boolean desktop = checkDesktop.isSelected();
-                boolean laptop = checkLaptop.isSelected();
-                boolean tablet = checkTablet.isSelected();
-                boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText().replace("'", "''");
-                String clientPin = pinText.getText();
-                String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText().replace("'", "''");
-                String otherEquip = equipmentText.getText().replace("'", "''");
-
-                int desktopBool = (desktop) ? 1 : 0;
-                int laptopBool = (laptop) ? 1 : 0;
-                int tabletBool = (tablet) ? 1 : 0;
-                int chargerBool = (charger) ? 1 : 0;
-
-                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                        + "select " + currentClient + " as client_id,"
-                        + "'" + workToDo + "' as work_to_do,"
-                        + "'" + clientPass + "' as pc_pass,"
-                        + "'" + clientPin + "' as pc_pin,"
-                        + "'" + otherEquip + "' as other_equip,"
-                        + "'" + techName + "' as tech_name,"
-                        + desktopBool + " as desktop,"
-                        + laptopBool + " as laptop,"
-                        + tabletBool + " as tablet,"
-                        + chargerBool + " as charger,"
-                        + "'" + workDone + "' as work_done";
-                System.out.println(addClientScript);
-
-                addWorkOrder.executeUpdate(addClientScript);
-                //SaveCompleteMessage gui = new SaveCompleteMessage();
-                //gui.setVisible(true);
-            }
-            if (isDupe == true) {
-                //WorkOrderExistsError gui = new WorkOrderExistsError();
-                // gui.setVisible(true);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         PrinterJob pjob = PrinterJob.getPrinterJob();
         PageFormat preformat = pjob.defaultPage();
         preformat.setOrientation(PageFormat.PORTRAIT);
@@ -1071,7 +1006,7 @@ public class SignInFront extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_printWorkOrderActionPerformed
-
+    public int globalClientID = -1;
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
 
         if (fNameText.getText().length() > 0) {
@@ -1107,6 +1042,7 @@ public class SignInFront extends javax.swing.JFrame {
                 while (searchQ.next()) {
                     String clientIDString = searchQ.getString("client_id");
                     clientIDText.setText(clientIDString);
+                    globalClientID = Integer.parseInt(clientIDString);
                 }
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
@@ -1141,73 +1077,81 @@ public class SignInFront extends javax.swing.JFrame {
 
 
     private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
+//check if global client ID is set
+        if (globalClientID == -1) {
+            SaveClientFirstFrame gui = new SaveClientFirstFrame();
+            gui.setVisible(true);
+            addNewClientButt.requestFocus();
+            globalClientID = 0;
+        } else if (globalClientID > 0){
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String clientID = clientIDText.getText();
-            String workToDoString = workToBeDone.getText().trim();
+                String clientID = clientIDText.getText();
+                String workToDoString = workToBeDone.getText().trim();
 
-            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '"
-                    + workToDoString + "'";
+                String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                        + clientID + "' and work_to_do like '"
+                        + workToDoString + "'";
 
-            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-            System.out.println(workOrderExist);
+                ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+                System.out.println(workOrderExist);
 
-            Boolean isDupe = true;
-            if (searchQ.next()) {
-                int dupeCheck = searchQ.getInt("checkDupe");
-                System.out.println(dupeCheck);
-                if (dupeCheck == 2) {
-                    isDupe = false;
-                    System.out.println(isDupe);
+                Boolean isDupe = true;
+                if (searchQ.next()) {
+                    int dupeCheck = searchQ.getInt("checkDupe");
+                    System.out.println(dupeCheck);
+                    if (dupeCheck == 2) {
+                        isDupe = false;
+                        System.out.println(isDupe);
+                    }
                 }
+
+                if (isDupe == false) {
+
+                    String currentClient = clientIDText.getText();
+                    String workToDo = workToBeDone.getText().replace("'", "''");
+                    boolean desktop = checkDesktop.isSelected();
+                    boolean laptop = checkLaptop.isSelected();
+                    boolean tablet = checkTablet.isSelected();
+                    boolean charger = checkCharger.isSelected();
+                    String clientPass = passwordText.getText().replace("'", "''");
+                    String clientPin = pinText.getText();
+                    String techName = techComboBox.getSelectedItem().toString();
+                    String workDone = workDoneText.getText().replace("'", "''");
+                    String otherEquip = equipmentText.getText().replace("'", "''");
+
+                    int desktopBool = (desktop) ? 1 : 0;
+                    int laptopBool = (laptop) ? 1 : 0;
+                    int tabletBool = (tablet) ? 1 : 0;
+                    int chargerBool = (charger) ? 1 : 0;
+
+                    String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                            + "select " + currentClient + " as client_id,"
+                            + "'" + workToDo + "' as work_to_do,"
+                            + "'" + clientPass + "' as pc_pass,"
+                            + "'" + clientPin + "' as pc_pin,"
+                            + "'" + otherEquip + "' as other_equip,"
+                            + "'" + techName + "' as tech_name,"
+                            + desktopBool + " as desktop,"
+                            + laptopBool + " as laptop,"
+                            + tabletBool + " as tablet,"
+                            + chargerBool + " as charger,"
+                            + "'" + workDone + "' as work_done";
+                    System.out.println(addClientScript);
+
+                    addWorkOrder.executeUpdate(addClientScript);
+                    //SaveCompleteMessage gui = new SaveCompleteMessage();
+                    //gui.setVisible(true);
+                }
+                if (isDupe == true) {
+                    //WorkOrderExistsError gui = new WorkOrderExistsError();
+                    //gui.setVisible(true);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if (isDupe == false) {
-
-                String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText().replace("'", "''");
-                boolean desktop = checkDesktop.isSelected();
-                boolean laptop = checkLaptop.isSelected();
-                boolean tablet = checkTablet.isSelected();
-                boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText().replace("'", "''");
-                String clientPin = pinText.getText();
-                String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText().replace("'", "''");
-                String otherEquip = equipmentText.getText().replace("'", "''");
-
-                int desktopBool = (desktop) ? 1 : 0;
-                int laptopBool = (laptop) ? 1 : 0;
-                int tabletBool = (tablet) ? 1 : 0;
-                int chargerBool = (charger) ? 1 : 0;
-
-                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                        + "select " + currentClient + " as client_id,"
-                        + "'" + workToDo + "' as work_to_do,"
-                        + "'" + clientPass + "' as pc_pass,"
-                        + "'" + clientPin + "' as pc_pin,"
-                        + "'" + otherEquip + "' as other_equip,"
-                        + "'" + techName + "' as tech_name,"
-                        + desktopBool + " as desktop,"
-                        + laptopBool + " as laptop,"
-                        + tabletBool + " as tablet,"
-                        + chargerBool + " as charger,"
-                        + "'" + workDone + "' as work_done";
-                System.out.println(addClientScript);
-
-                addWorkOrder.executeUpdate(addClientScript);
-                //SaveCompleteMessage gui = new SaveCompleteMessage();
-                //gui.setVisible(true);
-            }
-            if (isDupe == true) {
-                //WorkOrderExistsError gui = new WorkOrderExistsError();
-                //gui.setVisible(true);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_workToBeDoneFocusGained
 
@@ -1215,7 +1159,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String clientID = clientIDText.getText();
+            String clientID = clientIDText.getText().replace("Client ID: ", "");
             String workToDoString = workToBeDone.getText().trim();
 
             String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
@@ -1355,13 +1299,39 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
+    private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
+        System.out.println("Work to be done focus lost");
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
+            String workOrderID = woTextArea.getText();
+
+            String addClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            System.out.println(addClientScript);
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+        }
+
+
+    }//GEN-LAST:event_workToBeDoneFocusLost
+
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
                 String defaultWO = woTextArea.getText();
                 String cleanWO = defaultWO.trim();
-                System.out.println("Enter was pressed");
                 String topWorkOrder = """
                                   select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
                                   c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
