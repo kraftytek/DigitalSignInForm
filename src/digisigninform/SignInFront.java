@@ -851,7 +851,7 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
 
-       model.setRowCount(0);
+        model.setRowCount(0);
 
         String date = sdf3.format(new Date());
         String fname = fNameText.getText();
@@ -925,7 +925,7 @@ public class SignInFront extends javax.swing.JFrame {
         }
         //update cost total
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
-             workOrderText = woTextArea.getText();
+            workOrderText = woTextArea.getText();
             String getWorkCost = """
                                  select upc.upc_cost, upc.upc_code
                                  from service_link as sl
@@ -1083,7 +1083,7 @@ public class SignInFront extends javax.swing.JFrame {
             gui.setVisible(true);
             addNewClientButt.requestFocus();
             globalClientID = 0;
-        } else if (globalClientID > 0){
+        } else if (globalClientID > 0) {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
@@ -1159,67 +1159,20 @@ public class SignInFront extends javax.swing.JFrame {
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-            String clientID = clientIDText.getText().replace("Client ID: ", "");
-            String workToDoString = workToBeDone.getText().trim();
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
+            String workOrderID = woTextArea.getText();
 
-            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '"
-                    + workToDoString + "'";
+            String updateClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
-            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-            System.out.println(workOrderExist);
-
-            Boolean isDupe = true;
-            if (searchQ.next()) {
-                int dupeCheck = searchQ.getInt("checkDupe");
-                System.out.println(dupeCheck);
-                if (dupeCheck == 2) {
-                    isDupe = false;
-                    System.out.println(isDupe);
-                }
-            }
-
-            if (isDupe == false) {
-
-                String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText().replace("'", "''");
-                boolean desktop = checkDesktop.isSelected();
-                boolean laptop = checkLaptop.isSelected();
-                boolean tablet = checkTablet.isSelected();
-                boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText().replace("'", "''");
-                String clientPin = pinText.getText();
-                String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText().replace("'", "''");
-                String otherEquip = equipmentText.getText().replace("'", "''");
-
-                int desktopBool = (desktop) ? 1 : 0;
-                int laptopBool = (laptop) ? 1 : 0;
-                int tabletBool = (tablet) ? 1 : 0;
-                int chargerBool = (charger) ? 1 : 0;
-
-                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                        + "select " + currentClient + " as client_id,"
-                        + "'" + workToDo + "' as work_to_do,"
-                        + "'" + clientPass + "' as pc_pass,"
-                        + "'" + clientPin + "' as pc_pin,"
-                        + "'" + otherEquip + "' as other_equip,"
-                        + "'" + techName + "' as tech_name,"
-                        + desktopBool + " as desktop,"
-                        + laptopBool + " as laptop,"
-                        + tabletBool + " as tablet,"
-                        + chargerBool + " as charger,"
-                        + "'" + workDone + "' as work_done";
-                System.out.println(addClientScript);
-
-                addWorkOrder.executeUpdate(addClientScript);
-                //SaveCompleteMessage gui = new SaveCompleteMessage();
-                //gui.setVisible(true);
-            }
-            if (isDupe == true) {
-                //WorkOrderExistsError gui = new WorkOrderExistsError();
-                //gui.setVisible(true);
-            }
+            addWorkOrder.executeUpdate(updateClientScript);
 
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
@@ -1393,6 +1346,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.clientIDText.setText("Client ID: " + clientID);
                     SignInFront.workDoneText.setText(workDone);
                     SignInFront.companyText.setText(companyString);
+                    globalClientID = Integer.parseInt(cleanWO);
                 }
 
             } catch (SQLException t) {
