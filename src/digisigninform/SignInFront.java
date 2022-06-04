@@ -741,7 +741,6 @@ public class SignInFront extends javax.swing.JFrame {
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
-
             Boolean isDupe = true;
             if (searchQ.next()) {
                 int dupeCheck = searchQ.getInt("checkDupe");
@@ -784,7 +783,6 @@ public class SignInFront extends javax.swing.JFrame {
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
 
-
                 addWorkOrder.executeUpdate(addClientScript);
                 SaveCompleteMessage gui = new SaveCompleteMessage();
                 gui.setVisible(true);
@@ -815,8 +813,6 @@ public class SignInFront extends javax.swing.JFrame {
                     + "pc_pin = '" + clientPin + "', "
                     + "work_done = '" + workDone + "'"
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-
 
             addWorkOrder.executeUpdate(addClientScript);
 
@@ -977,7 +973,8 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setText("");
         woTextArea.setText("");
         companyText.setText("");
-
+        globalClientID = -1;
+        fNameText.requestFocusInWindow();
     }//GEN-LAST:event_clearWorkOrderActionPerformed
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
@@ -1081,7 +1078,7 @@ public class SignInFront extends javax.swing.JFrame {
         if (globalClientID == -1) {
             SaveClientFirstFrame gui = new SaveClientFirstFrame();
             gui.setVisible(true);
-            addNewClientButt.requestFocus();
+            fNameText.requestFocusInWindow();
             globalClientID = 0;
         } else if (globalClientID > 0) {
 
@@ -1096,14 +1093,13 @@ public class SignInFront extends javax.swing.JFrame {
 
                 ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
-
                 Boolean isDupe = true;
                 if (searchQ.next()) {
                     int dupeCheck = searchQ.getInt("checkDupe");
 
                     if (dupeCheck == 2) {
                         isDupe = false;
-                     
+
                     }
                 }
 
@@ -1139,17 +1135,15 @@ public class SignInFront extends javax.swing.JFrame {
                             + chargerBool + " as charger,"
                             + "'" + workDone + "' as work_done";
 
-
                     addWorkOrder.executeUpdate(addClientScript);
 
-                }
-                if (isDupe == true) {
-
-                }
+                }          
 
             } catch (SQLException ex) {
                 Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
             }
+            globalClientID = -1;
+            
         }
     }//GEN-LAST:event_workToBeDoneFocusGained
 
@@ -1266,8 +1260,6 @@ public class SignInFront extends javax.swing.JFrame {
                     + "pc_pin = '" + clientPin + "', "
                     + "work_done = '" + workDone + "'"
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-
 
             addWorkOrder.executeUpdate(addClientScript);
 
