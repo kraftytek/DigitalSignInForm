@@ -509,7 +509,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 //***********************************************************End of Billing stuff*************************************************************************//        
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String workOrderText = CompleteFormFront.woText.getText();
+            String workOrderText = SignInFront.woTextArea.getText();
 
             String getUPCs = """
                          select upc.upc_desc, upc.upc_cost, upc.upc_code

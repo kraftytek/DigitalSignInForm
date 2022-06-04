@@ -851,7 +851,7 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
 
-        model.setRowCount(0);
+       model.setRowCount(0);
 
         String date = sdf3.format(new Date());
         String fname = fNameText.getText();
@@ -880,7 +880,7 @@ public class SignInFront extends javax.swing.JFrame {
         //get currently attached parts
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            //String workOrderText = woTextArea.getText();
+            workOrderText = woTextArea.getText();
             String getUPCs = """
                          select upc.upc_desc, upc.upc_cost, upc.upc_code
                          from service_link as sl
@@ -925,7 +925,7 @@ public class SignInFront extends javax.swing.JFrame {
         }
         //update cost total
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
-            //String workOrderText2 = woTextArea.getText();
+             workOrderText = woTextArea.getText();
             String getWorkCost = """
                                  select upc.upc_cost, upc.upc_code
                                  from service_link as sl
@@ -933,7 +933,7 @@ public class SignInFront extends javax.swing.JFrame {
                                  on sl.service_fee_id = upc.upc_id
                                  where work_Order_ID ="""
                     + workOrderText;
-
+            System.out.println(getWorkCost);
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
             ArrayList<Double> list = new ArrayList<>();
             while (searchQ.next()) {

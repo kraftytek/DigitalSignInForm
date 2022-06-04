@@ -106,7 +106,7 @@ public class SaveCompleteMessage extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.SECONDS.sleep(1);
             dispose();
         } catch (InterruptedException ex) {
             Logger.getLogger(SaveCompleteMessage.class.getName()).log(Level.SEVERE, null, ex);
