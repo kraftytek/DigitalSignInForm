@@ -740,15 +740,15 @@ public class SignInFront extends javax.swing.JFrame {
                     + workToDoString + "'";
 
             ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-            System.out.println(workOrderExist);
+
 
             Boolean isDupe = true;
             if (searchQ.next()) {
                 int dupeCheck = searchQ.getInt("checkDupe");
-                System.out.println(dupeCheck);
+
                 if (dupeCheck == 2) {
                     isDupe = false;
-                    System.out.println(isDupe);
+
                 }
             }
 
@@ -783,7 +783,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + tabletBool + " as tablet,"
                         + chargerBool + " as charger,"
                         + "'" + workDone + "' as work_done";
-                System.out.println(addClientScript);
+
 
                 addWorkOrder.executeUpdate(addClientScript);
                 SaveCompleteMessage gui = new SaveCompleteMessage();
@@ -816,7 +816,7 @@ public class SignInFront extends javax.swing.JFrame {
                     + "work_done = '" + workDone + "'"
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
-            System.out.println(addClientScript);
+
 
             addWorkOrder.executeUpdate(addClientScript);
 
@@ -891,7 +891,7 @@ public class SignInFront extends javax.swing.JFrame {
 
             ResultSet searchQ = statement.executeQuery(getUPCs);
             if (!searchQ.isBeforeFirst()) {
-                System.out.println("no results found");
+
             } else {
                 while (searchQ.next()) {
                     String upcDescText = searchQ.getString("upc_desc");
@@ -933,7 +933,7 @@ public class SignInFront extends javax.swing.JFrame {
                                  on sl.service_fee_id = upc.upc_id
                                  where work_Order_ID ="""
                     + workOrderText;
-            System.out.println(getWorkCost);
+
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
             ArrayList<Double> list = new ArrayList<>();
             while (searchQ.next()) {
@@ -1029,7 +1029,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + phoneCell + "' as phone2,'"
                         + emailString + "' as email,"
                         + "getdate() as creation_date";
-                System.out.println(addClientScript);
+
                 addWorkOrder.executeUpdate(addClientScript);
 
                 String getClientID = "select client_id from clients where fname = '"
@@ -1095,15 +1095,15 @@ public class SignInFront extends javax.swing.JFrame {
                         + workToDoString + "'";
 
                 ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-                System.out.println(workOrderExist);
+
 
                 Boolean isDupe = true;
                 if (searchQ.next()) {
                     int dupeCheck = searchQ.getInt("checkDupe");
-                    System.out.println(dupeCheck);
+
                     if (dupeCheck == 2) {
                         isDupe = false;
-                        System.out.println(isDupe);
+                     
                     }
                 }
 
@@ -1138,15 +1138,13 @@ public class SignInFront extends javax.swing.JFrame {
                             + tabletBool + " as tablet,"
                             + chargerBool + " as charger,"
                             + "'" + workDone + "' as work_done";
-                    System.out.println(addClientScript);
+
 
                     addWorkOrder.executeUpdate(addClientScript);
-                    //SaveCompleteMessage gui = new SaveCompleteMessage();
-                    //gui.setVisible(true);
+
                 }
                 if (isDupe == true) {
-                    //WorkOrderExistsError gui = new WorkOrderExistsError();
-                    //gui.setVisible(true);
+
                 }
 
             } catch (SQLException ex) {
@@ -1253,7 +1251,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
-        System.out.println("Work to be done focus lost");
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1269,7 +1267,7 @@ public class SignInFront extends javax.swing.JFrame {
                     + "work_done = '" + workDone + "'"
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
-            System.out.println(addClientScript);
+
 
             addWorkOrder.executeUpdate(addClientScript);
 
