@@ -193,6 +193,11 @@ public class SignInFront extends javax.swing.JFrame {
         fNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         fNameText.setNextFocusableComponent(lNameText);
+        fNameText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fNameTextFocusGained(evt);
+            }
+        });
         fNameText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 fNameTextKeyTyped(evt);
@@ -981,6 +986,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_completeWorkOrderActionPerformed
 
     private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
+
         fNameText.setText("");
         lNameText.setText("");
         phoneOneText.setText("");
@@ -998,8 +1004,9 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setText("");
         woTextArea.setText("");
         companyText.setText("");
-        globalClientID = -1;
         fNameText.requestFocusInWindow();
+        globalClientID = -1;
+
     }//GEN-LAST:event_clearWorkOrderActionPerformed
 
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
@@ -1028,7 +1035,7 @@ public class SignInFront extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_printWorkOrderActionPerformed
-    public int globalClientID = -1;
+    public static int globalClientID = -1;
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1099,81 +1106,6 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
 
-    private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
-//check if global client ID is set
-        if (globalClientID == -1) {
-            SaveClientFirstFrame gui = new SaveClientFirstFrame();
-            gui.setVisible(true);
-            fNameText.requestFocusInWindow();
-            globalClientID = 0;
-        } else if (globalClientID > 0) {
-
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-                String clientID = clientIDText.getText().replace("Client ID:", "");
-                System.out.println(clientID);
-                String workToDoString = workToBeDone.getText().trim();
-
-                String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
-                        + clientID + "' and work_to_do like '"
-                        + workToDoString + "'";
-
-                ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-
-                Boolean isDupe = true;
-                if (searchQ.next()) {
-                    int dupeCheck = searchQ.getInt("checkDupe");
-
-                    if (dupeCheck == 2) {
-                        isDupe = false;
-
-                    }
-                }
-
-                if (isDupe == false) {
-
-                    String currentClient = clientIDText.getText();
-                    String workToDo = workToBeDone.getText().replace("'", "''");
-                    boolean desktop = checkDesktop.isSelected();
-                    boolean laptop = checkLaptop.isSelected();
-                    boolean tablet = checkTablet.isSelected();
-                    boolean charger = checkCharger.isSelected();
-                    String clientPass = passwordText.getText().replace("'", "''");
-                    String clientPin = pinText.getText();
-                    String techName = techComboBox.getSelectedItem().toString();
-                    String workDone = workDoneText.getText().replace("'", "''");
-                    String otherEquip = equipmentText.getText().replace("'", "''");
-
-                    int desktopBool = (desktop) ? 1 : 0;
-                    int laptopBool = (laptop) ? 1 : 0;
-                    int tabletBool = (tablet) ? 1 : 0;
-                    int chargerBool = (charger) ? 1 : 0;
-
-                    String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                            + "select " + currentClient + " as client_id,"
-                            + "'" + workToDo + "' as work_to_do,"
-                            + "'" + clientPass + "' as pc_pass,"
-                            + "'" + clientPin + "' as pc_pin,"
-                            + "'" + otherEquip + "' as other_equip,"
-                            + "'" + techName + "' as tech_name,"
-                            + desktopBool + " as desktop,"
-                            + laptopBool + " as laptop,"
-                            + tabletBool + " as tablet,"
-                            + chargerBool + " as charger,"
-                            + "'" + workDone + "' as work_done";
-
-                    addWorkOrder.executeUpdate(addClientScript);
-
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            globalClientID = -1;
-
-        }
-    }//GEN-LAST:event_workToBeDoneFocusGained
-
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png")));
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1193,7 +1125,7 @@ public class SignInFront extends javax.swing.JFrame {
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
             addWorkOrder.executeUpdate(updateClientScript);
-
+            //globalClientID = Integer.parseInt(clientIDText.getText());
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1275,6 +1207,7 @@ public class SignInFront extends javax.swing.JFrame {
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+        System.out.println("Global ID value: " + globalClientID);
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1299,19 +1232,129 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_workToBeDoneFocusLost
 
     private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workToBeDoneKeyTyped
+
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+        System.out.println("Global ID value: " + globalClientID);
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
+            String workOrderID = woTextArea.getText();
+
+            String addClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+
+        }
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+
     }//GEN-LAST:event_workToBeDoneKeyTyped
 
     private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workDoneTextKeyTyped
+        System.out.println("Global ID value: " + globalClientID);
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_workDoneTextKeyTyped
 
     private void fNameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fNameTextKeyTyped
+        System.out.println("Global ID value: " + globalClientID);
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_fNameTextKeyTyped
+
+    private void fNameTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fNameTextFocusGained
+        //globalClientID = -1;
+    }//GEN-LAST:event_fNameTextFocusGained
+
+    private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+        //check if global client ID is set
+        if (globalClientID == -1) {
+            SaveClientFirstFrame gui = new SaveClientFirstFrame();
+            gui.setVisible(true);
+            jMenu1.setPopupMenuVisible(true);
+            globalClientID = 0;
+        } else if (globalClientID > 0) {
+
+            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+                String clientID = String.valueOf(globalClientID);
+                String workToDoString = workToBeDone.getText().trim();
+
+                String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
+                        + clientID + "' and work_to_do like '"
+                        + workToDoString + "' and cast(sign_in_date as date) = cast(getdate() as date)"
+                        + "";
+                System.out.println(workOrderExist);
+
+                ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
+
+                Boolean isDupe = true;
+                if (searchQ.next()) {
+                    int dupeCheck = searchQ.getInt("checkDupe");
+
+                    if (dupeCheck == 2) {
+                        isDupe = false;
+
+                    }
+                }
+
+                if (isDupe == false) {
+
+                    int clientIDInt = globalClientID;
+                    String currentClient = String.valueOf(clientIDInt);
+                    String workToDo = workToBeDone.getText().replace("'", "''");
+                    boolean desktop = checkDesktop.isSelected();
+                    boolean laptop = checkLaptop.isSelected();
+                    boolean tablet = checkTablet.isSelected();
+                    boolean charger = checkCharger.isSelected();
+                    String clientPass = passwordText.getText().replace("'", "''");
+                    String clientPin = pinText.getText();
+                    String techName = techComboBox.getSelectedItem().toString();
+                    String workDone = workDoneText.getText().replace("'", "''");
+                    String otherEquip = equipmentText.getText().replace("'", "''");
+
+                    int desktopBool = (desktop) ? 1 : 0;
+                    int laptopBool = (laptop) ? 1 : 0;
+                    int tabletBool = (tablet) ? 1 : 0;
+                    int chargerBool = (charger) ? 1 : 0;
+
+                    String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
+                            + "select " + currentClient + " as client_id,"
+                            + "'" + workToDo + "' as work_to_do,"
+                            + "'" + clientPass + "' as pc_pass,"
+                            + "'" + clientPin + "' as pc_pin,"
+                            + "'" + otherEquip + "' as other_equip,"
+                            + "'" + techName + "' as tech_name,"
+                            + desktopBool + " as desktop,"
+                            + laptopBool + " as laptop,"
+                            + tabletBool + " as tablet,"
+                            + chargerBool + " as charger,"
+                            + "'" + workDone + "' as work_done";
+                    System.out.println(addClientScript);
+                    addWorkOrder.executeUpdate(addClientScript);
+
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //globalClientID = -1;
+
+        }
+    }//GEN-LAST:event_workToBeDoneFocusGained
 
     Action action = new AbstractAction() {
         @Override
@@ -1380,7 +1423,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.clientIDText.setText("Client ID: " + clientID);
                     SignInFront.workDoneText.setText(workDone);
                     SignInFront.companyText.setText(companyString);
-                    globalClientID = Integer.parseInt(cleanWO);
+                    globalClientID = Integer.parseInt(clientID);
                 }
 
             } catch (SQLException t) {

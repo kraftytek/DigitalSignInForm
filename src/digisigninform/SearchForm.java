@@ -246,7 +246,8 @@ public class SearchForm extends javax.swing.JFrame {
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String compName = searchQ.getString("companyName");
-
+                SignInFront.globalClientID = Integer.parseInt(clientID);
+                System.out.println(Integer.parseInt(clientID));
                 String phoneFormat;
                 String cellFormat;
 
@@ -371,7 +372,7 @@ public class SearchForm extends javax.swing.JFrame {
 
         } catch (SQLException e) {
         }
-        
+
     }//GEN-LAST:event_searchExistingButtActionPerformed
 
     private void selectWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWorkOrderButtActionPerformed
@@ -380,7 +381,7 @@ public class SearchForm extends javax.swing.JFrame {
         Pattern pattern = Pattern.compile("Work Order ID: ");
         Matcher matcher = pattern.matcher(selWONum);
 
-        int endWO = 0;      
+        int endWO = 0;
         while (matcher.find()) {
             endWO = matcher.end();
         }
@@ -456,7 +457,7 @@ public class SearchForm extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-        }        
+        }
         dispose();
 
     }//GEN-LAST:event_selectWorkOrderButtActionPerformed
