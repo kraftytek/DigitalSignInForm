@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -155,6 +156,7 @@ public class SignInFront extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        saveIcon = new javax.swing.JLabel();
         topMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addNewClientButt = new javax.swing.JMenuItem();
@@ -191,6 +193,11 @@ public class SignInFront extends javax.swing.JFrame {
         fNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         fNameText.setNextFocusableComponent(lNameText);
+        fNameText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fNameTextKeyTyped(evt);
+            }
+        });
 
         lNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
@@ -230,6 +237,11 @@ public class SignInFront extends javax.swing.JFrame {
                 workToBeDoneFocusLost(evt);
             }
         });
+        workToBeDone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                workToBeDoneKeyTyped(evt);
+            }
+        });
         workToDoField.setViewportView(workToBeDone);
 
         checkLaptop.setBackground(new java.awt.Color(255, 255, 255));
@@ -263,7 +275,6 @@ public class SignInFront extends javax.swing.JFrame {
         techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
         techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         techComboBox.setFocusable(false);
-        techComboBox.setRequestFocusEnabled(false);
         techComboBox.setVerifyInputWhenFocusTarget(false);
         for (int i = 0; i < techComboBox.getComponentCount(); i++)
         {
@@ -293,6 +304,11 @@ public class SignInFront extends javax.swing.JFrame {
         workDoneText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 workDoneTextFocusLost(evt);
+            }
+        });
+        workDoneText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                workDoneTextKeyTyped(evt);
             }
         });
         workPerformedArea.setViewportView(workDoneText);
@@ -359,6 +375,9 @@ public class SignInFront extends javax.swing.JFrame {
         jTextPane1.setText("     102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n   Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594 \n   www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
         jScrollPane1.setViewportView(jTextPane1);
 
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
@@ -404,7 +423,11 @@ public class SignInFront extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(saveIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -420,7 +443,9 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saveIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -722,7 +747,7 @@ public class SignInFront extends javax.swing.JFrame {
         gui.setVisible(true);
     }//GEN-LAST:event_searchExistingClientActionPerformed
 
-    private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_woTextAreaKeyPressed
+    private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
         woTextArea.addActionListener(action);
     }
 
@@ -1005,7 +1030,8 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_printWorkOrderActionPerformed
     public int globalClientID = -1;
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
-
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         if (fNameText.getText().length() > 0) {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
@@ -1084,7 +1110,8 @@ public class SignInFront extends javax.swing.JFrame {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
-                String clientID = clientIDText.getText();
+                String clientID = clientIDText.getText().replace("Client ID:", "");
+                System.out.println(clientID);
                 String workToDoString = workToBeDone.getText().trim();
 
                 String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
@@ -1137,18 +1164,19 @@ public class SignInFront extends javax.swing.JFrame {
 
                     addWorkOrder.executeUpdate(addClientScript);
 
-                }          
+                }
 
             } catch (SQLException ex) {
                 Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
             }
             globalClientID = -1;
-            
+
         }
     }//GEN-LAST:event_workToBeDoneFocusGained
 
     private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
-
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png")));
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1245,7 +1273,8 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
-
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
@@ -1268,6 +1297,21 @@ public class SignInFront extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_workToBeDoneFocusLost
+
+    private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workToBeDoneKeyTyped
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+    }//GEN-LAST:event_workToBeDoneKeyTyped
+
+    private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workDoneTextKeyTyped
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+    }//GEN-LAST:event_workDoneTextKeyTyped
+
+    private void fNameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fNameTextKeyTyped
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+    }//GEN-LAST:event_fNameTextKeyTyped
 
     Action action = new AbstractAction() {
         @Override
@@ -1394,6 +1438,7 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JTextField phoneOneText;
     public static javax.swing.JTextField pinText;
     private javax.swing.JMenuItem printWorkOrder;
+    private javax.swing.JLabel saveIcon;
     private javax.swing.JMenuItem saveNewWorkOrder;
     private javax.swing.JMenuItem searchExistingClient;
     private javax.swing.JMenuItem searchWorkOrderButt;
