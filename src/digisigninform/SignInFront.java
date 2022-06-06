@@ -32,11 +32,10 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -44,6 +43,7 @@ import javax.swing.table.DefaultTableModel;
 import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import java.awt.Toolkit;
 
 /**
  *
@@ -114,7 +114,12 @@ public class SignInFront extends javax.swing.JFrame {
     public String connectionUrl = configList.get(0);
     //public String workOrderText = woTextArea.getText();
     public String workOrderText = "0";
+    
+    
 
+    
+
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,6 +182,7 @@ public class SignInFront extends javax.swing.JFrame {
         setTitle("National Computer Resource Sign In");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(SignInFront.class.getResource("/icons/happyIcon3.png")));
         setMaximumSize(new java.awt.Dimension(696, 965));
         setMinimumSize(new java.awt.Dimension(696, 965));
         setPreferredSize(new java.awt.Dimension(700, 965));
@@ -446,33 +452,29 @@ public class SignInFront extends javax.swing.JFrame {
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(saveIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                            .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(saveIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(checkLaptop)
-                            .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)))
+                        .addGap(3, 3, 3)
+                        .addComponent(checkLaptop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -518,8 +520,10 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu1.setBackground(new java.awt.Color(255, 255, 255));
         jMenu1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu1.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu1.setText("Client Options");
+        jMenu1.setText("<html><p style='text-align:center;'>Client Options</p></html>");
         jMenu1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu1.setMinimumSize(new java.awt.Dimension(140, 24));
         jMenu1.setPreferredSize(new java.awt.Dimension(172, 26));
 
@@ -556,8 +560,10 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu2.setBackground(new java.awt.Color(255, 255, 255));
         jMenu2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu2.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu2.setText("Work Order Options");
+        jMenu2.setText("<html><p style='text-align:center;'>Work Order Options</p></html>");
         jMenu2.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu2.setPreferredSize(new java.awt.Dimension(172, 26));
 
         searchWorkOrderButt.setBackground(new java.awt.Color(255, 255, 255));
@@ -635,8 +641,10 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu3.setBackground(new java.awt.Color(255, 255, 255));
         jMenu3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenu3.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu3.setText("Print Options");
+        jMenu3.setText("<html><p style='text-align:center;'>Print Options</p></html>");
         jMenu3.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu3.setPreferredSize(new java.awt.Dimension(172, 26));
 
         printWorkOrder.setBackground(new java.awt.Color(255, 255, 255));
@@ -656,8 +664,10 @@ public class SignInFront extends javax.swing.JFrame {
         topMenu.add(jMenu3);
 
         jMenu4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jMenu4.setText("Other Options");
+        jMenu4.setText("<html><p style='text-align:center;'>Other Options</p></html>");
         jMenu4.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        jMenu4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu4.setPreferredSize(new java.awt.Dimension(172, 26));
 
         jMenuItem9.setBackground(new java.awt.Color(255, 255, 255));

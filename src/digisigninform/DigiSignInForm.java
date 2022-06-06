@@ -14,6 +14,7 @@ public class DigiSignInForm {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         new SignInFront().setVisible(true);
 
     }
