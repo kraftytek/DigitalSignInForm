@@ -114,12 +114,7 @@ public class SignInFront extends javax.swing.JFrame {
     public String connectionUrl = configList.get(0);
     //public String workOrderText = woTextArea.getText();
     public String workOrderText = "0";
-    
-    
 
-    
-
- 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -172,6 +167,7 @@ public class SignInFront extends javax.swing.JFrame {
         updateWorkOrder = new javax.swing.JMenuItem();
         completeWorkOrder = new javax.swing.JMenuItem();
         clearWorkOrder = new javax.swing.JMenuItem();
+        woHistory = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         printWorkOrder = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -635,6 +631,18 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
         jMenu2.add(clearWorkOrder);
+
+        woHistory.setBackground(new java.awt.Color(255, 255, 255));
+        woHistory.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        woHistory.setForeground(new java.awt.Color(0, 0, 0));
+        woHistory.setText("Work Order History");
+        woHistory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        woHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                woHistoryActionPerformed(evt);
+            }
+        });
+        jMenu2.add(woHistory);
 
         topMenu.add(jMenu2);
 
@@ -1377,6 +1385,11 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_fNameTextFocusGained
 
+    private void woHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_woHistoryActionPerformed
+        WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();
+        gui.setVisible(true);
+    }//GEN-LAST:event_woHistoryActionPerformed
+
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -1511,6 +1524,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JLabel titleText;
     private javax.swing.JMenuBar topMenu;
     private javax.swing.JMenuItem updateWorkOrder;
+    private javax.swing.JMenuItem woHistory;
     public static javax.swing.JTextField woTextArea;
     public static javax.swing.JTextArea workDoneText;
     private javax.swing.JScrollPane workPerformedArea;
