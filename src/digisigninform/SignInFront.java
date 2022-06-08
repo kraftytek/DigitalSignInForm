@@ -1058,6 +1058,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_printWorkOrderActionPerformed
     public static int globalClientID = -1;
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
+        clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         if (fNameText.getText().length() > 0) {
