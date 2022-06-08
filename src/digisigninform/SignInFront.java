@@ -1025,7 +1025,7 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.setText("");
         companyText.setText("");
         fNameText.requestFocusInWindow();
-        clearWasDone = 0;
+        clearWasDone = 1;
 
 
     }//GEN-LAST:event_clearWorkOrderActionPerformed
@@ -1157,6 +1157,7 @@ public class SignInFront extends javax.swing.JFrame {
     //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
     private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            
             String defaultWO = woTextArea.getText();
             String cleanWO = defaultWO.trim();
 
@@ -1250,7 +1251,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
                 addWorkOrder.executeUpdate(addClientScript);
-                clearWasDone = -1;
+                
             } catch (SQLException e) {
             }
 
@@ -1303,9 +1304,9 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        if (clearWasDone == 0) {
+        if (clearWasDone == 1) {
             System.out.println("Form was cleared");
-        } else if (clearWasDone < 0) {
+        } else if (clearWasDone < 1) {
 //check if global client ID is set
             System.out.println("work to do focus was gained");
             if (globalClientID == -1) {
