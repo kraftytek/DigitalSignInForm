@@ -1148,7 +1148,7 @@ public class SignInFront extends javax.swing.JFrame {
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
             addWorkOrder.executeUpdate(updateClientScript);
-            //globalClientID = Integer.parseInt(clientIDText.getText());
+
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
 
