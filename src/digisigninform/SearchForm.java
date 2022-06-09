@@ -248,6 +248,7 @@ public class SearchForm extends javax.swing.JFrame {
                 String compName = searchQ.getString("companyName");
 
                 System.out.println(Integer.parseInt(clientID));
+                SignInFront.globalClientID = Integer.parseInt(clientID);
                 String phoneFormat;
                 String cellFormat;
 
@@ -295,7 +296,6 @@ public class SearchForm extends javax.swing.JFrame {
 
                 String woText = searchWO.getString(1);
                 SignInFront.woTextArea.setText(woText);
-                SignInFront.globalClientID = Integer.parseInt(SignInFront.clientIDText.getText());
 
                 fNameText.requestFocus();
             }
