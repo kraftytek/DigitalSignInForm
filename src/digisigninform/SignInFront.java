@@ -767,9 +767,30 @@ public class SignInFront extends javax.swing.JFrame {
 
     //open the client search form
     private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingClientActionPerformed
+        //search clears form as well.
         SearchForm gui = new SearchForm();
         gui.setVisible(true);
         globalClientID = -1;
+        fNameText.setText("");
+        lNameText.setText("");
+        phoneOneText.setText("");
+        cellPhoneText.setText("");
+        checkDesktop.setSelected(false);
+        checkLaptop.setSelected(false);
+        checkTablet.setSelected(false);
+        checkCharger.setSelected(false);
+        workToBeDone.setText("");
+        workDoneText.setText("");
+        equipmentText.setText("");
+        passwordText.setText("");
+        pinText.setText("");
+        eMailText.setText("");
+        clientIDText.setText("");
+        woTextArea.setText("");
+        companyText.setText("");
+        fNameText.requestFocusInWindow();
+        clearWasDone = 1;       
+        
     }//GEN-LAST:event_searchExistingClientActionPerformed
 
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
