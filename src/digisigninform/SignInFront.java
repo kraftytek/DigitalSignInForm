@@ -769,6 +769,7 @@ public class SignInFront extends javax.swing.JFrame {
     private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingClientActionPerformed
         SearchForm gui = new SearchForm();
         gui.setVisible(true);
+        globalClientID = -1;
     }//GEN-LAST:event_searchExistingClientActionPerformed
 
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
@@ -1158,7 +1159,7 @@ public class SignInFront extends javax.swing.JFrame {
     //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
     private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            
+
             String defaultWO = woTextArea.getText();
             String cleanWO = defaultWO.trim();
 
@@ -1252,7 +1253,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
                 addWorkOrder.executeUpdate(addClientScript);
-                
+
             } catch (SQLException e) {
             }
 
@@ -1290,13 +1291,13 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_workToBeDoneKeyTyped
 
     private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workDoneTextKeyTyped
-        System.out.println("Global ID value: " + globalClientID);
+
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_workDoneTextKeyTyped
 
     private void fNameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fNameTextKeyTyped
-        System.out.println("Global ID value: " + globalClientID);
+
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_fNameTextKeyTyped
