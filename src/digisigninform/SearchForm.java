@@ -218,7 +218,6 @@ public class SearchForm extends javax.swing.JFrame {
 
     private void selButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selButtActionPerformed
         String selClient = searchResult.getSelectedValue();
-        SignInFront.globalClientID = Integer.parseInt(selClient);
         String selWONum = searchResult.getSelectedValue();
         Pattern pattern = Pattern.compile("Client ID: ");
         Matcher matcher = pattern.matcher(selWONum);
@@ -280,7 +279,7 @@ public class SearchForm extends javax.swing.JFrame {
                 SignInFront.checkLaptop.setSelected(false);
                 SignInFront.checkTablet.setSelected(false);
                 SignInFront.checkCharger.setSelected(false);
-
+                SignInFront.globalClientID = Integer.parseInt(clientID);
             }
 
         } catch (SQLException e) {
