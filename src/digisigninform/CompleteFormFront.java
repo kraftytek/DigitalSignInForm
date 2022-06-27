@@ -6,6 +6,7 @@ package digisigninform;
 
 import static digisigninform.SignInFront.woTextArea;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterException;
@@ -136,6 +137,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         jScrollPane6.setViewportView(jTextArea2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(SignInFront.class.getResource("/icons/happyIcon3.png")));
         setMinimumSize(new java.awt.Dimension(704, 944));
         setResizable(false);
         setSize(new java.awt.Dimension(704, 944));

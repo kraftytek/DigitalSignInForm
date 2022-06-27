@@ -224,7 +224,6 @@ public class SignInFront extends javax.swing.JFrame {
         equipmentText.setColumns(1);
         equipmentText.setRows(1);
         equipmentText.setTabSize(0);
-        equipmentText.setBorder(null);
         equipmentText.setNextFocusableComponent(passwordText);
         equipmentField.setViewportView(equipmentText);
 
@@ -235,7 +234,6 @@ public class SignInFront extends javax.swing.JFrame {
         workToBeDone.setLineWrap(true);
         workToBeDone.setRows(5);
         workToBeDone.setWrapStyleWord(true);
-        workToBeDone.setBorder(null);
         workToBeDone.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 workToBeDoneFocusGained(evt);
@@ -254,7 +252,6 @@ public class SignInFront extends javax.swing.JFrame {
         checkLaptop.setBackground(new java.awt.Color(255, 255, 255));
         checkLaptop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkLaptop.setText("Laptop");
-        checkLaptop.setBorder(null);
         checkLaptop.setFocusPainted(false);
         checkLaptop.setOpaque(true);
 
@@ -307,7 +304,6 @@ public class SignInFront extends javax.swing.JFrame {
         workDoneText.setLineWrap(true);
         workDoneText.setRows(5);
         workDoneText.setWrapStyleWord(true);
-        workDoneText.setBorder(null);
         workDoneText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 workDoneTextFocusLost(evt);
@@ -327,7 +323,6 @@ public class SignInFront extends javax.swing.JFrame {
         MinChargeText.setText("$50");
         MinChargeText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Sign In Fee", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
-        legalPane.setBorder(null);
         legalPane.setOpaque(false);
 
         legalText.setEditable(false);
@@ -337,7 +332,6 @@ public class SignInFront extends javax.swing.JFrame {
         legalText.setRows(5);
         legalText.setText("I agree to release the above equipment to National Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCR is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the length of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
         legalText.setWrapStyleWord(true);
-        legalText.setBorder(null);
         legalText.setFocusable(false);
         legalPane.setViewportView(legalText);
 
@@ -351,7 +345,6 @@ public class SignInFront extends javax.swing.JFrame {
         signText.setAutoscrolls(false);
         signText.setBorder(null);
         signText.setFocusable(false);
-        signText.setHighlighter(null);
 
         clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
@@ -383,7 +376,6 @@ public class SignInFront extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextPane1);
 
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
-        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -431,7 +423,7 @@ public class SignInFront extends javax.swing.JFrame {
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(saveIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveIcon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
