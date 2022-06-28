@@ -427,8 +427,7 @@ public class SearchForm extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         lastNameSearch.requestFocus();
     }//GEN-LAST:event_formWindowGainedFocus
-
-
+    public int searchClient = -1;
     private void searchExistingButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingButtActionPerformed
 
         columnNames = new Vector<>();
@@ -453,14 +452,14 @@ public class SearchForm extends javax.swing.JFrame {
 
         int selVal = resultTable.getSelectedRow();
         Object clientIDobj = resultTable.getValueAt(selVal, 0);
-        int clientID = Integer.parseInt(clientIDobj.toString());
-        String clientString = String.valueOf(clientID);
+        int clientID = Integer.parseInt(clientIDobj.toString());   
+        searchClient = clientID;
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String searchInvQue = "select work_order_id, left(work_to_do, 40) as work_to_do, sign_in_date\n"
                     + "from client_service\n"
-                    + "where client_id = " + clientString
+                    + "where client_id = " + searchClient
                     + " order by 1 desc";
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
@@ -475,7 +474,7 @@ public class SearchForm extends javax.swing.JFrame {
             }
 
             resultTable.setModel(model);
-           
+
             //resultTable.getColumnModel().getColumn(0).setMaxWidth(130);
             //resultTable.getColumnModel().getColumn(0).setMinWidth(130);
         } catch (SQLException e) {
@@ -484,10 +483,13 @@ public class SearchForm extends javax.swing.JFrame {
     }//GEN-LAST:event_searchExistingButtActionPerformed
 
     private void selectWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectWorkOrderButtActionPerformed
-        int selVal = resultTable.getSelectedRow();
-        Object clientIDobj = resultTable.getValueAt(selVal, 0);
-        int clientID = Integer.parseInt(clientIDobj.toString());
+
+        int clientID = searchClient;
         String clientString = String.valueOf(clientID);
+        int selVal = resultTable.getSelectedRow();
+        Object workOrderObj = resultTable.getValueAt(selVal, 0);        
+        int workOrderInt = Integer.parseInt(workOrderObj.toString());
+
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
@@ -497,7 +499,7 @@ public class SearchForm extends javax.swing.JFrame {
                                   from client_service as cs
                                   inner join clients as c
                                   on cs.client_id = c.client_id
-                                  where work_order_id = """ + clientString;
+                                  where work_order_id = """ + workOrderInt;
 
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
@@ -558,7 +560,7 @@ public class SearchForm extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
         dispose();
-
+        searchClient = -1;
     }//GEN-LAST:event_selectWorkOrderButtActionPerformed
 
     /**
