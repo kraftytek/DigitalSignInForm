@@ -82,7 +82,7 @@ public class SearchForm extends javax.swing.JFrame {
         selectWorkOrderButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Search Client");
+        setTitle("Search Form");
         setMinimumSize(new java.awt.Dimension(720, 600));
         setPreferredSize(new java.awt.Dimension(720, 600));
         setResizable(false);
