@@ -369,13 +369,14 @@ public class SearchForm extends javax.swing.JFrame {
 
                 String woText = searchWO.getString(1);
                 SignInFront.woTextArea.setText(woText);
-
                 fNameText.requestFocus();
             }
 
         } catch (SQLException e) {
         }
+        SignInFront.clearWasDone = -1;
         dispose();
+        
     }//GEN-LAST:event_selButtActionPerformed
 
     private void searchFormButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFormButtActionPerformed
