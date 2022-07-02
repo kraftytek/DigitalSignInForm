@@ -276,7 +276,7 @@ public class SignInFront extends javax.swing.JFrame {
         techComboBox.setBackground(new java.awt.Color(255, 255, 255));
         techComboBox.setEditable(true);
         techComboBox.setForeground(new java.awt.Color(0, 0, 0));
-        techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn" }));
+        techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris Reid", "Zane Zieske", "Dillan Timpany", "Tyson Schlehahn", "Trevor Harrington" }));
         techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         techComboBox.setFocusable(false);
         techComboBox.setVerifyInputWhenFocusTarget(false);
