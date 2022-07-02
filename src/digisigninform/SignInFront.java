@@ -1084,8 +1084,8 @@ public class SignInFront extends javax.swing.JFrame {
 
                 String firstName = fNameText.getText().replace("'", "''");
                 String lastName = lNameText.getText().replace("'", "''");
-                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "");
-                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "");
+                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ","").replace("-","");
+                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ","").replace("-","");
                 String companyString = companyText.getText().replace("'", "''");
                 String emailString = eMailText.getText();
 
@@ -1200,8 +1200,8 @@ public class SignInFront extends javax.swing.JFrame {
                 Boolean charger = searchQ.getBoolean("charger");
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ","").replace("-","");
+                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ","").replace("-","");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
@@ -1441,8 +1441,8 @@ public class SignInFront extends javax.swing.JFrame {
                     Boolean charger = searchQ.getBoolean("charger");
                     String firstName = searchQ.getString("fname");
                     String lastName = searchQ.getString("lname");
-                    String phoneNumber = searchQ.getString("phone").replace("-", "");
-                    String cellNumber = searchQ.getString("phone2").replace("-", "");
+                    String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ","").replace("-","");
+                    String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ","").replace("-","");
                     String emailText = searchQ.getString("email");
                     String otherEquip = searchQ.getString("other_equip");
                     String clientID = searchQ.getString("client_id");

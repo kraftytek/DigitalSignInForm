@@ -316,8 +316,8 @@ public class SearchForm extends javax.swing.JFrame {
             while (searchQ.next()) {
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String phoneNumber = searchQ.getString("phone").replace("-", "").replace(" ","");
+                String cellNumber = searchQ.getString("phone2").replace("-", "").replace(" ","");
                 String emailText = searchQ.getString("email");
                 String compName = searchQ.getString("companyName");
 
@@ -507,8 +507,8 @@ public class SearchForm extends javax.swing.JFrame {
             while (searchQ.next()) {
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("-", "");
+                String phoneNumber = searchQ.getString("phone").replace("-", "").replace(" ","");
+                String cellNumber = searchQ.getString("phone2").replace("-", "").replace(" ","");
                 String emailText = searchQ.getString("email");
                 String compName = searchQ.getString("companyName");
                 String workOrderID = searchQ.getString("work_order_id");
