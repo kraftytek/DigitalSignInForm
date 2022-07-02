@@ -869,12 +869,14 @@ public class SignInFront extends javax.swing.JFrame {
             String clientPin = pinText.getText();
             String workDone = workDoneText.getText().replace("'", "''");
             String workOrderID = woTextArea.getText();
+            String techName = (String) techComboBox.getSelectedItem();
 
             String addClientScript = "update client_service"
                     + " set work_to_do = '" + workToDo + "', "
                     + "pc_pass = '" + clientPass + "', "
                     + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "'"
+                    + "work_done = '" + workDone + "', "
+                    + "tech_name = '" + techName + "'"
                     + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
             addWorkOrder.executeUpdate(addClientScript);
@@ -1040,6 +1042,7 @@ public class SignInFront extends javax.swing.JFrame {
         companyText.setText("");
         fNameText.requestFocusInWindow();
         clearWasDone = 1;
+        techComboBox.setSelectedItem("Default");
 
 
     }//GEN-LAST:event_clearWorkOrderActionPerformed
@@ -1204,6 +1207,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String workDone = searchQ.getString("work_done");
                 String companyString = searchQ.getString("companyName");
                 String otherEquip = searchQ.getString("other_equip");
+                String techName = searchQ.getString("tech_name");
                 String phoneFormat;
                 String cellFormat;
 
@@ -1220,6 +1224,7 @@ public class SignInFront extends javax.swing.JFrame {
                 }
 
                 //add tech field eventually, low priority
+                SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workToBeDone.setText(woToDoText);
                 SignInFront.passwordText.setText(passText);
@@ -1237,6 +1242,7 @@ public class SignInFront extends javax.swing.JFrame {
                 SignInFront.workDoneText.setText(workDone);
                 SignInFront.companyText.setText(companyString);
                 SignInFront.equipmentText.setText(otherEquip);
+                SignInFront.techComboBox.setSelectedItem(techName);
             }
 
         } catch (SQLException e) {
@@ -1257,12 +1263,14 @@ public class SignInFront extends javax.swing.JFrame {
                 String clientPin = pinText.getText();
                 String workDone = workDoneText.getText().replace("'", "''");
                 String workOrderID = woTextArea.getText();
+                String techName = (String) techComboBox.getSelectedItem();
 
                 String addClientScript = "update client_service"
                         + " set work_to_do = '" + workToDo + "', "
                         + "pc_pass = '" + clientPass + "', "
                         + "pc_pin = '" + clientPin + "', "
-                        + "work_done = '" + workDone + "'"
+                        + "work_done = '" + workDone + ",'"
+                        + "tech_name = '" + techName + "'"
                         + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
                 addWorkOrder.executeUpdate(addClientScript);

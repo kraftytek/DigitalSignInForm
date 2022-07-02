@@ -517,6 +517,7 @@ public class SearchForm extends javax.swing.JFrame {
                 String workOrderPass = searchQ.getString("PC_pass");
                 String workOrderPin = searchQ.getString("PC_pin");
                 String otherEquip = searchQ.getString("other_equip");
+                String techName = searchQ.getString("tech_name");
                 boolean desktopBool = searchQ.getBoolean("desktop");
                 boolean laptopBool = searchQ.getBoolean("laptop");
                 boolean tabletBool = searchQ.getBoolean("tablet");
@@ -554,6 +555,7 @@ public class SearchForm extends javax.swing.JFrame {
                 SignInFront.checkLaptop.setSelected(laptopBool);
                 SignInFront.checkTablet.setSelected(tabletBool);
                 SignInFront.checkCharger.setSelected(chargerBool);
+                SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.globalClientID = clientID;
 
             }
