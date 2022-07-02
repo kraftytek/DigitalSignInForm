@@ -178,7 +178,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
         editButt.setBackground(new java.awt.Color(255, 255, 255));
         editButt.setForeground(new java.awt.Color(0, 0, 0));
-        editButt.setText("Update UPC Cost");
+        editButt.setText("Update UPC");
         editButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         editButt.setContentAreaFilled(false);
         editButt.setFocusPainted(false);
@@ -322,7 +322,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     private void saveBarcodeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBarcodeButtActionPerformed
         String upcDescText = upcDesc.getText().replace("'", "''");
         String upcCodeText = upcCode.getText();
-        String upcPriceText = upcCostText.getText();
+        String upcPriceText = upcCostText.getText().replace("$", "");
 
         String upcExists = """
                                select 1 as exist
@@ -554,13 +554,18 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
             String upcCodeTxt = upcCode.getText();
-            String upcCostTxt = upcCostText.getText();
+            String upcCostTxt = upcCostText.getText().replace("$", "");
+            String upcDescTxt = upcDesc.getText();
+            
 
             String updateUPC = "update upc_codes set upc_cost = '"
-                    + upcCostTxt + "'\n"
+                    + upcCostTxt + "' ,upc_desc = '"
+                    + upcDescTxt + "'\n"
                     + "from upc_codes\n"
                     + "where upc_code = '"
                     + upcCodeTxt + "'";
+            
+            System.out.println(updateUPC);
 
             statement.executeUpdate(updateUPC);
 
