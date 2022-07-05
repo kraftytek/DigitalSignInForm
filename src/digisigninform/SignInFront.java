@@ -366,7 +366,7 @@ public class SignInFront extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/digisigninform/logo-Scaled_inverted.png"))); // NOI18N
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo-Scaled_inverted.png"))); // NOI18N
 
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
