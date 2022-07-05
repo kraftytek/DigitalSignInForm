@@ -34,6 +34,7 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
      */
     public WorkOrderHistoryFrame() {
         initComponents();
+
     }
 
     public static ArrayList<String> getValues() {
@@ -221,7 +222,7 @@ public static int openedFrame = -1;
     }//GEN-LAST:event_formWindowActivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+
         historyModel.setRowCount(0);
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
             String workOrderHistory = "select c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date\n"

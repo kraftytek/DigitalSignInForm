@@ -4,6 +4,8 @@
  */
 package digisigninform;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author kraft
@@ -14,8 +16,14 @@ public class DigiSignInForm {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        SignInFront front = new SignInFront();        
+        front.setVisible(true);
+
         
-        new SignInFront().setVisible(true);
+        WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();              
+        gui.setLocation(front.getX() + front.getWidth(), front.getY());
+        gui.setVisible(true);  
 
     }
 

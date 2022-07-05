@@ -186,7 +186,9 @@ public class SignInFront extends javax.swing.JFrame {
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setPreferredSize(new java.awt.Dimension(780, 927));
 
+        titleText.setBackground(new java.awt.Color(255, 255, 255));
         titleText.setFont(new java.awt.Font("Rockwell", 0, 20)); // NOI18N
+        titleText.setForeground(new java.awt.Color(0, 0, 0));
         titleText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleText.setText("Service Work Order");
 
@@ -344,6 +346,8 @@ public class SignInFront extends javax.swing.JFrame {
         signText.setBorder(null);
         signText.setFocusable(false);
 
+        clientIDText.setBackground(new java.awt.Color(255, 255, 255));
+        clientIDText.setForeground(new java.awt.Color(255, 255, 255));
         clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         companyText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -661,7 +665,9 @@ public class SignInFront extends javax.swing.JFrame {
 
         topMenu.add(jMenu3);
 
+        jMenu4.setBackground(new java.awt.Color(255, 255, 255));
         jMenu4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jMenu4.setForeground(new java.awt.Color(0, 0, 0));
         jMenu4.setText("<html><p style='text-align:center;'>Other Options</p></html>");
         jMenu4.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jMenu4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -789,7 +795,7 @@ public class SignInFront extends javax.swing.JFrame {
 
 
     private void saveNewWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewWorkOrderActionPerformed
-
+/*
         //perform a check first to make sure that the work order does not exist already by matching string content and return popup with try update button instead
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
@@ -855,6 +861,7 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
     }//GEN-LAST:event_saveNewWorkOrderActionPerformed
 
 
@@ -1282,7 +1289,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-        System.out.println("Global ID value: " + globalClientID);
+        System.out.println(workToBeDone.getText());
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
