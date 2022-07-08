@@ -453,7 +453,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="backgroundPanel" pref="696" max="32767" attributes="0"/>
+          <Component id="backgroundPanel" pref="700" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -538,7 +538,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="clientIDText" alignment="0" max="32767" attributes="0"/>
-                      <Component id="SigLabel" pref="137" max="32767" attributes="0"/>
+                      <Component id="SigLabel" pref="141" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="signText" min="-2" pref="553" max="-2" attributes="0"/>

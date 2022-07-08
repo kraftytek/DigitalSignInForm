@@ -46,7 +46,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author kraft (Chris Reid)
+ * @author kraftytek (Chris Reid)
  */
 public class SignInFront extends javax.swing.JFrame {
 
@@ -66,27 +66,24 @@ public class SignInFront extends javax.swing.JFrame {
         try {
             stream = new FileInputStream(userDir + "/config.txt");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String strLine;
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         try {
             while ((strLine = reader.readLine()) != null) {
                 String lastWord = strLine.substring(strLine.lastIndexOf(" ") + 1);
                 lines.add(lastWord);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
         try {
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return lines;
     }
-
+    //create a global table model to be used in functions
     Vector<String> columnNames = new Vector<>();
 
     {
@@ -97,7 +94,7 @@ public class SignInFront extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 
         @Override
-
+        //get the data type of each column to force proper rendering
         public Class<?> getColumnClass(int column) {
             if (getRowCount() > 0) {
                 Object value = getValueAt(0, column);
@@ -433,7 +430,7 @@ public class SignInFront extends javax.swing.JFrame {
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(clientIDText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                    .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -710,7 +707,7 @@ public class SignInFront extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -729,8 +726,7 @@ public class SignInFront extends javax.swing.JFrame {
             this.comp = comp;
         }
 
-        @
-                Override
+        @Override
         public int print(Graphics g, PageFormat format, int page_index)
                 throws PrinterException {
             if (page_index > 0) {
@@ -795,7 +791,7 @@ public class SignInFront extends javax.swing.JFrame {
 
 
     private void saveNewWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewWorkOrderActionPerformed
-/*
+        /*
         //perform a check first to make sure that the work order does not exist already by matching string content and return popup with try update button instead
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
@@ -861,7 +857,7 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+         */
     }//GEN-LAST:event_saveNewWorkOrderActionPerformed
 
 
@@ -1077,6 +1073,7 @@ public class SignInFront extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_printWorkOrderActionPerformed
+    //Global Client ID value to keep data entry consistent
     public static int globalClientID = -1;
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
         clearWasDone = -1;
@@ -1212,6 +1209,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String companyString = searchQ.getString("companyName");
                 String otherEquip = searchQ.getString("other_equip");
                 String techName = searchQ.getString("tech_name");
+                
                 String phoneFormat;
                 String cellFormat;
 
@@ -1227,7 +1225,7 @@ public class SignInFront extends javax.swing.JFrame {
                     cellFormat = cellNumber;
                 }
 
-                //add tech field eventually, low priority
+                
                 SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workToBeDone.setText(woToDoText);
@@ -1254,7 +1252,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
-
+        //if the global ID is populated perform update when Work to be done fucus is lost
         if (globalClientID > 0) {
             saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
             saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1286,7 +1284,7 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_workToBeDoneFocusLost
 
     private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workToBeDoneKeyTyped
-
+        //performs an update on the db with each key pressed in the word to be done field
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         System.out.println(workToBeDone.getText());
@@ -1334,7 +1332,7 @@ public class SignInFront extends javax.swing.JFrame {
         if (clearWasDone == 1) {
             System.out.println("Form was cleared");
         } else if (clearWasDone < 1) {
-//check if global client ID is set
+            //check if global client ID is set
             System.out.println("work to do focus was gained");
             if (globalClientID == -1) {
                 SaveClientFirstFrame gui = new SaveClientFirstFrame();
@@ -1394,8 +1392,7 @@ public class SignInFront extends javax.swing.JFrame {
                                 + laptopBool + " as laptop,"
                                 + tabletBool + " as tablet,"
                                 + chargerBool + " as charger,"
-                                + "'" + workDone + "' as work_done";
-                        System.out.println(addClientScript);
+                                + "'" + workDone + "' as work_done";                        
                         addWorkOrder.executeUpdate(addClientScript);
 
                     }
@@ -1452,6 +1449,8 @@ public class SignInFront extends javax.swing.JFrame {
                     String clientID = searchQ.getString("client_id");
                     String workDone = searchQ.getString("work_done");
                     String companyString = searchQ.getString("companyName");
+                    String techName = searchQ.getString("tech_name");
+                    System.out.println(techName);
                     String phoneFormat;
                     String cellFormat;
 
@@ -1486,6 +1485,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.workDoneText.setText(workDone);
                     SignInFront.companyText.setText(companyString);
                     globalClientID = Integer.parseInt(clientID);
+                    SignInFront.techComboBox.setSelectedItem(techName);
                 }
 
             } catch (SQLException t) {
