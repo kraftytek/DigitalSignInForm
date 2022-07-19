@@ -1079,6 +1079,7 @@ public class SignInFront extends javax.swing.JFrame {
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+        workToBeDone.setText("");
         if (fNameText.getText().length() > 0) {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {

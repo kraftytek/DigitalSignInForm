@@ -18,7 +18,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.ImageIcon;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -81,6 +82,7 @@ public class SearchForm extends javax.swing.JFrame {
         selButt = new javax.swing.JButton();
         selectWorkOrderButt = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        mergeClientButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Form");
@@ -221,6 +223,16 @@ public class SearchForm extends javax.swing.JFrame {
             }
         });
 
+        mergeClientButt.setBackground(new java.awt.Color(255, 255, 255));
+        mergeClientButt.setForeground(new java.awt.Color(0, 0, 0));
+        mergeClientButt.setText("Merge Client");
+        mergeClientButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        mergeClientButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mergeClientButtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout backGroundPanelLayout = new javax.swing.GroupLayout(backGroundPanel);
         backGroundPanel.setLayout(backGroundPanelLayout);
         backGroundPanelLayout.setHorizontalGroup(
@@ -234,16 +246,19 @@ public class SearchForm extends javax.swing.JFrame {
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(backGroundPanelLayout.createSequentialGroup()
-                        .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(backGroundPanelLayout.createSequentialGroup()
                                 .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(searchExistingButt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(backGroundPanelLayout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(mergeClientButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchExistingButt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -262,7 +277,9 @@ public class SearchForm extends javax.swing.JFrame {
                     .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(mergeClientButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -396,7 +413,7 @@ public class SearchForm extends javax.swing.JFrame {
     }//GEN-LAST:event_selButtActionPerformed
 
     private void searchFormButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFormButtActionPerformed
-        DefaultTableModel modelClear = (DefaultTableModel) resultTable.getModel();        
+        DefaultTableModel modelClear = (DefaultTableModel) resultTable.getModel();
         modelClear.setRowCount(0);
         resultTable.setModel(modelClear);
         String txtLName = lastNameSearch.getText();
@@ -406,7 +423,8 @@ public class SearchForm extends javax.swing.JFrame {
             String searchInvQue = """
                                   select fname, lname, phone, phone2, companyName, client_id
                                   from clients
-                                  where lname like '""" + txtLName + "'";
+                                  where lname like '""" + txtLName + "'" + " and flags is null";
+            System.out.println(searchInvQue);
 
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
@@ -479,8 +497,9 @@ public class SearchForm extends javax.swing.JFrame {
 
             String searchInvQue = "select work_order_id, left(work_to_do, 40) as work_to_do, sign_in_date\n"
                     + "from client_service\n"
-                    + "where client_id = " + searchClient
-                    + " order by 1 desc";
+                    + "where client_id = " + searchClient                    
+                    + "order by 1 desc";
+            System.out.println(searchInvQue);
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
             while (searchQ.next()) {
@@ -640,10 +659,113 @@ public class SearchForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void mergeClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeClientButtActionPerformed
+        MergeClientFrame gui = new MergeClientFrame();
+        gui.setVisible(true);
+
+        
+        
+        Vector<String> columnNames = new Vector<>();
+
+    {
+        columnNames.clear();
+        columnNames.addElement("Client ID");
+        columnNames.addElement("First Name");
+        columnNames.addElement("Last Name");        
+        columnNames.addElement("Home Phone");
+        columnNames.addElement("Cell Phone");
+    }
+
+    DefaultTableModel mergeModel = new DefaultTableModel(columnNames, 0);       
+        
+        int selVal = resultTable.getSelectedRow();
+        Object clientIDobj = resultTable.getValueAt(selVal, 0);
+        int clientID = Integer.parseInt(clientIDobj.toString());
+        String clientString = String.valueOf(clientID);
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String matchClient = "declare @clientID int;\n"
+                    + "set @clientID = " + clientString + """                     
+                     select c.client_id, c.fname, c.lname, c.phone, c.phone2, c.flags,
+                     row_number() over (
+                     partition by
+                     c.fname,
+                     c.lname,
+                     c.phone,
+                     c.phone2,
+                     c.flags
+                     order by 
+                     c.fname,
+                     c.lname,
+                     c.phone,
+                     c.phone2,
+                     c.flags
+                     ) as row_num
+                     from clients as c
+                     inner join 
+                     (select fname, lname, phone, phone2, client_id, flags
+                     from clients
+                     where client_id = @clientID                 
+                     )as x
+                     on c.fname = x.fname
+                     and c.lname = x.lname
+                     and c.phone = x.phone
+                     and c.phone2 = x.phone2
+                     and c.flags is null""";
+            
+            System.out.println(matchClient);
+
+            ResultSet searchQ = statement.executeQuery(matchClient);
+
+            while (searchQ.next()) {
+
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");               
+                String phoneNumber = searchQ.getString("phone");
+                String cellNumber = searchQ.getString("phone2");
+                String clientText = searchQ.getString("client_id");
+                String phoneFormat;
+                String cellFormat;
+                if (phoneNumber.length() > 0) {
+                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                } else {
+                    phoneFormat = phoneNumber;
+                }
+
+                if (cellNumber.length() > 0) {
+                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                } else {
+                    cellFormat = cellNumber;
+                }
+
+                Object[] rowData = {clientText, firstName, lastName, phoneFormat, cellFormat};
+                mergeModel.addRow(rowData);
+
+            }
+            MergeClientFrame.mergeFromTable.setModel(mergeModel);
+            MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMaxWidth(130);
+            MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMinWidth(130);
+            
+            MergeClientFrame.mergeIntoTable.setModel(mergeModel);
+            MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMaxWidth(130);
+            MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMinWidth(130);
+
+        
+    }
+    catch (SQLException ex
+
+    
+        ) {
+            Logger.getLogger(SearchForm.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    }//GEN-LAST:event_mergeClientButtActionPerformed
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -655,23 +777,27 @@ public class SearchForm extends javax.swing.JFrame {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-                }
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchForm.class  
 
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class  
 
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -689,6 +815,7 @@ public class SearchForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField lastNameSearch;
+    private javax.swing.JButton mergeClientButt;
     private javax.swing.JTextField phoneNumberSearch;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton searchExistingButt;
