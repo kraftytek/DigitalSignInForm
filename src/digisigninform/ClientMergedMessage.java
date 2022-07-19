@@ -13,11 +13,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -126,12 +129,14 @@ public class ClientMergedMessage extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(confirmButt, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cancelButt, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cancelButt, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,8 +149,8 @@ public class ClientMergedMessage extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(confirmButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(confirmButt, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                     .addComponent(cancelButt, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -172,6 +177,19 @@ public class ClientMergedMessage extends javax.swing.JFrame {
         int mergeFromClientID = 0;
         int mergeIntoClientID = 0;
 
+        Vector<String> columnNames = new Vector<>();
+
+        {
+            columnNames.clear();
+            columnNames.addElement("Client ID");
+            columnNames.addElement("First Name");
+            columnNames.addElement("Last Name");
+            columnNames.addElement("Home Phone");
+            columnNames.addElement("Cell Phone");
+        }
+
+        DefaultTableModel mergeModel = new DefaultTableModel(columnNames, 0);
+
         mergeFromClientID = Integer.parseInt(mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 0).toString());
 
         mergeIntoClientID = Integer.parseInt(mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 0).toString());
@@ -195,9 +213,75 @@ public class ClientMergedMessage extends javax.swing.JFrame {
             addWorkOrder.executeUpdate(MergeClients);
             dispose();
 
+            String matchClient = "declare @clientID int;\n"
+                    + "set @clientID = " + mergeIntoClientID + """                     
+                     select c.client_id, c.fname, c.lname, c.phone, c.phone2, c.flags,
+                     row_number() over (
+                     partition by
+                     c.fname,
+                     c.lname,
+                     c.phone,
+                     c.phone2,
+                     c.flags
+                     order by 
+                     c.fname,
+                     c.lname,
+                     c.phone,
+                     c.phone2,
+                     c.flags
+                     ) as row_num
+                     from clients as c
+                     inner join 
+                     (select fname, lname, phone, phone2, client_id, flags
+                     from clients
+                     where client_id = @clientID                 
+                     )as x
+                     on c.fname = x.fname
+                     and c.lname = x.lname
+                     and c.phone = x.phone
+                     and c.phone2 = x.phone2
+                     and c.flags is null""";
+
+            ResultSet searchQ = addWorkOrder.executeQuery(matchClient);
+
+            while (searchQ.next()) {
+
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone");
+                String cellNumber = searchQ.getString("phone2");
+                String clientText = searchQ.getString("client_id");
+                String phoneFormat;
+                String cellFormat;
+                if (phoneNumber.length() > 0) {
+                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+                } else {
+                    phoneFormat = phoneNumber;
+                }
+
+                if (cellNumber.length() > 0) {
+                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
+                } else {
+                    cellFormat = cellNumber;
+                }
+
+                Object[] rowData = {clientText, firstName, lastName, phoneFormat, cellFormat};
+                mergeModel.addRow(rowData);
+
+            }
+            MergeClientFrame.mergeFromTable.setModel(mergeModel);
+            MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMaxWidth(130);
+            MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMinWidth(130);
+
+            MergeClientFrame.mergeIntoTable.setModel(mergeModel);
+            MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMaxWidth(130);
+            MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMinWidth(130);
+
         } catch (SQLException ex) {
             Logger.getLogger(MergeClientFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
     }//GEN-LAST:event_confirmButtActionPerformed
 
     private void cancelButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtActionPerformed

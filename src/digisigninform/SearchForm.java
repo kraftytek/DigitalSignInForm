@@ -712,9 +712,8 @@ public class SearchForm extends javax.swing.JFrame {
                      and c.lname = x.lname
                      and c.phone = x.phone
                      and c.phone2 = x.phone2
-                     and c.flags is null""";
-            
-            System.out.println(matchClient);
+                     and c.flags is null""";      
+
 
             ResultSet searchQ = statement.executeQuery(matchClient);
 
