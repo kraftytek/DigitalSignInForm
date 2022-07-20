@@ -169,6 +169,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="JTableHeader header = resultTable.getTableHeader();&#xa;      header.setBackground(Color.white);&#xa;      header.setForeground(Color.black);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jScrollPane2.getViewport().setBackground(Color.white);"/>
               </AuxValues>
             </Component>
           </SubComponents>

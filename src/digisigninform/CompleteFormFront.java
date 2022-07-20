@@ -287,6 +287,7 @@ public class CompleteFormFront extends javax.swing.JFrame {
         partsUsedPane.setForeground(new java.awt.Color(0, 0, 0));
         partsUsedPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        partsUsedPane.getViewport().setBackground(Color.white);
         partsUsedList.setBackground(new java.awt.Color(255, 255, 255));
         partsUsedList.setForeground(new java.awt.Color(0, 0, 0));
         partsUsedList.setModel(new javax.swing.table.DefaultTableModel(

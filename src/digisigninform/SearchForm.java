@@ -106,6 +106,7 @@ public class SearchForm extends javax.swing.JFrame {
         jScrollPane2.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(null);
 
+        jScrollPane2.getViewport().setBackground(Color.white);
         resultTable.setBackground(new java.awt.Color(255, 255, 255));
         resultTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         resultTable.setModel(new javax.swing.table.DefaultTableModel(

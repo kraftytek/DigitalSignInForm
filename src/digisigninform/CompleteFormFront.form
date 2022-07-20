@@ -702,6 +702,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JTableHeader header = partsUsedList.getTableHeader();&#xa;      header.setBackground(Color.white);&#xa;      header.setForeground(Color.black);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="partsUsedPane.getViewport().setBackground(Color.white);"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
               </AuxValues>

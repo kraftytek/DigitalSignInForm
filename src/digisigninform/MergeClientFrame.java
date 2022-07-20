@@ -4,6 +4,7 @@
  */
 package digisigninform;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -79,6 +80,7 @@ public class MergeClientFrame extends javax.swing.JFrame {
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Client Merge From", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         jScrollPane1.setForeground(new java.awt.Color(0, 0, 0));
 
+        jScrollPane1.getViewport().setBackground(Color.white);
         mergeFromTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -104,6 +106,7 @@ public class MergeClientFrame extends javax.swing.JFrame {
         jScrollPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Client Merge Into", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         jScrollPanel2.setForeground(new java.awt.Color(0, 0, 0));
 
+        jScrollPanel2.getViewport().setBackground(Color.white);
         mergeIntoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -129,6 +132,7 @@ public class MergeClientFrame extends javax.swing.JFrame {
         mergeClient.setForeground(new java.awt.Color(0, 0, 0));
         mergeClient.setText("Merge Client");
         mergeClient.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        mergeClient.setFocusable(false);
         mergeClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mergeClientActionPerformed(evt);
@@ -139,6 +143,7 @@ public class MergeClientFrame extends javax.swing.JFrame {
         closeButt.setForeground(new java.awt.Color(0, 0, 0));
         closeButt.setText("Close");
         closeButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        closeButt.setFocusable(false);
         closeButt.setPreferredSize(new java.awt.Dimension(72, 22));
         closeButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +152,7 @@ public class MergeClientFrame extends javax.swing.JFrame {
         });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Merge Duplicate Clients");
@@ -204,24 +210,28 @@ public class MergeClientFrame extends javax.swing.JFrame {
         gui.setVisible(true);
 
         //from info
+        int fromClientID = Integer.parseInt(mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 0).toString());
         String fNameFrom = mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 1).toString();
         String lNameFrom = mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 2).toString();
         String phoneFrom = mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 3).toString();
         String cellFrom = mergeFromTable.getValueAt(mergeFromTable.getSelectedRow(), 4).toString();
 
         //into info
+        int intoClientID = Integer.parseInt(mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 0).toString());
         String fNameInto = mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 1).toString();
         String lNameInto = mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 2).toString();
         String phoneInto = mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 3).toString();
         String cellInto = mergeIntoTable.getValueAt(mergeIntoTable.getSelectedRow(), 4).toString();
 
         ClientMergedMessage.mergeFromInfo.setText("Merge From: \n"
+                + "Client ID: " + fromClientID + "\n"
                 + "First Name: " + fNameFrom + "\n"
                 + "Last Name: " + lNameFrom + "\n"
                 + "Home Phone: " + phoneFrom + "\n"
                 + "Cell Phone: " + cellFrom);
 
         ClientMergedMessage.mergeIntoInfo.setText("Merge Into: \n"
+                + "Client ID: " + intoClientID + "\n"
                 + "First Name: " + fNameInto + "\n"
                 + "Last Name: " + lNameInto + "\n"
                 + "Home Phone: " + phoneInto + "\n"
@@ -261,10 +271,8 @@ public class MergeClientFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MergeClientFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MergeClientFrame().setVisible(true);
         });
     }
 
