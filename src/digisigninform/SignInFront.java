@@ -1338,7 +1338,6 @@ public class SignInFront extends javax.swing.JFrame {
             if (globalClientID == -1) {
                 SaveClientFirstFrame gui = new SaveClientFirstFrame();
                 gui.setVisible(true);
-                globalClientID = 0;
             } else if (globalClientID > 0) {
 
                 try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
