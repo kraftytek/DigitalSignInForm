@@ -477,35 +477,35 @@ public class CompleteFormFront extends javax.swing.JFrame {
                 }
             }
         }
-
     }//GEN-LAST:event_printCompleteButtActionPerformed
 
     private void removeButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtActionPerformed
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String workOrderTxt = CompleteFormFront.woText.getText();
+            int workOrderTxt = Integer.parseInt(CompleteFormFront.woText.getText());
             //delete the service items attached to the specified work order
             String deleteQue = """
                                delete
                                from service_link
-                               where work_order_id like """ + workOrderTxt;
+                               where work_order_id = """ + workOrderTxt;
+
+            System.out.println(deleteQue);
             statement.executeUpdate(deleteQue);
 
-        } catch (SQLException e) {
-        }
-        Vector<String> columnNames = new Vector<>();
-        columnNames.addElement("Desc");
-        columnNames.addElement("UPC");
+            Vector<String> columnNames = new Vector<>();
+            columnNames.addElement("Desc");
+            columnNames.addElement("UPC");
 
+            PartsUsedFrame.upcList.removeAllElements();
+            PartsUsedFrame.totalCost = 0.0;
+            PartsUsedFrame.doubles.clear();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         model.setRowCount(0);
         CompleteFormFront.partsUsedList.setModel(model);
         CompleteFormFront.totalText.setText("");
-        
-        PartsUsedFrame.upcList.removeAllElements();
-        PartsUsedFrame.totalCost = 0.0;
-        PartsUsedFrame.doubles.clear();
-
     }//GEN-LAST:event_removeButtActionPerformed
 
     /**
