@@ -498,8 +498,10 @@ public class CompleteFormFront extends javax.swing.JFrame {
         columnNames.addElement("Desc");
         columnNames.addElement("UPC");
 
+        model.setRowCount(0);
         CompleteFormFront.partsUsedList.setModel(model);
         CompleteFormFront.totalText.setText("");
+        
         PartsUsedFrame.upcList.removeAllElements();
         PartsUsedFrame.totalCost = 0.0;
         PartsUsedFrame.doubles.clear();
