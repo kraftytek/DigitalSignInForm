@@ -382,7 +382,6 @@ public class SignInFront extends javax.swing.JFrame {
         saveNewClientButt.setBorder(null);
         saveNewClientButt.setFocusable(false);
         saveNewClientButt.setOpaque(true);
-        saveNewClientButt.setPreferredSize(new java.awt.Dimension(30, 30));
         saveNewClientButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveNewClientButtActionPerformed(evt);
@@ -460,7 +459,7 @@ public class SignInFront extends javax.swing.JFrame {
                                 .addComponent(saveIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                    .addComponent(saveNewClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(saveNewClientButt)
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
