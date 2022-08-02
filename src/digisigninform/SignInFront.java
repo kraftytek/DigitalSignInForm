@@ -152,6 +152,7 @@ public class SignInFront extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         saveIcon = new javax.swing.JLabel();
+        saveNewClientButt = new javax.swing.JButton();
         topMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addNewClientButt = new javax.swing.JMenuItem();
@@ -376,6 +377,18 @@ public class SignInFront extends javax.swing.JFrame {
 
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
 
+        saveNewClientButt.setBackground(new java.awt.Color(255, 255, 255));
+        saveNewClientButt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/saveClient.png"))); // NOI18N
+        saveNewClientButt.setBorder(null);
+        saveNewClientButt.setFocusable(false);
+        saveNewClientButt.setOpaque(true);
+        saveNewClientButt.setPreferredSize(new java.awt.Dimension(30, 30));
+        saveNewClientButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveNewClientButtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
@@ -422,9 +435,11 @@ public class SignInFront extends javax.swing.JFrame {
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(saveIcon)
+                        .addComponent(saveNewClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveIcon)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -441,10 +456,13 @@ public class SignInFront extends javax.swing.JFrame {
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(backgroundPanelLayout.createSequentialGroup()
-                            .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(saveIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                    .addComponent(saveNewClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -1210,7 +1228,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String companyString = searchQ.getString("companyName");
                 String otherEquip = searchQ.getString("other_equip");
                 String techName = searchQ.getString("tech_name");
-                
+
                 String phoneFormat;
                 String cellFormat;
 
@@ -1226,7 +1244,6 @@ public class SignInFront extends javax.swing.JFrame {
                     cellFormat = cellNumber;
                 }
 
-                
                 SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workToBeDone.setText(woToDoText);
@@ -1392,7 +1409,7 @@ public class SignInFront extends javax.swing.JFrame {
                                 + laptopBool + " as laptop,"
                                 + tabletBool + " as tablet,"
                                 + chargerBool + " as charger,"
-                                + "'" + workDone + "' as work_done";                        
+                                + "'" + workDone + "' as work_done";
                         addWorkOrder.executeUpdate(addClientScript);
 
                     }
@@ -1414,6 +1431,66 @@ public class SignInFront extends javax.swing.JFrame {
         WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();
         gui.setVisible(true);
     }//GEN-LAST:event_woHistoryActionPerformed
+
+    private void saveNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewClientButtActionPerformed
+        clearWasDone = -1;
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+        workToBeDone.setText("");
+        if (fNameText.getText().length() > 0) {
+
+            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+                String firstName = fNameText.getText().replace("'", "''");
+                String lastName = lNameText.getText().replace("'", "''");
+                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String companyString = companyText.getText().replace("'", "''");
+                String emailString = eMailText.getText();
+
+                String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
+                        + "select '"
+                        + firstName + "' as fname, '"
+                        + lastName + "' as lname, '"
+                        + companyString + "' as companyName, '"
+                        + phoneHome + "' as phone, '"
+                        + phoneCell + "' as phone2,'"
+                        + emailString + "' as email,"
+                        + "getdate() as creation_date";
+
+                addWorkOrder.executeUpdate(addClientScript);
+
+                String getClientID = "select client_id from clients where fname = '"
+                        + firstName + "' and lname = '"
+                        + lastName + "' and phone = '"
+                        + phoneHome + "'";
+
+                ResultSet searchQ = addWorkOrder.executeQuery(getClientID);
+
+                while (searchQ.next()) {
+                    String clientIDString = searchQ.getString("client_id");
+                    clientIDText.setText(clientIDString);
+                    globalClientID = Integer.parseInt(clientIDString);
+                }
+                NewClientAddedMessage gui = new NewClientAddedMessage();
+                gui.setVisible(true);
+
+                String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
+
+                ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
+
+                while (searchT.next()) {
+                    String workOrderText = searchT.getString("work_order_id");
+                    woTextArea.setText(workOrderText);
+                }
+
+            } catch (SQLException e) {
+            }
+        } else {
+            AddNewClientError gui = new AddNewClientError();
+            gui.setVisible(true);
+        }
+    }//GEN-LAST:event_saveNewClientButtActionPerformed
 
     Action action = new AbstractAction() {
         @Override
@@ -1466,7 +1543,6 @@ public class SignInFront extends javax.swing.JFrame {
                         cellFormat = cellNumber;
                     }
 
-                    //add tech
                     SignInFront.clientIDText.setText(clientID);
                     SignInFront.workToBeDone.setText(woToDoText);
                     SignInFront.passwordText.setText(passText);
@@ -1544,6 +1620,7 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JTextField pinText;
     private javax.swing.JMenuItem printWorkOrder;
     private javax.swing.JLabel saveIcon;
+    private javax.swing.JButton saveNewClientButt;
     private javax.swing.JMenuItem saveNewWorkOrder;
     private javax.swing.JMenuItem searchExistingClient;
     private javax.swing.JMenuItem searchWorkOrderButt;
