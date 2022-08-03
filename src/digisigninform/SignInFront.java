@@ -83,6 +83,24 @@ public class SignInFront extends javax.swing.JFrame {
         }
         return lines;
     }
+
+    //phone formatter
+    static String phoneFormat(String phoneNumber) {
+
+        if (phoneNumber.length() == 10) {
+
+            String areaCode = phoneNumber.substring(0, 3);
+            String nextThree = phoneNumber.substring(3, 6);
+            String lastDigits = phoneNumber.substring(6, 10);
+
+            String cleanPhone = "(" + areaCode + ")-" + nextThree + "-" + lastDigits;
+
+            return cleanPhone;
+
+        }
+        return null;
+    }
+
     //create a global table model to be used in functions
     Vector<String> columnNames = new Vector<>();
 
@@ -1142,6 +1160,8 @@ public class SignInFront extends javax.swing.JFrame {
                 while (searchT.next()) {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
+                    phoneOneText.setText(phoneFormat(phoneHome));
+                    cellPhoneText.setText(phoneFormat(phoneCell));
                 }
 
             } catch (SQLException e) {
@@ -1228,21 +1248,6 @@ public class SignInFront extends javax.swing.JFrame {
                 String otherEquip = searchQ.getString("other_equip");
                 String techName = searchQ.getString("tech_name");
 
-                String phoneFormat;
-                String cellFormat;
-
-                if (phoneNumber.length() > 0) {
-                    phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
-                } else {
-                    phoneFormat = phoneNumber;
-                }
-
-                if (cellNumber.length() > 0) {
-                    cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
-                } else {
-                    cellFormat = cellNumber;
-                }
-
                 SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.clientIDText.setText(clientID);
                 SignInFront.workToBeDone.setText(woToDoText);
@@ -1254,8 +1259,8 @@ public class SignInFront extends javax.swing.JFrame {
                 SignInFront.checkCharger.setSelected(charger);
                 SignInFront.fNameText.setText(firstName);
                 SignInFront.lNameText.setText(lastName);
-                SignInFront.phoneOneText.setText(phoneFormat);
-                SignInFront.cellPhoneText.setText(cellFormat);
+                SignInFront.phoneOneText.setText(phoneFormat(phoneNumber));
+                SignInFront.cellPhoneText.setText(phoneFormat(cellNumber));
                 SignInFront.eMailText.setText(emailText);
                 SignInFront.clientIDText.setText("Client ID: " + clientID);
                 SignInFront.workDoneText.setText(workDone);
@@ -1481,6 +1486,8 @@ public class SignInFront extends javax.swing.JFrame {
                 while (searchT.next()) {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
+                    phoneOneText.setText(phoneFormat(phoneHome));
+                    cellPhoneText.setText(phoneFormat(phoneCell));
                 }
 
             } catch (SQLException e) {
@@ -1525,22 +1532,7 @@ public class SignInFront extends javax.swing.JFrame {
                     String clientID = searchQ.getString("client_id");
                     String workDone = searchQ.getString("work_done");
                     String companyString = searchQ.getString("companyName");
-                    String techName = searchQ.getString("tech_name");
-                    System.out.println(techName);
-                    String phoneFormat;
-                    String cellFormat;
-
-                    if (phoneNumber.length() > 0) {
-                        phoneFormat = "(" + phoneNumber.substring(0, 3) + ")-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
-                    } else {
-                        phoneFormat = phoneNumber;
-                    }
-
-                    if (cellNumber.length() > 0) {
-                        cellFormat = "(" + cellNumber.substring(0, 3) + ")-" + cellNumber.substring(3, 6) + "-" + cellNumber.substring(6);
-                    } else {
-                        cellFormat = cellNumber;
-                    }
+                    String techName = searchQ.getString("tech_name");   
 
                     SignInFront.clientIDText.setText(clientID);
                     SignInFront.workToBeDone.setText(woToDoText);
@@ -1552,8 +1544,8 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.checkCharger.setSelected(charger);
                     SignInFront.fNameText.setText(firstName);
                     SignInFront.lNameText.setText(lastName);
-                    SignInFront.phoneOneText.setText(phoneFormat);
-                    SignInFront.cellPhoneText.setText(cellFormat);
+                    SignInFront.phoneOneText.setText(phoneFormat(phoneNumber));
+                    SignInFront.cellPhoneText.setText(phoneFormat(cellNumber));
                     SignInFront.eMailText.setText(emailText);
                     SignInFront.equipmentText.setText(otherEquip);
                     SignInFront.clientIDText.setText("Client ID: " + clientID);

@@ -196,7 +196,7 @@ public static int openedFrame = -1;
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date\n"
+            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date\n"
                     + "from client_service as cs\n"
                     + "inner join clients as c\n"
                     + "on cs.client_id = c.client_id\n"
