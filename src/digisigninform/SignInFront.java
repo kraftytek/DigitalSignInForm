@@ -1351,14 +1351,13 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        if (clearWasDone == 1) {
-            System.out.println("Form was cleared");
-        } else if (clearWasDone < 1) {
+        if (clearWasDone < 1) {
             //check if global client ID is set
             System.out.println("work to do focus was gained");
             if (globalClientID == -1) {
                 SaveClientFirstFrame gui = new SaveClientFirstFrame();
                 gui.setVisible(true);
+                clearWasDone = 1;
             } else if (globalClientID > 0) {
 
                 try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
@@ -1532,7 +1531,7 @@ public class SignInFront extends javax.swing.JFrame {
                     String clientID = searchQ.getString("client_id");
                     String workDone = searchQ.getString("work_done");
                     String companyString = searchQ.getString("companyName");
-                    String techName = searchQ.getString("tech_name");   
+                    String techName = searchQ.getString("tech_name");
 
                     SignInFront.clientIDText.setText(clientID);
                     SignInFront.workToBeDone.setText(woToDoText);
