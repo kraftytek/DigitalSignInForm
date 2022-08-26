@@ -381,7 +381,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String populateList = "select upc_desc, upc_code, upc_cost from upc_codes";
+            String populateList = "select upc_desc, upc_code, upc_cost from upc_codes order by 1";
             Vector<String> upcList = new Vector<>();
             ResultSet searchQ = statement.executeQuery(populateList);
 
