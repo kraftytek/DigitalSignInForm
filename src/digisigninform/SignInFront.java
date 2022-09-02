@@ -554,7 +554,6 @@ public class SignInFront extends javax.swing.JFrame {
         addNewClientButt.setForeground(new java.awt.Color(0, 0, 0));
         addNewClientButt.setText("Add New Client");
         addNewClientButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        addNewClientButt.setEnabled(false);
         addNewClientButt.setOpaque(true);
         addNewClientButt.setPreferredSize(new java.awt.Dimension(172, 26));
         addNewClientButt.addActionListener(new java.awt.event.ActionListener() {
@@ -1163,6 +1162,7 @@ public class SignInFront extends javax.swing.JFrame {
                     woTextArea.setText(workOrderText);
                     phoneOneText.setText(phoneFormat(phoneHome));
                     cellPhoneText.setText(phoneFormat(phoneCell));
+                    
                 }
 
             } catch (SQLException e) {
