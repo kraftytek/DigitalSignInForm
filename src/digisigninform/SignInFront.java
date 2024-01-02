@@ -169,13 +169,13 @@ public class SignInFront extends javax.swing.JFrame {
         jTextPane1 = new javax.swing.JTextPane();
         saveIcon = new javax.swing.JLabel();
         saveNewClientButt = new javax.swing.JButton();
+        createdDateText = new javax.swing.JTextField();
         topMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         addNewClientButt = new javax.swing.JMenuItem();
         searchExistingClient = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         searchWorkOrderButt = new javax.swing.JMenuItem();
-        saveNewWorkOrder = new javax.swing.JMenuItem();
         updateWorkOrder = new javax.swing.JMenuItem();
         completeWorkOrder = new javax.swing.JMenuItem();
         clearWorkOrder = new javax.swing.JMenuItem();
@@ -221,15 +221,15 @@ public class SignInFront extends javax.swing.JFrame {
         });
 
         lNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         lNameText.setNextFocusableComponent(phoneOneText);
 
         phoneOneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Home Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Home Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         phoneOneText.setNextFocusableComponent(cellPhoneText);
 
         cellPhoneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Cell Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Cell Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
         equipmentField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Other Equipment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         equipmentField.setNextFocusableComponent(passwordText);
@@ -404,6 +404,8 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
 
+        createdDateText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Created Date", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
@@ -427,6 +429,7 @@ public class SignInFront extends javax.swing.JFrame {
                     .addComponent(passwordText, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(equipmentField, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(techComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pinText)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(checkLaptop, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -437,7 +440,7 @@ public class SignInFront extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
-                    .addComponent(pinText)))
+                    .addComponent(createdDateText)))
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backgroundPanelLayout.createSequentialGroup()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(workPerformedArea)
@@ -495,21 +498,24 @@ public class SignInFront extends javax.swing.JFrame {
                         .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cellPhoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cellPhoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(createdDateText))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(companyText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(equipmentField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(equipmentField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pinText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(companyText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eMailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -599,15 +605,6 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
         jMenu2.add(searchWorkOrderButt);
-
-        saveNewWorkOrder.setBackground(new java.awt.Color(255, 255, 255));
-        saveNewWorkOrder.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        saveNewWorkOrder.setForeground(new java.awt.Color(0, 0, 0));
-        saveNewWorkOrder.setText("Save New Work Order");
-        saveNewWorkOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        saveNewWorkOrder.setOpaque(true);
-        saveNewWorkOrder.setPreferredSize(new java.awt.Dimension(172, 26));
-        jMenu2.add(saveNewWorkOrder);
 
         updateWorkOrder.setBackground(new java.awt.Color(255, 255, 255));
         updateWorkOrder.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -808,6 +805,7 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setText("");
         woTextArea.setText("");
         companyText.setText("");
+        createdDateText.setText(sdf3.format(new Date()));
         fNameText.requestFocusInWindow();
         clearWasDone = 1;
 
@@ -816,30 +814,6 @@ public class SignInFront extends javax.swing.JFrame {
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
         woTextArea.addActionListener(action);
     }
-
-    private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String workToDo = workToBeDone.getText().replace("'", "''");
-            String clientPass = passwordText.getText().replace("'", "''");
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'", "''");
-            String workOrderID = woTextArea.getText();
-            String techName = (String) techComboBox.getSelectedItem();
-
-            String addClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "', "
-                    + "tech_name = '" + techName + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-            addWorkOrder.executeUpdate(addClientScript);
-
-        } catch (SQLException e) {
-        }
-    }//GEN-LAST:event_updateWorkOrderActionPerformed
 
     private static final SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -863,146 +837,9 @@ public class SignInFront extends javax.swing.JFrame {
         BigDecimal bd = BigDecimal.valueOf(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
-    }
-    private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeWorkOrderActionPerformed
-        CompleteFormFront gui = new CompleteFormFront();
-        gui.setVisible(true);
-
-        model.setRowCount(0);
-
-        String date = sdf3.format(new Date());
-        String fname = fNameText.getText();
-        String lname = lNameText.getText();
-        String companyName = companyText.getText();
-        String phoneText = phoneOneText.getText();
-        String cellText = cellPhoneText.getText();
-        String emailText = eMailText.getText();
-
-        String workToDo = workToBeDone.getText();
-        String workPerformed = workDoneText.getText();
-        String workOrderID = woTextArea.getText();
-
-        CompleteFormFront.fNameText.setText(fname);
-        CompleteFormFront.lNameText.setText(lname);
-        CompleteFormFront.phoneText.setText(phoneText);
-        CompleteFormFront.cellText.setText(cellText);
-        CompleteFormFront.compName.setText(companyName);
-        CompleteFormFront.eMailText.setText(emailText);
-
-        CompleteFormFront.workToDoText.setText(workToDo);
-        CompleteFormFront.workPerformedText.setText(workPerformed);
-        CompleteFormFront.woText.setText(workOrderID);
-        CompleteFormFront.receivedText.setText(date);
-
-        //get currently attached parts
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-
-            workOrderText = woTextArea.getText();
-            String getUPCs = """
-                         select upc.upc_desc, upc.upc_cost, upc.upc_code
-                         from service_link as sl
-                         inner join upc_codes as upc
-                         on sl.service_fee_id = upc.upc_id
-                         where work_Order_ID =
-                         """ + workOrderText;
-
-            ResultSet searchQ = statement.executeQuery(getUPCs);
-            if (!searchQ.isBeforeFirst()) {
-
-            } else {
-                while (searchQ.next()) {
-                    String upcDescText = searchQ.getString("upc_desc");
-                    String upcCostText = searchQ.getString("upc_cost");
-                    String upcCodeText = searchQ.getString("upc_code");
-                    String completeText = upcDescText + " -> $" + upcCostText;
-                    Image newImage = generateCode39BarcodeImage(upcCodeText);
-                    ImageIcon icon = new ImageIcon(newImage);
-
-                    Object[] rowData = {completeText, icon};
-                    model.addRow(rowData);
-                    CompleteFormFront.partsUsedList.setModel(model);
-                    CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
-                }
-            }
-
-            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
-            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(PartsUsedFrame.class
-                    .getName()).log(Level.SEVERE, null, ex);
-
-        } catch (Exception ex) {
-            Logger.getLogger(PartsUsedFrame.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (model.getRowCount() > 0) {
-            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
-        }
-        //update cost total
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
-            workOrderText = woTextArea.getText();
-            String getWorkCost = """
-                                 select upc.upc_cost, upc.upc_code
-                                 from service_link as sl
-                                 inner join upc_codes as upc
-                                 on sl.service_fee_id = upc.upc_id
-                                 where work_Order_ID ="""
-                    + workOrderText;
-
-            ResultSet searchQ = statement2.executeQuery(getWorkCost);
-            ArrayList<Double> list = new ArrayList<>();
-            while (searchQ.next()) {
-                String costText = searchQ.getString("upc_cost");
-                Double costDouble = Double.parseDouble(costText.replace("$", ""));
-
-                list.add(costDouble);
-            }
-            double sum = 0;
-            for (int i = 0; i <= list.size() - 1; i++) {
-                sum += list.get(i);
-            }
-            DecimalFormat df = new DecimalFormat("#.##");
-            String roundSum = df.format(sum);
-
-            CompleteFormFront.totalText.setText("Total before tax: $" + roundSum);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-
-    }//GEN-LAST:event_completeWorkOrderActionPerformed
+    }    
     public static int clearWasDone = -1;
-    private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
-
-        globalClientID = -1;
-        fNameText.setText("");
-        lNameText.setText("");
-        phoneOneText.setText("");
-        cellPhoneText.setText("");
-        checkDesktop.setSelected(false);
-        checkLaptop.setSelected(false);
-        checkTablet.setSelected(false);
-        checkCharger.setSelected(false);
-        workToBeDone.setText("");
-        workDoneText.setText("");
-        equipmentText.setText("");
-        passwordText.setText("");
-        pinText.setText("");
-        eMailText.setText("");
-        clientIDText.setText("");
-        woTextArea.setText("");
-        companyText.setText("");
-        fNameText.requestFocusInWindow();
-        clearWasDone = 1;
-        techComboBox.setSelectedItem("Default");
-
-
-    }//GEN-LAST:event_clearWorkOrderActionPerformed
-
+    
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
 
         PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -1132,68 +969,6 @@ public class SignInFront extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_workDoneTextFocusLost
-
-    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
-    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-
-            String defaultWO = woTextArea.getText();
-            String cleanWO = defaultWO.trim();
-
-            String topWorkOrder = """
-            select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
-            c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
-            from client_service as cs
-            inner join clients as c
-            on cs.client_id = c.client_id
-            where work_order_ID = """
-                    + cleanWO;
-
-            ResultSet searchQ = statement.executeQuery(topWorkOrder);
-
-            while (searchQ.next()) {
-                String woToDoText = searchQ.getString("work_to_do");
-                String passText = searchQ.getString("pc_pass");
-                String pinText = searchQ.getString("pc_pin");
-                Boolean desktop = searchQ.getBoolean("desktop");
-                Boolean laptop = searchQ.getBoolean("laptop");
-                Boolean tablet = searchQ.getBoolean("tablet");
-                Boolean charger = searchQ.getBoolean("charger");
-                String firstName = searchQ.getString("fname");
-                String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                String emailText = searchQ.getString("email");
-                String clientID = searchQ.getString("client_id");
-                String workDone = searchQ.getString("work_done");
-                String companyString = searchQ.getString("companyName");
-                String otherEquip = searchQ.getString("other_equip");
-                String techName = searchQ.getString("tech_name");
-
-                SignInFront.techComboBox.setSelectedItem(techName);
-                SignInFront.clientIDText.setText(clientID);
-                SignInFront.workToBeDone.setText(woToDoText);
-                SignInFront.passwordText.setText(passText);
-                SignInFront.pinText.setText(pinText);
-                SignInFront.checkLaptop.setSelected(laptop);
-                SignInFront.checkDesktop.setSelected(desktop);
-                SignInFront.checkTablet.setSelected(tablet);
-                SignInFront.checkCharger.setSelected(charger);
-                SignInFront.fNameText.setText(firstName);
-                SignInFront.lNameText.setText(lastName);
-                SignInFront.phoneOneText.setText(phoneFormat(phoneNumber));
-                SignInFront.cellPhoneText.setText(phoneFormat(cellNumber));
-                SignInFront.eMailText.setText(emailText);
-                SignInFront.clientIDText.setText("Client ID: " + clientID);
-                SignInFront.workDoneText.setText(workDone);
-                SignInFront.companyText.setText(companyString);
-                SignInFront.equipmentText.setText(otherEquip);
-                SignInFront.techComboBox.setSelectedItem(techName);
-            }
-
-        } catch (SQLException e) {
-        }
-    }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
         //if the global ID is populated perform update when Work to be done fucus is lost
@@ -1352,11 +1127,6 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
     }//GEN-LAST:event_fNameTextFocusGained
 
-    private void woHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_woHistoryActionPerformed
-        WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();
-        gui.setVisible(true);
-    }//GEN-LAST:event_woHistoryActionPerformed
-
     private void saveNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewClientButtActionPerformed
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
@@ -1419,6 +1189,237 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveNewClientButtActionPerformed
 
+    private void woHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_woHistoryActionPerformed
+        WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();
+        gui.setVisible(true);
+    }//GEN-LAST:event_woHistoryActionPerformed
+
+    private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
+
+        globalClientID = -1;
+        fNameText.setText("");
+        lNameText.setText("");
+        phoneOneText.setText("");
+        cellPhoneText.setText("");
+        checkDesktop.setSelected(false);
+        checkLaptop.setSelected(false);
+        checkTablet.setSelected(false);
+        checkCharger.setSelected(false);
+        workToBeDone.setText("");
+        workDoneText.setText("");
+        equipmentText.setText("");
+        passwordText.setText("");
+        pinText.setText("");
+        eMailText.setText("");
+        clientIDText.setText("");
+        woTextArea.setText("");
+        companyText.setText("");
+        createdDateText.setText(sdf3.format(new Date()));
+        fNameText.requestFocusInWindow();
+        clearWasDone = 1;
+        techComboBox.setSelectedItem("Default");
+
+    }//GEN-LAST:event_clearWorkOrderActionPerformed
+
+    private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeWorkOrderActionPerformed
+        CompleteFormFront gui = new CompleteFormFront();
+        gui.setVisible(true);
+
+        model.setRowCount(0);
+
+        String date = sdf3.format(new Date());
+        String fname = fNameText.getText();
+        String lname = lNameText.getText();
+        String companyName = companyText.getText();
+        String phoneText = phoneOneText.getText();
+        String cellText = cellPhoneText.getText();
+        String emailText = eMailText.getText();
+
+        String workToDo = workToBeDone.getText();
+        String workPerformed = workDoneText.getText();
+        String workOrderID = woTextArea.getText();
+
+        CompleteFormFront.fNameText.setText(fname);
+        CompleteFormFront.lNameText.setText(lname);
+        CompleteFormFront.phoneText.setText(phoneText);
+        CompleteFormFront.cellText.setText(cellText);
+        CompleteFormFront.compName.setText(companyName);
+        CompleteFormFront.eMailText.setText(emailText);
+
+        CompleteFormFront.workToDoText.setText(workToDo);
+        CompleteFormFront.workPerformedText.setText(workPerformed);
+        CompleteFormFront.woText.setText(workOrderID);
+        CompleteFormFront.receivedText.setText(date);
+
+        //get currently attached parts
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            workOrderText = woTextArea.getText();
+            String getUPCs = """
+            select upc.upc_desc, upc.upc_cost, upc.upc_code
+            from service_link as sl
+            inner join upc_codes as upc
+            on sl.service_fee_id = upc.upc_id
+            where work_Order_ID =
+            """ + workOrderText;
+
+            ResultSet searchQ = statement.executeQuery(getUPCs);
+            if (!searchQ.isBeforeFirst()) {
+
+            } else {
+                while (searchQ.next()) {
+                    String upcDescText = searchQ.getString("upc_desc");
+                    String upcCostText = searchQ.getString("upc_cost");
+                    String upcCodeText = searchQ.getString("upc_code");
+                    String completeText = upcDescText + " -> $" + upcCostText;
+                    Image newImage = generateCode39BarcodeImage(upcCodeText);
+                    ImageIcon icon = new ImageIcon(newImage);
+
+                    Object[] rowData = {completeText, icon};
+                    model.addRow(rowData);
+                    CompleteFormFront.partsUsedList.setModel(model);
+                    CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+                }
+            }
+
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMaxWidth(130);
+            CompleteFormFront.partsUsedList.getColumnModel().getColumn(0).setMinWidth(130);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PartsUsedFrame.class
+                .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception ex) {
+            Logger.getLogger(PartsUsedFrame.class
+                .getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (model.getRowCount() > 0) {
+            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+        }
+        //update cost total
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
+            workOrderText = woTextArea.getText();
+            String getWorkCost = """
+            select upc.upc_cost, upc.upc_code
+            from service_link as sl
+            inner join upc_codes as upc
+            on sl.service_fee_id = upc.upc_id
+            where work_Order_ID ="""
+            + workOrderText;
+
+            ResultSet searchQ = statement2.executeQuery(getWorkCost);
+            ArrayList<Double> list = new ArrayList<>();
+            while (searchQ.next()) {
+                String costText = searchQ.getString("upc_cost");
+                Double costDouble = Double.parseDouble(costText.replace("$", ""));
+
+                list.add(costDouble);
+            }
+            double sum = 0;
+            for (int i = 0; i <= list.size() - 1; i++) {
+                sum += list.get(i);
+            }
+            DecimalFormat df = new DecimalFormat("#.##");
+            String roundSum = df.format(sum);
+
+            CompleteFormFront.totalText.setText("Total before tax: $" + roundSum);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SignInFront.class
+                .getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_completeWorkOrderActionPerformed
+
+    private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
+            String workOrderID = woTextArea.getText();
+            String techName = (String) techComboBox.getSelectedItem();
+
+            String addClientScript = "update client_service"
+            + " set work_to_do = '" + workToDo + "', "
+            + "pc_pass = '" + clientPass + "', "
+            + "pc_pin = '" + clientPin + "', "
+            + "work_done = '" + workDone + "', "
+            + "tech_name = '" + techName + "'"
+            + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            addWorkOrder.executeUpdate(addClientScript);
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_updateWorkOrderActionPerformed
+
+    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
+    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String defaultWO = woTextArea.getText();
+            String cleanWO = defaultWO.trim();
+
+            String topWorkOrder = """
+            select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+            c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
+            from client_service as cs
+            inner join clients as c
+            on cs.client_id = c.client_id
+            where work_order_ID = """
+            + cleanWO;
+
+            ResultSet searchQ = statement.executeQuery(topWorkOrder);
+
+            while (searchQ.next()) {
+                String woToDoText = searchQ.getString("work_to_do");
+                String passText = searchQ.getString("pc_pass");
+                String pinText = searchQ.getString("pc_pin");
+                Boolean desktop = searchQ.getBoolean("desktop");
+                Boolean laptop = searchQ.getBoolean("laptop");
+                Boolean tablet = searchQ.getBoolean("tablet");
+                Boolean charger = searchQ.getBoolean("charger");
+                String firstName = searchQ.getString("fname");
+                String lastName = searchQ.getString("lname");
+                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String emailText = searchQ.getString("email");
+                String clientID = searchQ.getString("client_id");
+                String workDone = searchQ.getString("work_done");
+                String companyString = searchQ.getString("companyName");
+                String otherEquip = searchQ.getString("other_equip");
+                String techName = searchQ.getString("tech_name");
+                String signInDate = searchQ.getString("sign_in_date");
+
+                SignInFront.techComboBox.setSelectedItem(techName);
+                SignInFront.clientIDText.setText(clientID);
+                SignInFront.workToBeDone.setText(woToDoText);
+                SignInFront.passwordText.setText(passText);
+                SignInFront.pinText.setText(pinText);
+                SignInFront.checkLaptop.setSelected(laptop);
+                SignInFront.checkDesktop.setSelected(desktop);
+                SignInFront.checkTablet.setSelected(tablet);
+                SignInFront.checkCharger.setSelected(charger);
+                SignInFront.fNameText.setText(firstName);
+                SignInFront.lNameText.setText(lastName);
+                SignInFront.phoneOneText.setText(phoneFormat(phoneNumber));
+                SignInFront.cellPhoneText.setText(phoneFormat(cellNumber));
+                SignInFront.eMailText.setText(emailText);
+                SignInFront.clientIDText.setText("Client ID: " + clientID);
+                SignInFront.workDoneText.setText(workDone);
+                SignInFront.companyText.setText(companyString);
+                SignInFront.equipmentText.setText(otherEquip);
+                SignInFront.techComboBox.setSelectedItem(techName);
+                SignInFront.createdDateText.setText(signInDate.substring(0, (signInDate.length() - 4)));
+            }
+
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchWorkOrderButtActionPerformed
+
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -1427,7 +1428,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String cleanWO = defaultWO.trim();
                 String topWorkOrder = """
                                   select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
-                                  c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName
+                                  c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
                                   from client_service as cs
                                   inner join clients as c
                                   on cs.client_id = c.client_id
@@ -1454,6 +1455,7 @@ public class SignInFront extends javax.swing.JFrame {
                     String workDone = searchQ.getString("work_done");
                     String companyString = searchQ.getString("companyName");
                     String techName = searchQ.getString("tech_name");
+                    String signInDate = searchQ.getString("sign_in_date");
 
                     SignInFront.clientIDText.setText(clientID);
                     SignInFront.workToBeDone.setText(woToDoText);
@@ -1474,6 +1476,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.companyText.setText(companyString);
                     globalClientID = Integer.parseInt(clientID);
                     SignInFront.techComboBox.setSelectedItem(techName);
+                    SignInFront.createdDateText.setText(signInDate.substring(0, (signInDate.length() - 4)));
                 }
 
             } catch (SQLException t) {
@@ -1509,6 +1512,7 @@ public class SignInFront extends javax.swing.JFrame {
     public static javax.swing.JLabel clientIDText;
     public static javax.swing.JTextField companyText;
     private javax.swing.JMenuItem completeWorkOrder;
+    public static javax.swing.JTextField createdDateText;
     public static javax.swing.JTextField eMailText;
     private javax.swing.JScrollPane equipmentField;
     public static javax.swing.JTextArea equipmentText;
@@ -1533,7 +1537,6 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JMenuItem printWorkOrder;
     private javax.swing.JLabel saveIcon;
     private javax.swing.JButton saveNewClientButt;
-    private javax.swing.JMenuItem saveNewWorkOrder;
     private javax.swing.JMenuItem searchExistingClient;
     private javax.swing.JMenuItem searchWorkOrderButt;
     private javax.swing.JTextField signText;
