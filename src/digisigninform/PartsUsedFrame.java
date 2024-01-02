@@ -4,7 +4,6 @@
  */
 package digisigninform;
 
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -325,7 +324,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
         String upcPriceText = upcCostText.getText().replace("$", "");
 
         String upcExists = """
-                               select 1 as exist
+                               select distinct 1 as exist
                                from upc_codes
                                where upc_code = """ + upcCodeText;
 
@@ -343,14 +342,14 @@ public class PartsUsedFrame extends javax.swing.JFrame {
 
             ResultSet searchRe = statement.executeQuery(upcExists);
 
-            while (searchRe.isBeforeFirst()) {
+            while (!searchRe.isBeforeFirst()) {
 
-                UpcExistsMessage gui = new UpcExistsMessage();
-                gui.setVisible(true);
-                System.out.println("UPC exists");
+                statement.executeUpdate(addUpcScript);
                 break;
             }
-            statement.executeUpdate(addUpcScript);
+            UpcExistsMessage gui = new UpcExistsMessage();
+            gui.setVisible(true);
+            System.out.println("UPC exists");
 
         } catch (SQLException e) {
         }
@@ -372,6 +371,10 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             DefaultComboBoxModel model = new DefaultComboBoxModel(upcList);
             upcCombo.setModel(model);
             upcCombo.setSelectedIndex(0);
+            upcDesc.setText("");
+            upcCode.setText("");
+            upcCostText.setText("");            
+            barCode.setIcon(null);
 
         } catch (SQLException ex) {
             Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -466,8 +469,8 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                '""" + workOrderTxt + "',\n"
                     + "(select upc_id from upc_codes where upc_code = '" + upcCodeText + "')\n"
                     + ")";
-            
-                    System.out.println(insertQue);
+
+            System.out.println(insertQue);
 
             statement.executeUpdate(insertQue);
 
@@ -482,7 +485,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                                  inner join upc_codes as upc
                                  on sl.service_fee_id = upc.upc_id
                                  where work_Order_ID ="""
-                    + workOrderText2; 
+                    + workOrderText2;
 
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
             ArrayList<Double> list = new ArrayList<>();
@@ -556,7 +559,6 @@ public class PartsUsedFrame extends javax.swing.JFrame {
             String upcCodeTxt = upcCode.getText();
             String upcCostTxt = upcCostText.getText().replace("$", "");
             String upcDescTxt = upcDesc.getText();
-            
 
             String updateUPC = "update upc_codes set upc_cost = '"
                     + upcCostTxt + "' ,upc_desc = '"
@@ -564,7 +566,7 @@ public class PartsUsedFrame extends javax.swing.JFrame {
                     + "from upc_codes\n"
                     + "where upc_code = '"
                     + upcCodeTxt + "'";
-            
+
             System.out.println(updateUPC);
 
             statement.executeUpdate(updateUPC);

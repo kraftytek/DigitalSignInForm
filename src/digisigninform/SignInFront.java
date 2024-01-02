@@ -96,14 +96,12 @@ public class SignInFront extends javax.swing.JFrame {
             String cleanPhone = "(" + areaCode + ")-" + nextThree + "-" + lastDigits;
 
             return cleanPhone;
-
         }
         return null;
     }
 
     //create a global table model to be used in functions
     Vector<String> columnNames = new Vector<>();
-
     {
         columnNames.addElement("Desc");
         columnNames.addElement("UPC");
@@ -609,11 +607,6 @@ public class SignInFront extends javax.swing.JFrame {
         saveNewWorkOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         saveNewWorkOrder.setOpaque(true);
         saveNewWorkOrder.setPreferredSize(new java.awt.Dimension(172, 26));
-        saveNewWorkOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveNewWorkOrderActionPerformed(evt);
-            }
-        });
         jMenu2.add(saveNewWorkOrder);
 
         updateWorkOrder.setBackground(new java.awt.Color(255, 255, 255));
@@ -823,78 +816,6 @@ public class SignInFront extends javax.swing.JFrame {
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
         woTextArea.addActionListener(action);
     }
-
-
-    private void saveNewWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewWorkOrderActionPerformed
-        /*
-        //perform a check first to make sure that the work order does not exist already by matching string content and return popup with try update button instead
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String clientID = clientIDText.getText();
-            String workToDoString = workToBeDone.getText().trim();
-
-            String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
-                    + clientID + "' and work_to_do like '"
-                    + workToDoString + "'";
-
-            ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
-
-            Boolean isDupe = true;
-            if (searchQ.next()) {
-                int dupeCheck = searchQ.getInt("checkDupe");
-
-                if (dupeCheck == 2) {
-                    isDupe = false;
-                }
-            }
-
-            if (isDupe == false) {
-
-                String currentClient = clientIDText.getText();
-                String workToDo = workToBeDone.getText().replace("'", "''");
-                boolean desktop = checkDesktop.isSelected();
-                boolean laptop = checkLaptop.isSelected();
-                boolean tablet = checkTablet.isSelected();
-                boolean charger = checkCharger.isSelected();
-                String clientPass = passwordText.getText().replace("'", "''");
-                String clientPin = pinText.getText();
-                String techName = techComboBox.getSelectedItem().toString();
-                String workDone = workDoneText.getText().replace("'", "''");
-                String otherEquip = equipmentText.getText().replace("'", "''");
-
-                int desktopBool = (desktop) ? 1 : 0;
-                int laptopBool = (laptop) ? 1 : 0;
-                int tabletBool = (tablet) ? 1 : 0;
-                int chargerBool = (charger) ? 1 : 0;
-
-                String addClientScript = "insert into client_service(client_id, work_to_do, pc_pass, pc_pin, other_equip, tech_name, desktop, laptop, tablet, charger, work_done)"
-                        + "select " + currentClient + " as client_id,"
-                        + "'" + workToDo + "' as work_to_do,"
-                        + "'" + clientPass + "' as pc_pass,"
-                        + "'" + clientPin + "' as pc_pin,"
-                        + "'" + otherEquip + "' as other_equip,"
-                        + "'" + techName + "' as tech_name,"
-                        + desktopBool + " as desktop,"
-                        + laptopBool + " as laptop,"
-                        + tabletBool + " as tablet,"
-                        + chargerBool + " as charger,"
-                        + "'" + workDone + "' as work_done";
-
-                addWorkOrder.executeUpdate(addClientScript);
-                SaveCompleteMessage gui = new SaveCompleteMessage();
-                gui.setVisible(true);
-            }
-            if (isDupe == true) {
-                WorkOrderExistsError gui = new WorkOrderExistsError();
-                gui.setVisible(true);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
-    }//GEN-LAST:event_saveNewWorkOrderActionPerformed
-
 
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
