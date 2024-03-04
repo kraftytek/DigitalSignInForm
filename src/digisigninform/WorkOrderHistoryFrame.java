@@ -73,6 +73,7 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         columnNames.addElement("Last Name");
         columnNames.addElement("Work Order ID");
         columnNames.addElement("Sign In Date");
+        columnNames.addElement("Status");
     }
 
     DefaultTableModel historyModel = new DefaultTableModel(columnNames, 0) {
@@ -196,11 +197,15 @@ public static int openedFrame = -1;
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date\n"
+            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
                     + "inner join clients as c\n"
                     + "on cs.client_id = c.client_id\n"
-                    + "order by 3 desc";
+                    + "left outer join status_link as sl\n"
+                    + "on sl.work_Order_ID = cs.work_Order_ID\n"
+                    + "left outer join statuses as s\n"
+                    + "on sl.status_id = s.status_id\n"
+                    + "order by 3 desc;";
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
             for (int i = 0; i < 60; i++) {
@@ -209,8 +214,9 @@ public static int openedFrame = -1;
                     String lNameString = searchQ.getString("lname");
                     String workOrderString = searchQ.getString("work_Order_ID");
                     String signInString = searchQ.getString("sign_in_date");
+                    String workOrderStatus = searchQ.getString("status_name");
 
-                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString};
+                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString, workOrderStatus};
                     historyModel.addRow(rowData);
                 }
                 reportTable.setModel(historyModel);
@@ -225,21 +231,26 @@ public static int openedFrame = -1;
 
         historyModel.setRowCount(0);
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date\n"
+            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
                     + "inner join clients as c\n"
                     + "on cs.client_id = c.client_id\n"
-                    + "order by 3 desc";
+                    + "left outer join status_link as sl\n"
+                    + "on sl.work_Order_ID = cs.work_Order_ID\n"
+                    + "left outer join statuses as s\n"
+                    + "on sl.status_id = s.status_id\n"
+                    + "order by 3 desc;";
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 60; i++) {
                 if (searchQ.next()) {
                     String fNameString = searchQ.getString("fname");
                     String lNameString = searchQ.getString("lname");
                     String workOrderString = searchQ.getString("work_Order_ID");
                     String signInString = searchQ.getString("sign_in_date");
+                    String workOrderStatus = searchQ.getString("status_name");
 
-                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString};
+                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString, workOrderStatus};
                     historyModel.addRow(rowData);
                 }
                 reportTable.setModel(historyModel);
