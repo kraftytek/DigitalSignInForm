@@ -911,11 +911,11 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="6">
                 <StringItem index="0" value="Default"/>
-                <StringItem index="1" value="Chris Reid"/>
-                <StringItem index="2" value="Zane Zieske"/>
-                <StringItem index="3" value="Dillan Timpany"/>
-                <StringItem index="4" value="Tyson Schlehahn"/>
-                <StringItem index="5" value="Trevor Harrington"/>
+                <StringItem index="1" value="Chris R"/>
+                <StringItem index="2" value="Jarett L"/>
+                <StringItem index="3" value="Paul Q"/>
+                <StringItem index="4" value="James C"/>
+                <StringItem index="5" value="Aaron S"/>
               </StringArray>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
