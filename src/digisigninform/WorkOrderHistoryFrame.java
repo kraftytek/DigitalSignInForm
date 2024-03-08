@@ -65,6 +65,7 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
     }
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
+    public int historyLen = 0;
 
     Vector<String> columnNames = new Vector<>();
 
@@ -105,6 +106,7 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        historyComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(500, 965));
@@ -155,6 +157,8 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
             }
         });
 
+        historyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "50", "100", "1000", "10000", "100000" }));
+
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
@@ -164,7 +168,9 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(historyComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
         );
         backgroundPanelLayout.setVerticalGroup(
@@ -173,7 +179,8 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(historyComboBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE))
         );
@@ -195,9 +202,9 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 public static int openedFrame = -1;
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-
+        historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
+            String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
                     + "inner join clients as c\n"
                     + "on cs.client_id = c.client_id\n"
@@ -208,7 +215,7 @@ public static int openedFrame = -1;
                     + "order by 3 desc;";
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
-            for (int i = 0; i < 60; i++) {
+            for (int i = 0; i < historyLen; i++) {
                 if (searchQ.next()) {
                     String fNameString = searchQ.getString("fname");
                     String lNameString = searchQ.getString("lname");
@@ -228,10 +235,10 @@ public static int openedFrame = -1;
     }//GEN-LAST:event_formWindowActivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
         historyModel.setRowCount(0);
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select top 60 c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
+            String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
                     + "inner join clients as c\n"
                     + "on cs.client_id = c.client_id\n"
@@ -242,7 +249,7 @@ public static int openedFrame = -1;
                     + "order by 3 desc;";
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
-            for (int i = 0; i < 60; i++) {
+            for (int i = 0; i < historyLen; i++) {
                 if (searchQ.next()) {
                     String fNameString = searchQ.getString("fname");
                     String lNameString = searchQ.getString("lname");
@@ -306,6 +313,7 @@ public static int openedFrame = -1;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JComboBox<String> historyComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

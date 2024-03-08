@@ -1228,6 +1228,7 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         workToBeDone.setText("");
+        statusComboBox.setSelectedIndex(0);
         if (fNameText.getText().length() > 0) {
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
