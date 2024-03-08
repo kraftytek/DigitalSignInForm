@@ -144,6 +144,9 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        reportTable.setCellSelectionEnabled(true);
+        reportTable.setDragEnabled(true);
+        reportTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(reportTable);
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
