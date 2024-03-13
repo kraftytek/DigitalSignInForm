@@ -59,7 +59,10 @@ public class SignInFront extends javax.swing.JFrame {
         initComponents();
     }
 
-    //Get the server connection information from the cofig file, should move to src/resources/config.txt
+    /***************************************************************************************************************
+     * Get the server connection information from the cofig file, should move to
+     * src/resources/config.txt
+     ****************************************************************************************************************/
     public static ArrayList<String> getValues() {
         FileInputStream stream = null;
         String userDir = System.getProperty("user.dir");
@@ -84,7 +87,10 @@ public class SignInFront extends javax.swing.JFrame {
         return lines;
     }
 
-    //phone formatter
+    /***************************************************************************************************************
+     * phone formater function to clean up the phone number to make it look like
+     * (123) 456-7890
+     ****************************************************************************************************************/
     static String phoneFormat(String phoneNumber) {
 
         if (phoneNumber.length() == 10) {
@@ -100,7 +106,9 @@ public class SignInFront extends javax.swing.JFrame {
         return null;
     }
 
-    //create a global table model to be used in functions
+    /***************************************************************************************************************
+     * create a global table model to be used in functions
+     ****************************************************************************************************************/
     Vector<String> columnNames = new Vector<>();
 
     {
@@ -111,7 +119,7 @@ public class SignInFront extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 
         @Override
-        //get the data type of each column to force proper rendering
+        // get the data type of each column to force proper rendering
         public Class<?> getColumnClass(int column) {
             if (getRowCount() > 0) {
                 Object value = getValueAt(0, column);
@@ -123,15 +131,25 @@ public class SignInFront extends javax.swing.JFrame {
         }
     };
 
+    /***************************************************************************************************************
+     * GlobaL variables for the current work order, the current user, and the
+     * current status
+     ****************************************************************************************************************/
+
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
     public String workOrderText = "0";
+
+    /***************************************************************************************************************
+     * applies the currently selected status to the work order in the DB
+     ****************************************************************************************************************/
 
     public void updateStatus() {
 
         String currentWorkOrder = woTextArea.getText();
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement checkStatus = connection.createStatement();) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement checkStatus = connection.createStatement();) {
             String checkQue = "select isnull(max(1),2) as status\n"
                     + "from status_link\n"
                     + "where work_order_id = " + currentWorkOrder;
@@ -151,7 +169,8 @@ public class SignInFront extends javax.swing.JFrame {
             System.out.println(exists);
             if (exists == true) {
 
-                String updateStatus = "update status_link set status_id = (select status_id from statuses where status_name like '" + selectedStatus + "')\n"
+                String updateStatus = "update status_link set status_id = (select status_id from statuses where status_name like '"
+                        + selectedStatus + "')\n"
                         + "where work_Order_ID = " + currentWorkOrder;
 
                 System.out.println(updateStatus);
@@ -160,7 +179,8 @@ public class SignInFront extends javax.swing.JFrame {
             } else {
 
                 String insertStatus = "insert into status_link(work_Order_ID, status_id)\n"
-                        + "select " + currentWorkOrder + ", (select status_id from statuses where status_name = '" + selectedStatus + "') as status_id\n";
+                        + "select " + currentWorkOrder + ", (select status_id from statuses where status_name = '"
+                        + selectedStatus + "') as status_id\n";
 
                 System.out.println(insertStatus);
                 checkStatus.executeUpdate(insertStatus);
@@ -171,15 +191,21 @@ public class SignInFront extends javax.swing.JFrame {
 
     }
 
+    /***************************************************************************************************************
+     * gets the selected work orders current status and applies it to the form
+     ****************************************************************************************************************/
+
     public void setStatus() {
         String currentWorkOrder = woTextArea.getText();
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement setStatus = connection.createStatement();) {
-            //get the current work orders status from the DB
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement setStatus = connection.createStatement();) {
+            // get the current work orders status from the DB
             String getStatus = "select status_name\n"
-                    + "from statuses where status_id in (select status_id from status_link where work_order_id = " + currentWorkOrder + " )";
+                    + "from statuses where status_id in (select status_id from status_link where work_order_id = "
+                    + currentWorkOrder + " )";
 
             ResultSet searchQ = setStatus.executeQuery(getStatus);
-            //set the front combo box to display status
+            // set the front combo box to display status
             while (searchQ.next()) {
                 String currentStatus = searchQ.getString("status_name");
                 statusComboBox.setSelectedItem(currentStatus);
@@ -189,21 +215,26 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }
 
+    /***************************************************************************************************************
+     * adds or updates the last updated datetime for a given work order
+     ****************************************************************************************************************/
+
     public void lastUpdated() {
         String currentWorkOrder = woTextArea.getText();
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement updatedLast = connection.createStatement();) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement updatedLast = connection.createStatement();) {
 
-            //check table to see if there is a current entry for the workOrder
+            // check table to see if there is a current entry for the workOrder
             String entryExists = "select isnull(max(1),2) as checkExists \n"
                     + "from lastUpdated\n"
                     + "where work_order_id = " + currentWorkOrder;
 
-            //insert new entry
+            // insert new entry
             String addEntry = "insert into lastUpdated (work_order_id, lastUpdated)\n"
                     + "select " + currentWorkOrder + " as work_order_id,\n"
                     + "getdate() as lastUpdated";
 
-            //if there is a current entry apply an update
+            // if there is a current entry apply an update
             String updateEntry = "update lastUpdated\n"
                     + "set lastUpdated = getdate()\n"
                     + "where work_order_id = " + currentWorkOrder;
@@ -214,13 +245,10 @@ public class SignInFront extends javax.swing.JFrame {
 
             if (searchQ.next()) {
                 int existCheck = searchQ.getInt("checkExists");
-
                 if (existCheck == 2) {
                     doesExist = false;
-
                 }
             }
-
             if (doesExist) {
                 updatedLast.executeUpdate(updateEntry);
             } else {
@@ -238,7 +266,8 @@ public class SignInFront extends javax.swing.JFrame {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         backgroundPanel = new javax.swing.JPanel();
@@ -313,7 +342,10 @@ public class SignInFront extends javax.swing.JFrame {
         titleText.setText("Service Work Order");
 
         fNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "First Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        fNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "First Name",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         fNameText.setNextFocusableComponent(lNameText);
         fNameText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -327,17 +359,29 @@ public class SignInFront extends javax.swing.JFrame {
         });
 
         lNameText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        lNameText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Last Name",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         lNameText.setNextFocusableComponent(phoneOneText);
 
         phoneOneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Home Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        phoneOneText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Home Phone",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         phoneOneText.setNextFocusableComponent(cellPhoneText);
 
         cellPhoneText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Cell Phone", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        cellPhoneText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Cell Phone",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
-        equipmentField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Other Equipment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        equipmentField.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Other Equipment",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         equipmentField.setNextFocusableComponent(passwordText);
         equipmentField.setOpaque(false);
 
@@ -347,7 +391,10 @@ public class SignInFront extends javax.swing.JFrame {
         equipmentText.setNextFocusableComponent(passwordText);
         equipmentField.setViewportView(equipmentText);
 
-        workToDoField.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work to be Done", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        workToDoField.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work to be Done",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         workToDoField.setOpaque(false);
 
         workToBeDone.setColumns(20);
@@ -358,6 +405,7 @@ public class SignInFront extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 workToBeDoneFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 workToBeDoneFocusLost(evt);
             }
@@ -386,30 +434,42 @@ public class SignInFront extends javax.swing.JFrame {
         checkTablet.setFocusPainted(false);
 
         passwordText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         passwordText.setNextFocusableComponent(pinText);
 
         pinText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pinText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Pin", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        pinText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Pin",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         pinText.setNextFocusableComponent(workToBeDone);
 
         techComboBox.setBackground(new java.awt.Color(255, 255, 255));
         techComboBox.setEditable(true);
         techComboBox.setForeground(new java.awt.Color(0, 0, 0));
-        techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Chris R", "Jarett L", "Paul Q", "James C", "Aaron S" }));
-        techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        techComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
+                new String[] { "Default", "Chris R", "Jarett L", "Paul Q", "James C", "Aaron S" }));
+        techComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Tech",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         techComboBox.setFocusable(false);
         techComboBox.setRequestFocusEnabled(true);
-        for (int i = 0; i < techComboBox.getComponentCount(); i++)
-        {
+        for (int i = 0; i < techComboBox.getComponentCount(); i++) {
             if (techComboBox.getComponent(i) instanceof JComponent) {
-                ((JComponent) techComboBox.getComponent(i)).setBorder(new EmptyBorder(0, 0,0,0));
+                ((JComponent) techComboBox.getComponent(i)).setBorder(new EmptyBorder(0, 0, 0, 0));
             }
         }
-        ((JLabel)techComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        ((JLabel) techComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         eMailText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        eMailText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "E-Mail",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         eMailText.setNextFocusableComponent(equipmentText);
 
         checkCharger.setBackground(new java.awt.Color(255, 255, 255));
@@ -417,7 +477,10 @@ public class SignInFront extends javax.swing.JFrame {
         checkCharger.setText("Charger");
         checkCharger.setFocusPainted(false);
 
-        workPerformedArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        workPerformedArea.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Performed",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         workPerformedArea.setOpaque(false);
 
         workDoneText.setColumns(20);
@@ -436,12 +499,18 @@ public class SignInFront extends javax.swing.JFrame {
         });
         workPerformedArea.setViewportView(workDoneText);
 
-        partBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        partBox.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Parts Used",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         partBox.setOpaque(true);
 
         MinChargeText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MinChargeText.setText("$50");
-        MinChargeText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Sign In Fee", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        MinChargeText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Sign In Fee",
+                javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
         legalPane.setOpaque(false);
 
@@ -450,7 +519,8 @@ public class SignInFront extends javax.swing.JFrame {
         legalText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         legalText.setLineWrap(true);
         legalText.setRows(5);
-        legalText.setText("I agree to release the above equipment to National Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCR is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the length of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
+        legalText.setText(
+                "I agree to release the above equipment to National Computer Resource (\"NCR\") for evaluation and/or repair. I agree that NCR is in no way responsible for the condition of equipment prior to be serviced, or for lost or damaged data that may occur during the evaluation and/or repair. I agree that the above description of the equipment is based solely upon my representations and may be in error. I agree that NCR makes no representations, warranties or guarantees as to the length of time to make an evaluation or repair, as to whether can in fact be made, or as to the current or future impact any evaluation or repairs may have on existing hardware, software or external and peripheral devices that may be attached to the equipment (eg., networks). I agree that service fees are payable whether or not a problem is solved. I agree that National Computer Resource will not release the above equipment until all parts and/or labour charges have been paid in full. I agree that after 90-days all unclaimed equipment becomes property of NCR.");
         legalText.setWrapStyleWord(true);
         legalText.setFocusable(false);
         legalPane.setViewportView(legalText);
@@ -461,7 +531,8 @@ public class SignInFront extends javax.swing.JFrame {
         signText.setBackground(new java.awt.Color(255, 255, 255));
         signText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         signText.setForeground(new java.awt.Color(0, 0, 0));
-        signText.setText("________________________________________________________________________________________________________________");
+        signText.setText(
+                "________________________________________________________________________________________________________________");
         signText.setAutoscrolls(false);
         signText.setBorder(null);
         signText.setFocusable(false);
@@ -471,12 +542,18 @@ public class SignInFront extends javax.swing.JFrame {
         clientIDText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         companyText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        companyText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Company", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        companyText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Company",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         companyText.setNextFocusableComponent(eMailText);
 
         woTextArea.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         woTextArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        woTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Work Order ID",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 woTextAreaKeyPressed(evt);
@@ -494,7 +571,8 @@ public class SignInFront extends javax.swing.JFrame {
         jScrollPane1.setWheelScrollingEnabled(false);
 
         jTextPane1.setBorder(null);
-        jTextPane1.setText("     102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n   Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594 \n   www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
+        jTextPane1.setText(
+                "     102-1980 Cooper Rd., Kelowna, B.C., Canada V1Y-8K5\n   Phone: 250-868-9765 / 250-763-2492 | Fax:877-263-8594 \n   www.ncro.ca | service@ncro.ca | facebook.com/ncrodotca");
         jScrollPane1.setViewportView(jTextPane1);
 
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
@@ -510,22 +588,28 @@ public class SignInFront extends javax.swing.JFrame {
             }
         });
 
-        createdDateText.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Created Date", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        createdDateText.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Created Date",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
 
         statusComboBox.setBackground(new java.awt.Color(255, 255, 255));
         statusComboBox.setEditable(true);
         statusComboBox.setForeground(new java.awt.Color(0, 0, 0));
-        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "New", "In Progress", "Pending Client", "Pending Ordered Part", "Due", "Over Due", "Complete", "Abandoned" }));
-        statusComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Status", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "New", "In Progress",
+                "Pending Client", "Pending Ordered Part", "Due", "Over Due", "Complete", "Abandoned" }));
+        statusComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Status",
+                javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         statusComboBox.setFocusable(false);
         statusComboBox.setRequestFocusEnabled(true);
-        for (int i = 0; i < statusComboBox.getComponentCount(); i++)
-        {
+        for (int i = 0; i < statusComboBox.getComponentCount(); i++) {
             if (statusComboBox.getComponent(i) instanceof JComponent) {
-                ((JComponent) statusComboBox.getComponent(i)).setBorder(new EmptyBorder(0, 0,0,0));
+                ((JComponent) statusComboBox.getComponent(i)).setBorder(new EmptyBorder(0, 0, 0, 0));
             }
         }
-        ((JLabel)statusComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        ((JLabel) statusComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         statusComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 statusComboBoxItemStateChanged(evt);
@@ -535,146 +619,276 @@ public class SignInFront extends javax.swing.JFrame {
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         backgroundPanelLayout.setHorizontalGroup(
-            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(clientIDText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backgroundPanelLayout.createSequentialGroup()
-                                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(workPerformedArea)
-                                    .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(partBox))
-                            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(phoneOneText)
-                                            .addComponent(fNameText))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cellPhoneText)
-                                            .addComponent(lNameText)))
-                                    .addComponent(companyText)
-                                    .addComponent(eMailText)
-                                    .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(techComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(statusComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 368, Short.MAX_VALUE)
-                                            .addComponent(equipmentField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(pinText, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(passwordText, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                        .addComponent(checkLaptop, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(createdDateText)))
-                            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                        .addComponent(saveNewClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(titleText, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(saveIcon))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(legalPane, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(9, 9, 9)))
-                .addGap(13, 13, 13))
-            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-        );
-        backgroundPanelLayout.setVerticalGroup(
-            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(backgroundPanelLayout.createSequentialGroup()
-                            .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(saveIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(titleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(backgroundPanelLayout.createSequentialGroup()
-                                    .addComponent(saveNewClientButt)
-                                    .addGap(0, 0, Short.MAX_VALUE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(checkLaptop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cellPhoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(createdDateText))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(companyText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(eMailText)
-                    .addComponent(statusComboBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(equipmentField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pinText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addComponent(workPerformedArea, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(partBox, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(142, 142, 142))
-        );
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(clientIDText, javax.swing.GroupLayout.Alignment.LEADING,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(SigLabel, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                .addGroup(backgroundPanelLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(jSeparator1,
+                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING,
+                                                                backgroundPanelLayout.createSequentialGroup()
+                                                                        .addGroup(backgroundPanelLayout
+                                                                                .createParallelGroup(
+                                                                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                        false)
+                                                                                .addComponent(workPerformedArea)
+                                                                                .addComponent(MinChargeText,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        492,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(partBox))
+                                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                                .addGroup(backgroundPanelLayout.createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(backgroundPanelLayout
+                                                                                .createSequentialGroup()
+                                                                                .addGroup(backgroundPanelLayout
+                                                                                        .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(phoneOneText)
+                                                                                        .addComponent(fNameText))
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addGroup(backgroundPanelLayout
+                                                                                        .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(cellPhoneText)
+                                                                                        .addComponent(lNameText)))
+                                                                        .addComponent(companyText)
+                                                                        .addComponent(eMailText)
+                                                                        .addComponent(workToDoField,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                317,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(backgroundPanelLayout.createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(backgroundPanelLayout
+                                                                                .createSequentialGroup()
+                                                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                                                .addGroup(backgroundPanelLayout
+                                                                                        .createParallelGroup(
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                false)
+                                                                                        .addComponent(techComboBox,
+                                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                0,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE)
+                                                                                        .addComponent(statusComboBox,
+                                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                0, 368, Short.MAX_VALUE)
+                                                                                        .addComponent(equipmentField,
+                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(pinText,
+                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(passwordText,
+                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)))
+                                                                        .addGroup(backgroundPanelLayout
+                                                                                .createSequentialGroup()
+                                                                                .addComponent(checkLaptop,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        78,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(checkDesktop,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        91,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(checkTablet,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        67,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                                        .addComponent(createdDateText)))
+                                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                                .addComponent(logo,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        Short.MAX_VALUE)
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(backgroundPanelLayout.createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(backgroundPanelLayout
+                                                                                .createSequentialGroup()
+                                                                                .addComponent(saveNewClientButt,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        30,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(titleText,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        261,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                .addComponent(saveIcon))
+                                                                        .addComponent(jScrollPane1,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                340,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(woTextArea,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 145,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                                .addComponent(checkCharger,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 105,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(legalPane,
+                                                                javax.swing.GroupLayout.Alignment.LEADING))
+                                                .addGap(9, 9, 9)))
+                                .addGap(13, 13, 13))
+                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE, 552,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)));
+        backgroundPanelLayout.setVerticalGroup(
+                backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(backgroundPanelLayout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                        .addGroup(backgroundPanelLayout
+                                                                .createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addComponent(saveIcon,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        Short.MAX_VALUE)
+                                                                .addComponent(titleText,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        Short.MAX_VALUE)
+                                                                .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                                        .addComponent(saveNewClientButt)
+                                                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                                        .addPreferredGap(
+                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jScrollPane1,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 54,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(woTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 82,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(checkDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(checkTablet, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(checkCharger, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                backgroundPanelLayout.createSequentialGroup()
+                                                        .addGap(3, 3, 3)
+                                                        .addComponent(checkLaptop, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                backgroundPanelLayout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(fNameText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lNameText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(backgroundPanelLayout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(phoneOneText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cellPhoneText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(createdDateText))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(companyText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(techComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(eMailText)
+                                        .addComponent(statusComboBox))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                .addComponent(equipmentField)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(pinText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(workToDoField, javax.swing.GroupLayout.PREFERRED_SIZE, 179,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                                .addComponent(workPerformedArea, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(MinChargeText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(partBox, javax.swing.GroupLayout.PREFERRED_SIZE, 253,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(legalPane, javax.swing.GroupLayout.PREFERRED_SIZE, 112,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(backgroundPanelLayout
+                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(SigLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(signText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(clientIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 19,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(142, 142, 142)));
 
         topMenu.setBackground(new java.awt.Color(255, 255, 255));
         topMenu.setBorder(null);
@@ -869,18 +1083,17 @@ public class SignInFront extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 910, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(backgroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 910,
+                                javax.swing.GroupLayout.PREFERRED_SIZE));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Create the print function to call.
+    // Create the print function to call.
     public static class Printer implements Printable {
 
         final Component comp;
@@ -920,9 +1133,9 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }
 
-    //open the client search form
-    private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchExistingClientActionPerformed
-        //search clears form as well.
+    // open the client search form
+    private void searchExistingClientActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_searchExistingClientActionPerformed
+        // search clears form as well.
         SearchForm gui = new SearchForm();
         gui.setVisible(true);
         globalClientID = -1;
@@ -948,7 +1161,7 @@ public class SignInFront extends javax.swing.JFrame {
         clearWasDone = 1;
         statusComboBox.setSelectedIndex(0);
 
-    }//GEN-LAST:event_searchExistingClientActionPerformed
+    }// GEN-LAST:event_searchExistingClientActionPerformed
 
     private void woTextAreaKeyPressed(java.awt.event.KeyEvent evt) {
         woTextArea.addActionListener(action);
@@ -977,9 +1190,10 @@ public class SignInFront extends javax.swing.JFrame {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
     public static int clearWasDone = -1;
 
-    private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printWorkOrderActionPerformed
+    private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_printWorkOrderActionPerformed
 
         PrinterJob pjob = PrinterJob.getPrinterJob();
         PageFormat preformat = pjob.defaultPage();
@@ -990,9 +1204,9 @@ public class SignInFront extends javax.swing.JFrame {
                 - margin * 2);
         PageFormat postformat = pjob.pageDialog(preformat);
         postformat.setPaper(paper);
-        //If user does not hit cancel then print.
+        // If user does not hit cancel then print.
         if (preformat != postformat) {
-            //Set print component
+            // Set print component
             pjob.setPrintable(new PrintForm.Printer(backgroundPanel), postformat);
             if (pjob.printDialog()) {
                 try {
@@ -1004,22 +1218,27 @@ public class SignInFront extends javax.swing.JFrame {
                 }
             }
         }
-    }//GEN-LAST:event_printWorkOrderActionPerformed
-    //Global Client ID value to keep data entry consistent
+    }// GEN-LAST:event_printWorkOrderActionPerformed
+     // Global Client ID value to keep data entry consistent
+
     public static int globalClientID = -1;
-    private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewClientButtActionPerformed
+
+    private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addNewClientButtActionPerformed
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         workToBeDone.setText("");
         if (fNameText.getText().length() > 0) {
 
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+            try (Connection connection = DriverManager.getConnection(connectionUrl);
+                    Statement addWorkOrder = connection.createStatement();) {
 
                 String firstName = fNameText.getText().replace("'", "''");
                 String lastName = lNameText.getText().replace("'", "''");
-                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
+                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
                 String companyString = companyText.getText().replace("'", "''");
                 String emailString = eMailText.getText();
 
@@ -1069,24 +1288,24 @@ public class SignInFront extends javax.swing.JFrame {
             gui.setVisible(true);
         }
 
-    }//GEN-LAST:event_addNewClientButtActionPerformed
+    }// GEN-LAST:event_addNewClientButtActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem9ActionPerformed
         AboutAppFrame gui = new AboutAppFrame();
         gui.setVisible(true);
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }// GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem10ActionPerformed
         AboutCreatorFrame gui = new AboutCreatorFrame();
         gui.setVisible(true);
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }// GEN-LAST:event_jMenuItem10ActionPerformed
 
-
-    private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workDoneTextFocusLost
+    private void workDoneTextFocusLost(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_workDoneTextFocusLost
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png")));
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
             String clientPass = passwordText.getText().replace("'", "''");
@@ -1108,16 +1327,18 @@ public class SignInFront extends javax.swing.JFrame {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-    }//GEN-LAST:event_workDoneTextFocusLost
+    }// GEN-LAST:event_workDoneTextFocusLost
 
-    private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusLost
-        //if the global ID is populated perform update when Work to be done fucus is lost
+    private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_workToBeDoneFocusLost
+        // if the global ID is populated perform update when Work to be done fucus is
+        // lost
         if (globalClientID > 0) {
             saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
             saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
             System.out.println("work to be done focus was lost");
 
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+            try (Connection connection = DriverManager.getConnection(connectionUrl);
+                    Statement addWorkOrder = connection.createStatement();) {
 
                 String workToDo = workToBeDone.getText().replace("'", "''");
                 String clientPass = passwordText.getText().replace("'", "''");
@@ -1140,14 +1361,16 @@ public class SignInFront extends javax.swing.JFrame {
             }
 
         }
-    }//GEN-LAST:event_workToBeDoneFocusLost
+    }// GEN-LAST:event_workToBeDoneFocusLost
 
-    private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workToBeDoneKeyTyped
-        //performs an update on the db with each key pressed in the word to be done field
+    private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_workToBeDoneKeyTyped
+        // performs an update on the db with each key pressed in the word to be done
+        // field
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         System.out.println(workToBeDone.getText());
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
             String clientPass = passwordText.getText().replace("'", "''");
@@ -1170,26 +1393,26 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
-    }//GEN-LAST:event_workToBeDoneKeyTyped
+    }// GEN-LAST:event_workToBeDoneKeyTyped
 
-    private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_workDoneTextKeyTyped
-
-        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
-        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-    }//GEN-LAST:event_workDoneTextKeyTyped
-
-    private void fNameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fNameTextKeyTyped
+    private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_workDoneTextKeyTyped
 
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-    }//GEN-LAST:event_fNameTextKeyTyped
+    }// GEN-LAST:event_workDoneTextKeyTyped
 
-    private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_workToBeDoneFocusGained
+    private void fNameTextKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_fNameTextKeyTyped
+
+        saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
+        saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+    }// GEN-LAST:event_fNameTextKeyTyped
+
+    private void workToBeDoneFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_workToBeDoneFocusGained
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
         if (clearWasDone < 1) {
-            //check if global client ID is set
+            // check if global client ID is set
             System.out.println("work to do focus was gained");
             if (globalClientID == -1) {
                 SaveClientFirstFrame gui = new SaveClientFirstFrame();
@@ -1197,7 +1420,8 @@ public class SignInFront extends javax.swing.JFrame {
                 clearWasDone = 1;
             } else if (globalClientID > 0) {
                 lastUpdated();
-                try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+                try (Connection connection = DriverManager.getConnection(connectionUrl);
+                        Statement addWorkOrder = connection.createStatement();) {
 
                     String clientID = String.valueOf(globalClientID);
                     String workOrderText = woTextArea.getText();
@@ -1260,14 +1484,14 @@ public class SignInFront extends javax.swing.JFrame {
 
             }
         }
-    }//GEN-LAST:event_workToBeDoneFocusGained
+    }// GEN-LAST:event_workToBeDoneFocusGained
 
-    private void fNameTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fNameTextFocusGained
+    private void fNameTextFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_fNameTextFocusGained
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-    }//GEN-LAST:event_fNameTextFocusGained
+    }// GEN-LAST:event_fNameTextFocusGained
 
-    private void saveNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveNewClientButtActionPerformed
+    private void saveNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveNewClientButtActionPerformed
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1275,12 +1499,15 @@ public class SignInFront extends javax.swing.JFrame {
         statusComboBox.setSelectedIndex(0);
         if (fNameText.getText().length() > 0) {
 
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+            try (Connection connection = DriverManager.getConnection(connectionUrl);
+                    Statement addWorkOrder = connection.createStatement();) {
 
                 String firstName = fNameText.getText().replace("'", "''");
                 String lastName = lNameText.getText().replace("'", "''");
-                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
+                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
                 String companyString = companyText.getText().replace("'", "''");
                 String emailString = eMailText.getText();
 
@@ -1328,14 +1555,14 @@ public class SignInFront extends javax.swing.JFrame {
             AddNewClientError gui = new AddNewClientError();
             gui.setVisible(true);
         }
-    }//GEN-LAST:event_saveNewClientButtActionPerformed
+    }// GEN-LAST:event_saveNewClientButtActionPerformed
 
-    private void woHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_woHistoryActionPerformed
+    private void woHistoryActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_woHistoryActionPerformed
         WorkOrderHistoryFrame gui = new WorkOrderHistoryFrame();
         gui.setVisible(true);
-    }//GEN-LAST:event_woHistoryActionPerformed
+    }// GEN-LAST:event_woHistoryActionPerformed
 
-    private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWorkOrderActionPerformed
+    private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_clearWorkOrderActionPerformed
 
         globalClientID = -1;
         fNameText.setText("");
@@ -1361,9 +1588,9 @@ public class SignInFront extends javax.swing.JFrame {
         techComboBox.setSelectedItem("Default");
         statusComboBox.setSelectedIndex(0);
 
-    }//GEN-LAST:event_clearWorkOrderActionPerformed
+    }// GEN-LAST:event_clearWorkOrderActionPerformed
 
-    private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeWorkOrderActionPerformed
+    private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_completeWorkOrderActionPerformed
         CompleteFormFront gui = new CompleteFormFront();
         gui.setVisible(true);
         setStatus();
@@ -1393,17 +1620,18 @@ public class SignInFront extends javax.swing.JFrame {
         CompleteFormFront.woText.setText(workOrderID);
         CompleteFormFront.receivedText.setText(date);
 
-        //get currently attached parts
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+        // get currently attached parts
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement = connection.createStatement();) {
 
             workOrderText = woTextArea.getText();
             String getUPCs = """
-            select upc.upc_desc, upc.upc_cost, upc.upc_code
-            from service_link as sl
-            inner join upc_codes as upc
-            on sl.service_fee_id = upc.upc_id
-            where work_Order_ID =
-            """ + workOrderText;
+                    select upc.upc_desc, upc.upc_cost, upc.upc_code
+                    from service_link as sl
+                    inner join upc_codes as upc
+                    on sl.service_fee_id = upc.upc_id
+                    where work_Order_ID =
+                    """ + workOrderText;
 
             ResultSet searchQ = statement.executeQuery(getUPCs);
             if (!searchQ.isBeforeFirst()) {
@@ -1417,10 +1645,11 @@ public class SignInFront extends javax.swing.JFrame {
                     Image newImage = generateCode39BarcodeImage(upcCodeText);
                     ImageIcon icon = new ImageIcon(newImage);
 
-                    Object[] rowData = {completeText, icon};
+                    Object[] rowData = { completeText, icon };
                     model.addRow(rowData);
                     CompleteFormFront.partsUsedList.setModel(model);
-                    CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+                    CompleteFormFront.partsUsedList.setRowHeight(
+                            ((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
                 }
             }
 
@@ -1437,17 +1666,19 @@ public class SignInFront extends javax.swing.JFrame {
         }
 
         if (model.getRowCount() > 0) {
-            CompleteFormFront.partsUsedList.setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
+            CompleteFormFront.partsUsedList
+                    .setRowHeight(((ImageIcon) CompleteFormFront.partsUsedList.getValueAt(0, 1)).getIconHeight());
         }
-        //update cost total
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement2 = connection.createStatement();) {
+        // update cost total
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement2 = connection.createStatement();) {
             workOrderText = woTextArea.getText();
             String getWorkCost = """
-            select upc.upc_cost, upc.upc_code
-            from service_link as sl
-            inner join upc_codes as upc
-            on sl.service_fee_id = upc.upc_id
-            where work_Order_ID ="""
+                    select upc.upc_cost, upc.upc_code
+                    from service_link as sl
+                    inner join upc_codes as upc
+                    on sl.service_fee_id = upc.upc_id
+                    where work_Order_ID ="""
                     + workOrderText;
 
             ResultSet searchQ = statement2.executeQuery(getWorkCost);
@@ -1472,10 +1703,11 @@ public class SignInFront extends javax.swing.JFrame {
                     .getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_completeWorkOrderActionPerformed
+    }// GEN-LAST:event_completeWorkOrderActionPerformed
 
-    private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateWorkOrderActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
+    private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_updateWorkOrderActionPerformed
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement addWorkOrder = connection.createStatement();) {
 
             String workToDo = workToBeDone.getText().replace("'", "''");
             String clientPass = passwordText.getText().replace("'", "''");
@@ -1498,22 +1730,24 @@ public class SignInFront extends javax.swing.JFrame {
 
         } catch (SQLException e) {
         }
-    }//GEN-LAST:event_updateWorkOrderActionPerformed
+    }// GEN-LAST:event_updateWorkOrderActionPerformed
 
-    //this function is depricated as you can simple hit enter after typing the work order ID to search. keep for special users..?
-    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkOrderButtActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+    // this function is depricated as you can simple hit enter after typing the work
+    // order ID to search. keep for special users..?
+    private void searchWorkOrderButtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_searchWorkOrderButtActionPerformed
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement = connection.createStatement();) {
 
             String defaultWO = woTextArea.getText();
             String cleanWO = defaultWO.trim();
 
             String topWorkOrder = """
-            select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
-            c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
-            from client_service as cs
-            inner join clients as c
-            on cs.client_id = c.client_id
-            where work_order_ID = """
+                    select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+                    c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
+                    from client_service as cs
+                    inner join clients as c
+                    on cs.client_id = c.client_id
+                    where work_order_ID = """
                     + cleanWO;
 
             ResultSet searchQ = statement.executeQuery(topWorkOrder);
@@ -1528,8 +1762,10 @@ public class SignInFront extends javax.swing.JFrame {
                 Boolean charger = searchQ.getBoolean("charger");
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
+                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "")
+                        .replace("-", "");
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
@@ -1559,32 +1795,33 @@ public class SignInFront extends javax.swing.JFrame {
                 SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.createdDateText.setText(signInDate.substring(0, (signInDate.length() - 4)));
                 setStatus();
-               
+
             }
 
         } catch (SQLException e) {
         }
-    }//GEN-LAST:event_searchWorkOrderButtActionPerformed
+    }// GEN-LAST:event_searchWorkOrderButtActionPerformed
 
-    private void statusComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_statusComboBoxItemStateChanged
+    private void statusComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {// GEN-FIRST:event_statusComboBoxItemStateChanged
         updateStatus();
         lastUpdated();
-    }//GEN-LAST:event_statusComboBoxItemStateChanged
+    }// GEN-LAST:event_statusComboBoxItemStateChanged
 
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            try (Connection connection = DriverManager.getConnection(connectionUrl);
+                    Statement statement = connection.createStatement();) {
                 String defaultWO = woTextArea.getText();
                 String cleanWO = defaultWO.trim();
                 String topWorkOrder = """
-                                  select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
-                                  c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
-                                  from client_service as cs
-                                  inner join clients as c
-                                  on cs.client_id = c.client_id
-                                  where work_order_ID = """
+                        select work_order_id, cs.client_id, work_to_do, cs.pc_pass, cs.pc_pin, cs.other_equip, tech_name, desktop, laptop, tablet, charger, cs.client_id,
+                        c.fname, c.lname, c.phone, c.phone2, c.email, work_done, c.companyName, cs.sign_in_date
+                        from client_service as cs
+                        inner join clients as c
+                        on cs.client_id = c.client_id
+                        where work_order_ID = """
                         + cleanWO;
 
                 ResultSet searchQ = statement.executeQuery(topWorkOrder);
@@ -1599,8 +1836,10 @@ public class SignInFront extends javax.swing.JFrame {
                     Boolean charger = searchQ.getBoolean("charger");
                     String firstName = searchQ.getString("fname");
                     String lastName = searchQ.getString("lname");
-                    String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
-                    String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+                    String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "")
+                            .replace("-", "");
+                    String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "")
+                            .replace("-", "");
                     String emailText = searchQ.getString("email");
                     String otherEquip = searchQ.getString("other_equip");
                     String clientID = searchQ.getString("client_id");
@@ -1642,7 +1881,6 @@ public class SignInFront extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

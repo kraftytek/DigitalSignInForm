@@ -4,8 +4,6 @@
  */
 package digisigninform;
 
-import javax.swing.JFrame;
-
 /**
  *
  * @author kraft
