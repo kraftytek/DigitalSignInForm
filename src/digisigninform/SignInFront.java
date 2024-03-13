@@ -189,6 +189,49 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }
 
+    public void lastUpdated() {
+        String currentWorkOrder = woTextArea.getText();
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement updatedLast = connection.createStatement();) {
+
+            //check table to see if there is a current entry for the workOrder
+            String entryExists = "select isnull(max(1),2) as checkExists \n"
+                    + "from lastUpdated\n"
+                    + "where work_order_id = " + currentWorkOrder;
+
+            //insert new entry
+            String addEntry = "insert into lastUpdated (work_order_id, lastUpdated)\n"
+                    + "select " + currentWorkOrder + " as work_order_id,\n"
+                    + "getdate() as lastUpdated";
+
+            //if there is a current entry apply an update
+            String updateEntry = "update lastUpdated\n"
+                    + "set lastUpdated = getdate()\n"
+                    + "where work_order_id = " + currentWorkOrder;
+
+            ResultSet searchQ = updatedLast.executeQuery(entryExists);
+
+            Boolean doesExist = true;
+
+            if (searchQ.next()) {
+                int existCheck = searchQ.getInt("checkExists");
+
+                if (existCheck == 2) {
+                    doesExist = false;
+
+                }
+            }
+
+            if (doesExist) {
+                updatedLast.executeUpdate(updateEntry);
+            } else {
+                updatedLast.executeUpdate(addEntry);
+            }
+
+        } catch (SQLException e) {
+        }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -903,6 +946,7 @@ public class SignInFront extends javax.swing.JFrame {
         createdDateText.setText(sdf3.format(new Date()));
         fNameText.requestFocusInWindow();
         clearWasDone = 1;
+        statusComboBox.setSelectedIndex(0);
 
     }//GEN-LAST:event_searchExistingClientActionPerformed
 
@@ -1009,7 +1053,7 @@ public class SignInFront extends javax.swing.JFrame {
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
-
+                statusComboBox.setSelectedIndex(0);
                 while (searchT.next()) {
                     String workOrderText = searchT.getString("work_order_id");
                     woTextArea.setText(workOrderText);
@@ -1091,7 +1135,7 @@ public class SignInFront extends javax.swing.JFrame {
                         + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
 
                 addWorkOrder.executeUpdate(addClientScript);
-
+                updateStatus();
             } catch (SQLException e) {
             }
 
@@ -1152,7 +1196,7 @@ public class SignInFront extends javax.swing.JFrame {
                 gui.setVisible(true);
                 clearWasDone = 1;
             } else if (globalClientID > 0) {
-
+                lastUpdated();
                 try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
                     String clientID = String.valueOf(globalClientID);
@@ -1207,7 +1251,7 @@ public class SignInFront extends javax.swing.JFrame {
                                 + chargerBool + " as charger,"
                                 + "'" + workDone + "' as work_done";
                         addWorkOrder.executeUpdate(addClientScript);
-
+                        updateStatus();
                     }
 
                 } catch (SQLException ex) {
@@ -1315,6 +1359,7 @@ public class SignInFront extends javax.swing.JFrame {
         fNameText.requestFocusInWindow();
         clearWasDone = 1;
         techComboBox.setSelectedItem("Default");
+        statusComboBox.setSelectedIndex(0);
 
     }//GEN-LAST:event_clearWorkOrderActionPerformed
 
@@ -1449,6 +1494,7 @@ public class SignInFront extends javax.swing.JFrame {
 
             addWorkOrder.executeUpdate(addClientScript);
             updateStatus();
+            lastUpdated();
 
         } catch (SQLException e) {
         }
@@ -1513,6 +1559,7 @@ public class SignInFront extends javax.swing.JFrame {
                 SignInFront.techComboBox.setSelectedItem(techName);
                 SignInFront.createdDateText.setText(signInDate.substring(0, (signInDate.length() - 4)));
                 setStatus();
+               
             }
 
         } catch (SQLException e) {
@@ -1520,12 +1567,14 @@ public class SignInFront extends javax.swing.JFrame {
     }//GEN-LAST:event_searchWorkOrderButtActionPerformed
 
     private void statusComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_statusComboBoxItemStateChanged
-        updateStatus();   
+        updateStatus();
+        lastUpdated();
     }//GEN-LAST:event_statusComboBoxItemStateChanged
 
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
                 String defaultWO = woTextArea.getText();
                 String cleanWO = defaultWO.trim();
@@ -1581,6 +1630,7 @@ public class SignInFront extends javax.swing.JFrame {
                     SignInFront.techComboBox.setSelectedItem(techName);
                     SignInFront.createdDateText.setText(signInDate.substring(0, (signInDate.length() - 4)));
                     setStatus();
+                    lastUpdated();
                 }
 
             } catch (SQLException t) {

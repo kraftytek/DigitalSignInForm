@@ -105,8 +105,9 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        refreshButt = new javax.swing.JButton();
         historyComboBox = new javax.swing.JComboBox<>();
+        filterComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(500, 965));
@@ -149,18 +150,24 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         reportTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(reportTable);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Refresh");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jButton1.setFocusable(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        refreshButt.setBackground(new java.awt.Color(255, 255, 255));
+        refreshButt.setForeground(new java.awt.Color(0, 0, 0));
+        refreshButt.setText("Refresh");
+        refreshButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        refreshButt.setFocusable(false);
+        refreshButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                refreshButtActionPerformed(evt);
             }
         });
 
+        historyComboBox.setBackground(new java.awt.Color(255, 255, 255));
         historyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "50", "100", "1000", "10000", "100000" }));
+        historyComboBox.setFocusable(false);
+
+        filterComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        filterComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-None-", "New", "In Progress", "Pending Client", "Pending Ordered Part", "Due", "Over Due", "Complete", "Abandoned" }));
+        filterComboBox.setFocusable(false);
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -168,11 +175,13 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(refreshButt, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(historyComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(historyComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(filterComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
         );
@@ -180,10 +189,13 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(historyComboBox))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addComponent(historyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(refreshButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE))
         );
@@ -198,7 +210,7 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
         );
 
         pack();
@@ -237,9 +249,15 @@ public static int openedFrame = -1;
 
     }//GEN-LAST:event_formWindowActivated
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void refreshButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtActionPerformed
         historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
         historyModel.setRowCount(0);
+        String whereEntry = "where 1 = 1";
+        
+        if(filterComboBox.getSelectedItem().toString() != "-None-"){
+            whereEntry = "where s.status_name like '" + filterComboBox.getSelectedItem().toString() + "'";
+        }
+        
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
             String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
@@ -249,7 +267,10 @@ public static int openedFrame = -1;
                     + "on sl.work_Order_ID = cs.work_Order_ID\n"
                     + "left outer join statuses as s\n"
                     + "on sl.status_id = s.status_id\n"
+                    + whereEntry +"\n"
                     + "order by 3 desc;";
+            
+            System.out.println(workOrderHistory);
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
             for (int i = 0; i < historyLen; i++) {
@@ -268,7 +289,7 @@ public static int openedFrame = -1;
         } catch (SQLException ex) {
             Logger.getLogger(WorkOrderHistoryFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_refreshButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,10 +337,11 @@ public static int openedFrame = -1;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JComboBox<String> filterComboBox;
     private javax.swing.JComboBox<String> historyComboBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton refreshButt;
     private javax.swing.JTable reportTable;
     // End of variables declaration//GEN-END:variables
 }
