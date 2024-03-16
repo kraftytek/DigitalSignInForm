@@ -492,7 +492,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         checkTablet.setBackground(new java.awt.Color(255, 255, 255));
         checkTablet.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        checkTablet.setText("Tablet");
+        checkTablet.setText("Other");
         checkTablet.setFocusPainted(false);
         checkTablet.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
