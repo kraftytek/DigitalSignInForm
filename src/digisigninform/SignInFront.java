@@ -332,7 +332,7 @@ public class SignInFront extends javax.swing.JFrame {
 
     /**
      * *************************************************************************************************************
-     * update workorder
+     * update work order
      * **************************************************************************************************************
      */
     public void updateWorkOrder() {
@@ -658,11 +658,6 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 woTextAreaKeyPressed(evt);
-            }
-        });
-        woTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                woTextAreaMouseReleased(evt);
             }
         });
 
@@ -1078,12 +1073,6 @@ public class SignInFront extends javax.swing.JFrame {
     private void checkChargerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkChargerItemStateChanged
         updateHardware();
     }//GEN-LAST:event_checkChargerItemStateChanged
-
-    private void woTextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_woTextAreaMouseReleased
-        woTextArea.setText("");
-
-        SwingUtilities.invokeLater(() -> woTextArea.requestFocusInWindow());
-    }//GEN-LAST:event_woTextAreaMouseReleased
 
     // Create the print function to call.
     public static class Printer implements Printable {

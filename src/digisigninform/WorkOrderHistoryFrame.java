@@ -5,6 +5,7 @@
 package digisigninform;
 
 import static digisigninform.SignInFront.getValues;
+import static digisigninform.SignInFront.woTextArea;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -148,6 +149,11 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
         reportTable.setCellSelectionEnabled(true);
         reportTable.setDragEnabled(true);
         reportTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        reportTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                reportTableMouseDragged(evt);
+            }
+        });
         jScrollPane1.setViewportView(reportTable);
 
         refreshButt.setBackground(new java.awt.Color(255, 255, 255));
@@ -253,11 +259,11 @@ public static int openedFrame = -1;
         historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
         historyModel.setRowCount(0);
         String whereEntry = "where 1 = 1";
-        
-        if(filterComboBox.getSelectedItem().toString() != "-None-"){
+
+        if (filterComboBox.getSelectedItem().toString() != "-None-") {
             whereEntry = "where s.status_name like '" + filterComboBox.getSelectedItem().toString() + "'";
         }
-        
+
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
             String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
                     + "from client_service as cs\n"
@@ -267,9 +273,9 @@ public static int openedFrame = -1;
                     + "on sl.work_Order_ID = cs.work_Order_ID\n"
                     + "left outer join statuses as s\n"
                     + "on sl.status_id = s.status_id\n"
-                    + whereEntry +"\n"
+                    + whereEntry + "\n"
                     + "order by 3 desc;";
-            
+
             System.out.println(workOrderHistory);
 
             ResultSet searchQ = statement.executeQuery(workOrderHistory);
@@ -290,6 +296,11 @@ public static int openedFrame = -1;
             Logger.getLogger(WorkOrderHistoryFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_refreshButtActionPerformed
+
+    private void reportTableMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportTableMouseDragged
+        woTextArea.setText("");   
+        woTextArea.requestFocus();
+    }//GEN-LAST:event_reportTableMouseDragged
 
     /**
      * @param args the command line arguments
