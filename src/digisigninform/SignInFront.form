@@ -1158,6 +1158,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="woTextAreaMouseReleased"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {&#xa;            public void keyPressed(java.awt.event.KeyEvent evt) {&#xa;                woTextAreaKeyPressed(evt);&#xa;            }&#xa;        });"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>

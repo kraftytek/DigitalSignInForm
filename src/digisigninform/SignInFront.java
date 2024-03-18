@@ -43,6 +43,7 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import java.awt.Toolkit;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -91,11 +92,11 @@ public class SignInFront extends javax.swing.JFrame {
 
     /**
      * *************************************************************************************************************
-     * phone formater function to clean up the phone number to make it look like
-     * (123) 456-7890
+     * phone formatter function to clean up the phone number to make it look
+     * like (123) 456-7890
      * **************************************************************************************************************
      */
-    static String phoneFormat(String phoneNumber) {
+    public static String phoneFormat(String phoneNumber) {
 
         if (phoneNumber.length() == 10) {
 
@@ -146,6 +147,8 @@ public class SignInFront extends javax.swing.JFrame {
     public ArrayList<String> configList = getValues();
     public String connectionUrl = configList.get(0);
     public String workOrderText = "0";
+    public static int clearWasDone = -1;
+    public static int globalClientID = -1;
 
     /**
      * *************************************************************************************************************
@@ -161,26 +164,23 @@ public class SignInFront extends javax.swing.JFrame {
                     + "from status_link\n"
                     + "where work_order_id = " + currentWorkOrder;
 
-            System.out.println(checkQue);
             ResultSet searchQ = checkStatus.executeQuery(checkQue);
             Boolean exists = true;
             if (searchQ.next()) {
                 int dupeCheck = searchQ.getInt("status");
-                System.out.println(dupeCheck);
 
                 if (dupeCheck == 2) {
                     exists = false;
                 }
             }
             String selectedStatus = (String) statusComboBox.getSelectedItem();
-            System.out.println(exists);
+
             if (exists == true) {
 
                 String updateStatus = "update status_link set status_id = (select status_id from statuses where status_name like '"
                         + selectedStatus + "')\n"
                         + "where work_Order_ID = " + currentWorkOrder;
 
-                System.out.println(updateStatus);
                 checkStatus.executeUpdate(updateStatus);
 
             } else {
@@ -189,7 +189,6 @@ public class SignInFront extends javax.swing.JFrame {
                         + "select " + currentWorkOrder + ", (select status_id from statuses where status_name = '"
                         + selectedStatus + "') as status_id\n";
 
-                System.out.println(insertStatus);
                 checkStatus.executeUpdate(insertStatus);
             }
 
@@ -328,6 +327,65 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
 
+        }
+    }
+
+    /**
+     * *************************************************************************************************************
+     * update workorder
+     * **************************************************************************************************************
+     */
+    public void updateWorkOrder() {
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement updateWorkOrder = connection.createStatement();) {
+
+            String workToDo = workToBeDone.getText().replace("'", "''");
+            String clientPass = passwordText.getText().replace("'", "''");
+            String clientPin = pinText.getText();
+            String workDone = workDoneText.getText().replace("'", "''");
+            String workOrderID = woTextArea.getText();
+            String techName = (String) techComboBox.getSelectedItem();
+
+            String addClientScript = "update client_service"
+                    + " set work_to_do = '" + workToDo + "', "
+                    + "pc_pass = '" + clientPass + "', "
+                    + "pc_pin = '" + clientPin + "', "
+                    + "work_done = '" + workDone + "', "
+                    + "tech_name = '" + techName + "'"
+                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
+
+            updateWorkOrder.executeUpdate(addClientScript);
+            updateStatus();
+            lastUpdated();
+
+        } catch (SQLException e) {
+        }
+    }
+
+    public void addNewClient() {
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addClientEntry = connection.createStatement();) {
+
+            String firstName = fNameText.getText().replace("'", "''");
+            String lastName = lNameText.getText().replace("'", "''");
+            String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                    .replace("-", "");
+            String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
+                    .replace("-", "");
+            String companyString = companyText.getText().replace("'", "''");
+            String emailString = eMailText.getText();
+
+            String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
+                    + "select '"
+                    + firstName + "' as fname, '"
+                    + lastName + "' as lname, '"
+                    + companyString + "' as companyName, '"
+                    + phoneHome + "' as phone, '"
+                    + phoneCell + "' as phone2,'"
+                    + emailString + "' as email,"
+                    + "getdate() as creation_date";
+
+            addClientEntry.executeUpdate(addClientScript);
+
+        } catch (SQLException ex) {
         }
     }
 
@@ -600,6 +658,11 @@ public class SignInFront extends javax.swing.JFrame {
         woTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 woTextAreaKeyPressed(evt);
+            }
+        });
+        woTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                woTextAreaMouseReleased(evt);
             }
         });
 
@@ -1016,6 +1079,12 @@ public class SignInFront extends javax.swing.JFrame {
         updateHardware();
     }//GEN-LAST:event_checkChargerItemStateChanged
 
+    private void woTextAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_woTextAreaMouseReleased
+        woTextArea.setText("");
+
+        SwingUtilities.invokeLater(() -> woTextArea.requestFocusInWindow());
+    }//GEN-LAST:event_woTextAreaMouseReleased
+
     // Create the print function to call.
     public static class Printer implements Printable {
 
@@ -1093,8 +1162,6 @@ public class SignInFront extends javax.swing.JFrame {
         return bd.doubleValue();
     }
 
-    public static int clearWasDone = -1;
-
     private void printWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_printWorkOrderActionPerformed
 
         PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -1123,14 +1190,13 @@ public class SignInFront extends javax.swing.JFrame {
     }// GEN-LAST:event_printWorkOrderActionPerformed
     // Global Client ID value to keep data entry consistent
 
-    public static int globalClientID = -1;
-
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addNewClientButtActionPerformed
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
         workToBeDone.setText("");
         if (fNameText.getText().length() > 0) {
+            addNewClient();
 
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
@@ -1140,20 +1206,6 @@ public class SignInFront extends javax.swing.JFrame {
                         .replace("-", "");
                 String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
                         .replace("-", "");
-                String companyString = companyText.getText().replace("'", "''");
-                String emailString = eMailText.getText();
-
-                String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
-                        + "select '"
-                        + firstName + "' as fname, '"
-                        + lastName + "' as lname, '"
-                        + companyString + "' as companyName, '"
-                        + phoneHome + "' as phone, '"
-                        + phoneCell + "' as phone2,'"
-                        + emailString + "' as email,"
-                        + "getdate() as creation_date";
-
-                addWorkOrder.executeUpdate(addClientScript);
 
                 String getClientID = "select client_id from clients where fname = '"
                         + firstName + "' and lname = '"
@@ -1167,6 +1219,7 @@ public class SignInFront extends javax.swing.JFrame {
                     clientIDText.setText(clientIDString);
                     globalClientID = Integer.parseInt(clientIDString);
                 }
+
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
 
@@ -1179,7 +1232,6 @@ public class SignInFront extends javax.swing.JFrame {
                     woTextArea.setText(workOrderText);
                     phoneOneText.setText(phoneFormat(phoneHome));
                     cellPhoneText.setText(phoneFormat(phoneCell));
-
                 }
 
             } catch (SQLException e) {
@@ -1205,28 +1257,7 @@ public class SignInFront extends javax.swing.JFrame {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png")));
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String workToDo = workToBeDone.getText().replace("'", "''");
-            String clientPass = passwordText.getText().replace("'", "''");
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'", "''");
-            String workOrderID = woTextArea.getText();
-
-            String updateClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-            addWorkOrder.executeUpdate(updateClientScript);
-            updateStatus();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
-
-        }
+        updateWorkOrder();
     }// GEN-LAST:event_workDoneTextFocusLost
 
     private void workToBeDoneFocusLost(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_workToBeDoneFocusLost
@@ -1235,63 +1266,18 @@ public class SignInFront extends javax.swing.JFrame {
         if (globalClientID > 0) {
             saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
             saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-            System.out.println("work to be done focus was lost");
-
-            try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-                String workToDo = workToBeDone.getText().replace("'", "''");
-                String clientPass = passwordText.getText().replace("'", "''");
-                String clientPin = pinText.getText();
-                String workDone = workDoneText.getText().replace("'", "''");
-                String workOrderID = woTextArea.getText();
-                String techName = (String) techComboBox.getSelectedItem();
-
-                String addClientScript = "update client_service"
-                        + " set work_to_do = '" + workToDo + "', "
-                        + "pc_pass = '" + clientPass + "', "
-                        + "pc_pin = '" + clientPin + "', "
-                        + "work_done = '" + workDone + ",'"
-                        + "tech_name = '" + techName + "'"
-                        + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-                addWorkOrder.executeUpdate(addClientScript);
-                updateStatus();
-            } catch (SQLException e) {
-            }
+            updateWorkOrder();
 
         }
     }// GEN-LAST:event_workToBeDoneFocusLost
 
-    private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_workToBeDoneKeyTyped
-        // performs an update on the db with each key pressed in the word to be done
-        // field
+    private void workToBeDoneKeyTyped(java.awt.event.KeyEvent evt) {
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/FrownIcon.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-        System.out.println(workToBeDone.getText());
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String workToDo = workToBeDone.getText().replace("'", "''");
-            String clientPass = passwordText.getText().replace("'", "''");
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'", "''");
-            String workOrderID = woTextArea.getText();
-
-            String addClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-            addWorkOrder.executeUpdate(addClientScript);
-
-        } catch (SQLException e) {
-
-        }
+        updateWorkOrder();
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
-
-    }// GEN-LAST:event_workToBeDoneKeyTyped
+    }
 
     private void workDoneTextKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_workDoneTextKeyTyped
 
@@ -1311,7 +1297,7 @@ public class SignInFront extends javax.swing.JFrame {
 
         if (clearWasDone < 1) {
             // check if global client ID is set
-            System.out.println("work to do focus was gained");
+
             if (globalClientID == -1) {
                 SaveClientFirstFrame gui = new SaveClientFirstFrame();
                 gui.setVisible(true);
@@ -1326,7 +1312,6 @@ public class SignInFront extends javax.swing.JFrame {
                     String workOrderExist = "select isnull(max(1),2) as checkDupe from client_service where client_id = '"
                             + clientID + "' and work_order_id = '"
                             + workOrderText + "'";
-                    System.out.println(workOrderExist);
 
                     ResultSet searchQ = addWorkOrder.executeQuery(workOrderExist);
 
@@ -1336,7 +1321,6 @@ public class SignInFront extends javax.swing.JFrame {
 
                         if (dupeCheck == 2) {
                             isDupe = false;
-
                         }
                     }
 
@@ -1378,7 +1362,6 @@ public class SignInFront extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(SignInFront.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         }
     }// GEN-LAST:event_workToBeDoneFocusGained
@@ -1395,7 +1378,7 @@ public class SignInFront extends javax.swing.JFrame {
         workToBeDone.setText("");
         statusComboBox.setSelectedIndex(0);
         if (fNameText.getText().length() > 0) {
-
+            addNewClient();
             try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
 
                 String firstName = fNameText.getText().replace("'", "''");
@@ -1404,20 +1387,6 @@ public class SignInFront extends javax.swing.JFrame {
                         .replace("-", "");
                 String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
                         .replace("-", "");
-                String companyString = companyText.getText().replace("'", "''");
-                String emailString = eMailText.getText();
-
-                String addClientScript = "insert into clients(fname, lname, companyName, phone, phone2, email, creation_date)"
-                        + "select '"
-                        + firstName + "' as fname, '"
-                        + lastName + "' as lname, '"
-                        + companyString + "' as companyName, '"
-                        + phoneHome + "' as phone, '"
-                        + phoneCell + "' as phone2,'"
-                        + emailString + "' as email,"
-                        + "getdate() as creation_date";
-
-                addWorkOrder.executeUpdate(addClientScript);
 
                 String getClientID = "select client_id from clients where fname = '"
                         + firstName + "' and lname = '"
@@ -1459,9 +1428,7 @@ public class SignInFront extends javax.swing.JFrame {
     }// GEN-LAST:event_woHistoryActionPerformed
 
     private void clearWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_clearWorkOrderActionPerformed
-
         clearForm();
-
     }// GEN-LAST:event_clearWorkOrderActionPerformed
 
     private void completeWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_completeWorkOrderActionPerformed
@@ -1578,30 +1545,8 @@ public class SignInFront extends javax.swing.JFrame {
     }// GEN-LAST:event_completeWorkOrderActionPerformed
 
     private void updateWorkOrderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_updateWorkOrderActionPerformed
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addWorkOrder = connection.createStatement();) {
-
-            String workToDo = workToBeDone.getText().replace("'", "''");
-            String clientPass = passwordText.getText().replace("'", "''");
-            String clientPin = pinText.getText();
-            String workDone = workDoneText.getText().replace("'", "''");
-            String workOrderID = woTextArea.getText();
-            String techName = (String) techComboBox.getSelectedItem();
-
-            String addClientScript = "update client_service"
-                    + " set work_to_do = '" + workToDo + "', "
-                    + "pc_pass = '" + clientPass + "', "
-                    + "pc_pin = '" + clientPin + "', "
-                    + "work_done = '" + workDone + "', "
-                    + "tech_name = '" + techName + "'"
-                    + "where work_order_ID = ltrim(rtrim('" + workOrderID + "'))";
-
-            addWorkOrder.executeUpdate(addClientScript);
-            updateStatus();
-            lastUpdated();
-
-        } catch (SQLException e) {
-        }
-    }// GEN-LAST:event_updateWorkOrderActionPerformed
+        updateWorkOrder();
+    }
 
     // this function is depricated as you can simple hit enter after typing the work
     // order ID to search. keep for special users..?
