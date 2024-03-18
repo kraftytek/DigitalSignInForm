@@ -360,7 +360,11 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
     }
-
+    /**
+     * *************************************************************************************************************
+     * Add new Client
+     * **************************************************************************************************************
+     */
     public void addNewClient() {
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement addClientEntry = connection.createStatement();) {
 

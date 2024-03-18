@@ -17,10 +17,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -298,8 +300,9 @@ public static int openedFrame = -1;
     }//GEN-LAST:event_refreshButtActionPerformed
 
     private void reportTableMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportTableMouseDragged
-        woTextArea.setText("");   
+        woTextArea.setText("");
         woTextArea.requestFocus();
+
     }//GEN-LAST:event_reportTableMouseDragged
 
     /**
