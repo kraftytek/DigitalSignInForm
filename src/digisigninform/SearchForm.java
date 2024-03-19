@@ -5,6 +5,8 @@
 package digisigninform;
 
 import static digisigninform.SignInFront.fNameText;
+import static digisigninform.SignInFront.passwordText;
+import static digisigninform.SignInFront.pinText;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -387,6 +389,8 @@ public class SearchForm extends javax.swing.JFrame {
                 SignInFront.checkTablet.setSelected(false);
                 SignInFront.checkCharger.setSelected(false);
                 SignInFront.globalClientID = clientID;
+                passwordText.setBackground(Color.red);
+                pinText.setBackground(Color.red);
             }
 
         } catch (SQLException e) {
@@ -498,7 +502,7 @@ public class SearchForm extends javax.swing.JFrame {
 
             String searchInvQue = "select work_order_id, left(work_to_do, 40) as work_to_do, sign_in_date\n"
                     + "from client_service\n"
-                    + "where client_id = " + searchClient                    
+                    + "where client_id = " + searchClient
                     + "order by 1 desc";
             System.out.println(searchInvQue);
             ResultSet searchQ = statement.executeQuery(searchInvQue);
@@ -664,21 +668,19 @@ public class SearchForm extends javax.swing.JFrame {
         MergeClientFrame gui = new MergeClientFrame();
         gui.setVisible(true);
 
-        
-        
         Vector<String> columnNames = new Vector<>();
 
-    {
-        columnNames.clear();
-        columnNames.addElement("Client ID");
-        columnNames.addElement("First Name");
-        columnNames.addElement("Last Name");        
-        columnNames.addElement("Home Phone");
-        columnNames.addElement("Cell Phone");
-    }
+        {
+            columnNames.clear();
+            columnNames.addElement("Client ID");
+            columnNames.addElement("First Name");
+            columnNames.addElement("Last Name");
+            columnNames.addElement("Home Phone");
+            columnNames.addElement("Cell Phone");
+        }
 
-    DefaultTableModel mergeModel = new DefaultTableModel(columnNames, 0);       
-        
+        DefaultTableModel mergeModel = new DefaultTableModel(columnNames, 0);
+
         int selVal = resultTable.getSelectedRow();
         Object clientIDobj = resultTable.getValueAt(selVal, 0);
         int clientID = Integer.parseInt(clientIDobj.toString());
@@ -713,15 +715,14 @@ public class SearchForm extends javax.swing.JFrame {
                      and c.lname = x.lname
                      and c.phone = x.phone
                      and c.phone2 = x.phone2
-                     and c.flags is null""";      
-
+                     and c.flags is null""";
 
             ResultSet searchQ = statement.executeQuery(matchClient);
 
             while (searchQ.next()) {
 
                 String firstName = searchQ.getString("fname");
-                String lastName = searchQ.getString("lname");               
+                String lastName = searchQ.getString("lname");
                 String phoneNumber = searchQ.getString("phone");
                 String cellNumber = searchQ.getString("phone2");
                 String clientText = searchQ.getString("client_id");
@@ -746,26 +747,21 @@ public class SearchForm extends javax.swing.JFrame {
             MergeClientFrame.mergeFromTable.setModel(mergeModel);
             MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMaxWidth(130);
             MergeClientFrame.mergeFromTable.getColumnModel().getColumn(0).setMinWidth(130);
-            
+
             MergeClientFrame.mergeIntoTable.setModel(mergeModel);
             MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMaxWidth(130);
             MergeClientFrame.mergeIntoTable.getColumnModel().getColumn(0).setMinWidth(130);
 
-        
-    }
-    catch (SQLException ex
-
-    
-        ) {
+        } catch (SQLException ex) {
             Logger.getLogger(SearchForm.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        }
 
     }//GEN-LAST:event_mergeClientButtActionPerformed
 
-/**
- * @param args the command line arguments
- */
-public static void main(String args[]) {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -777,27 +773,23 @@ public static void main(String args[]) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class  
+            java.util.logging.Logger.getLogger(SearchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SearchForm.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(SearchForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
