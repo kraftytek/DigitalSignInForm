@@ -322,6 +322,8 @@ public class SignInFront extends javax.swing.JFrame {
                     + "charger = " + chargerBool + "\n"
                     + "where work_order_id = " + currentWorkOrder;
 
+            System.out.println(updateQue);
+
             updateHardware.executeUpdate(updateQue);
 
         } catch (SQLException ex) {
@@ -360,6 +362,7 @@ public class SignInFront extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
     }
+
     /**
      * *************************************************************************************************************
      * Add new Client
@@ -391,6 +394,13 @@ public class SignInFront extends javax.swing.JFrame {
 
         } catch (SQLException ex) {
         }
+    }
+
+    public void checkForPW() {
+
+        passwordText.setBackground(Color.red);
+        pinText.setBackground(Color.red);
+
     }
 
     /**
@@ -536,9 +546,9 @@ public class SignInFront extends javax.swing.JFrame {
         checkLaptop.setText("Laptop");
         checkLaptop.setFocusPainted(false);
         checkLaptop.setOpaque(true);
-        checkLaptop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkLaptopItemStateChanged(evt);
+        checkLaptop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkLaptopMouseClicked(evt);
             }
         });
 
@@ -546,9 +556,9 @@ public class SignInFront extends javax.swing.JFrame {
         checkDesktop.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkDesktop.setText("Desktop");
         checkDesktop.setFocusPainted(false);
-        checkDesktop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkDesktopItemStateChanged(evt);
+        checkDesktop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkDesktopMouseClicked(evt);
             }
         });
 
@@ -556,19 +566,29 @@ public class SignInFront extends javax.swing.JFrame {
         checkTablet.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkTablet.setText("Other");
         checkTablet.setFocusPainted(false);
-        checkTablet.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkTabletItemStateChanged(evt);
+        checkTablet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkTabletMouseClicked(evt);
             }
         });
 
         passwordText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         passwordText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Password", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         passwordText.setNextFocusableComponent(pinText);
+        passwordText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                passwordTextFocusGained(evt);
+            }
+        });
 
         pinText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         pinText.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Pin", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rockwell", 0, 12))); // NOI18N
         pinText.setNextFocusableComponent(workToBeDone);
+        pinText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pinTextFocusGained(evt);
+            }
+        });
 
         techComboBox.setBackground(new java.awt.Color(255, 255, 255));
         techComboBox.setEditable(true);
@@ -593,9 +613,9 @@ public class SignInFront extends javax.swing.JFrame {
         checkCharger.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         checkCharger.setText("Charger");
         checkCharger.setFocusPainted(false);
-        checkCharger.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkChargerItemStateChanged(evt);
+        checkCharger.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkChargerMouseClicked(evt);
             }
         });
 
@@ -1062,21 +1082,29 @@ public class SignInFront extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void checkLaptopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkLaptopItemStateChanged
+    private void checkLaptopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkLaptopMouseClicked
         updateHardware();
-    }//GEN-LAST:event_checkLaptopItemStateChanged
+    }//GEN-LAST:event_checkLaptopMouseClicked
 
-    private void checkDesktopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkDesktopItemStateChanged
+    private void checkDesktopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkDesktopMouseClicked
         updateHardware();
-    }//GEN-LAST:event_checkDesktopItemStateChanged
+    }//GEN-LAST:event_checkDesktopMouseClicked
 
-    private void checkTabletItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkTabletItemStateChanged
+    private void checkTabletMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkTabletMouseClicked
         updateHardware();
-    }//GEN-LAST:event_checkTabletItemStateChanged
+    }//GEN-LAST:event_checkTabletMouseClicked
 
-    private void checkChargerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkChargerItemStateChanged
+    private void checkChargerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkChargerMouseClicked
         updateHardware();
-    }//GEN-LAST:event_checkChargerItemStateChanged
+    }//GEN-LAST:event_checkChargerMouseClicked
+
+    private void passwordTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordTextFocusGained
+        passwordText.setBackground(Color.white);
+    }//GEN-LAST:event_passwordTextFocusGained
+
+    private void pinTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinTextFocusGained
+        pinText.setBackground(Color.white);
+    }//GEN-LAST:event_pinTextFocusGained
 
     // Create the print function to call.
     public static class Printer implements Printable {
@@ -1217,7 +1245,7 @@ public class SignInFront extends javax.swing.JFrame {
                 gui.setVisible(true);
 
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
-
+                checkForPW();
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
                 statusComboBox.setSelectedIndex(0);
                 while (searchT.next()) {
@@ -1395,7 +1423,7 @@ public class SignInFront extends javax.swing.JFrame {
                 }
                 NewClientAddedMessage gui = new NewClientAddedMessage();
                 gui.setVisible(true);
-
+                checkForPW();
                 String getWorkOrder = "select top 1 work_order_id + 1 as work_order_id from client_service order by 1 desc";
 
                 ResultSet searchT = addWorkOrder.executeQuery(getWorkOrder);
