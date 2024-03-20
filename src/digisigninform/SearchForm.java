@@ -65,6 +65,13 @@ public class SearchForm extends javax.swing.JFrame {
         }
     };
 
+    public static String phoneFormat(String phoneNumber) {
+
+        String rawPhoneNumber = phoneNumber;
+        String cleanPhone = rawPhoneNumber.replace("(", "").replace(")", "").replace("-", "");
+        return cleanPhone;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,7 +85,6 @@ public class SearchForm extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         resultTable = new javax.swing.JTable();
         searchExistingButt = new javax.swing.JButton();
-        phoneNumberSearch = new javax.swing.JTextField();
         lastNameSearch = new javax.swing.JTextField();
         searchFormButt = new javax.swing.JButton();
         selButt = new javax.swing.JButton();
@@ -89,7 +95,7 @@ public class SearchForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Form");
         setMinimumSize(new java.awt.Dimension(720, 600));
-        setPreferredSize(new java.awt.Dimension(720, 620));
+        setPreferredSize(new java.awt.Dimension(720, 650));
         setResizable(false);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
@@ -159,7 +165,7 @@ public class SearchForm extends javax.swing.JFrame {
 
         searchExistingButt.setBackground(new java.awt.Color(255, 255, 255));
         searchExistingButt.setForeground(new java.awt.Color(0, 0, 0));
-        searchExistingButt.setText("Search Existing WO");
+        searchExistingButt.setText("Search Existing Work Order");
         searchExistingButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchExistingButt.setFocusable(false);
         searchExistingButt.setOpaque(true);
@@ -169,14 +175,10 @@ public class SearchForm extends javax.swing.JFrame {
             }
         });
 
-        phoneNumberSearch.setBackground(new java.awt.Color(255, 255, 255));
-        phoneNumberSearch.setForeground(new java.awt.Color(0, 0, 0));
-        phoneNumberSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Phone Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        phoneNumberSearch.setOpaque(true);
-
         lastNameSearch.setBackground(new java.awt.Color(255, 255, 255));
+        lastNameSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lastNameSearch.setForeground(new java.awt.Color(0, 0, 0));
-        lastNameSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Last Name", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        lastNameSearch.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "First Name, Last Name, Company or Phone Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         lastNameSearch.setNextFocusableComponent(searchFormButt);
         lastNameSearch.setOpaque(true);
 
@@ -208,7 +210,7 @@ public class SearchForm extends javax.swing.JFrame {
 
         selectWorkOrderButt.setBackground(new java.awt.Color(255, 255, 255));
         selectWorkOrderButt.setForeground(new java.awt.Color(0, 0, 0));
-        selectWorkOrderButt.setText("Select WO");
+        selectWorkOrderButt.setText("Select Work Order");
         selectWorkOrderButt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         selectWorkOrderButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,13 +243,10 @@ public class SearchForm extends javax.swing.JFrame {
         backGroundPanelLayout.setHorizontalGroup(
             backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backGroundPanelLayout.createSequentialGroup()
-                .addComponent(lastNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(phoneNumberSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(backGroundPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
+                    .addComponent(lastNameSearch, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(backGroundPanelLayout.createSequentialGroup()
                         .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(backGroundPanelLayout.createSequentialGroup()
@@ -257,12 +256,11 @@ public class SearchForm extends javax.swing.JFrame {
                             .addGroup(backGroundPanelLayout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(mergeClientButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(searchExistingButt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(mergeClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(searchExistingButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         backGroundPanelLayout.setVerticalGroup(
@@ -270,20 +268,19 @@ public class SearchForm extends javax.swing.JFrame {
             .addGroup(backGroundPanelLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneNumberSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lastNameSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchExistingButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchFormButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(selButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(mergeClientButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(mergeClientButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectWorkOrderButt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -296,7 +293,7 @@ public class SearchForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backGroundPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(backGroundPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
         );
 
         pack();
@@ -421,15 +418,21 @@ public class SearchForm extends javax.swing.JFrame {
         DefaultTableModel modelClear = (DefaultTableModel) resultTable.getModel();
         modelClear.setRowCount(0);
         resultTable.setModel(modelClear);
-        String txtLName = lastNameSearch.getText();
+        String txtLName = phoneFormat(lastNameSearch.getText());
 
         try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
 
-            String searchInvQue = """
-                                  select fname, lname, phone, phone2, companyName, client_id
-                                  from clients
-                                  where lname like '""" + txtLName + "'" + " and flags is null";
-            System.out.println(searchInvQue);
+            String searchInvQue = "declare @nameString as varchar(max)\n"
+                    + "set @nameString = '" + txtLName + "'\n"
+                    + "\n"
+                    + "select fname, lname, phone, phone2, companyName, client_id\n"
+                    + "from clients \n"
+                    + "where fname like @nameString\n"
+                    + "or lname like @nameString\n"
+                    + "or companyName like @nameString\n"
+                    + "or phone like @nameString\n" 
+                    + "or phone2 like @nameString\n"                    
+                    + "and flags is null";
 
             ResultSet searchQ = statement.executeQuery(searchInvQue);
 
@@ -808,7 +811,6 @@ public class SearchForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField lastNameSearch;
     private javax.swing.JButton mergeClientButt;
-    private javax.swing.JTextField phoneNumberSearch;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton searchExistingButt;
     private javax.swing.JButton searchFormButt;
