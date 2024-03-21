@@ -94,6 +94,48 @@ public class WorkOrderHistoryFrame extends javax.swing.JFrame {
             return super.getColumnClass(column);
         }
     };
+    
+    public void refreshHistory() {
+        historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
+        historyModel.setRowCount(0);
+        String whereEntry = "where 1 = 1";
+
+        if (filterComboBox.getSelectedItem().toString() != "-None-") {
+            whereEntry = "where s.status_name like '" + filterComboBox.getSelectedItem().toString() + "'";
+        }
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+            String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
+                    + "from client_service as cs\n"
+                    + "inner join clients as c\n"
+                    + "on cs.client_id = c.client_id\n"
+                    + "left outer join status_link as sl\n"
+                    + "on sl.work_Order_ID = cs.work_Order_ID\n"
+                    + "left outer join statuses as s\n"
+                    + "on sl.status_id = s.status_id\n"
+                    + whereEntry + "\n"
+                    + "order by 3 desc;";
+
+            System.out.println(workOrderHistory);
+
+            ResultSet searchQ = statement.executeQuery(workOrderHistory);
+            for (int i = 0; i < historyLen; i++) {
+                if (searchQ.next()) {
+                    String fNameString = searchQ.getString("fname");
+                    String lNameString = searchQ.getString("lname");
+                    String workOrderString = searchQ.getString("work_Order_ID");
+                    String signInString = searchQ.getString("sign_in_date");
+                    String workOrderStatus = searchQ.getString("status_name");
+
+                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString, workOrderStatus};
+                    historyModel.addRow(rowData);
+                }
+                reportTable.setModel(historyModel);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(WorkOrderHistoryFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -258,45 +300,7 @@ public static int openedFrame = -1;
     }//GEN-LAST:event_formWindowActivated
 
     private void refreshButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtActionPerformed
-        historyLen = Integer.parseInt(historyComboBox.getSelectedItem().toString());
-        historyModel.setRowCount(0);
-        String whereEntry = "where 1 = 1";
-
-        if (filterComboBox.getSelectedItem().toString() != "-None-") {
-            whereEntry = "where s.status_name like '" + filterComboBox.getSelectedItem().toString() + "'";
-        }
-
-        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
-            String workOrderHistory = "select top " + String.valueOf(historyLen) + " c.fname, c.lname, cs.work_Order_ID, CONVERT(Char(16), cs.sign_in_date ,20) as sign_in_date, s.status_name \n"
-                    + "from client_service as cs\n"
-                    + "inner join clients as c\n"
-                    + "on cs.client_id = c.client_id\n"
-                    + "left outer join status_link as sl\n"
-                    + "on sl.work_Order_ID = cs.work_Order_ID\n"
-                    + "left outer join statuses as s\n"
-                    + "on sl.status_id = s.status_id\n"
-                    + whereEntry + "\n"
-                    + "order by 3 desc;";
-
-            System.out.println(workOrderHistory);
-
-            ResultSet searchQ = statement.executeQuery(workOrderHistory);
-            for (int i = 0; i < historyLen; i++) {
-                if (searchQ.next()) {
-                    String fNameString = searchQ.getString("fname");
-                    String lNameString = searchQ.getString("lname");
-                    String workOrderString = searchQ.getString("work_Order_ID");
-                    String signInString = searchQ.getString("sign_in_date");
-                    String workOrderStatus = searchQ.getString("status_name");
-
-                    Object[] rowData = {fNameString, lNameString, workOrderString, signInString, workOrderStatus};
-                    historyModel.addRow(rowData);
-                }
-                reportTable.setModel(historyModel);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(WorkOrderHistoryFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        refreshHistory();
     }//GEN-LAST:event_refreshButtActionPerformed
 
     private void reportTableMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportTableMouseDragged

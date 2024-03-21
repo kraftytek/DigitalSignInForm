@@ -294,6 +294,8 @@ public class SignInFront extends javax.swing.JFrame {
         fNameText.requestFocusInWindow();
         clearWasDone = 1;
         statusComboBox.setSelectedIndex(0);
+        passwordText.setBackground(Color.white);
+        pinText.setBackground(Color.white);
     }
 
     /**
@@ -396,11 +398,41 @@ public class SignInFront extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * *************************************************************************************************************
+     * Make sure we get a password or pin
+     * **************************************************************************************************************
+     */
     public void checkForPW() {
 
         passwordText.setBackground(Color.red);
         pinText.setBackground(Color.red);
 
+    }
+
+    /**
+     * *************************************************************************************************************
+     * strip phone number
+     * **************************************************************************************************************
+     * @param passNumber
+     * @return
+     */
+    public static String stripPhone(String passNumber) {
+
+        String cleanPhone = passNumber;
+
+        ArrayList<String> removeItems = new ArrayList<>();
+        removeItems.add("(");
+        removeItems.add(")");
+        removeItems.add("-");
+        removeItems.add(" ");
+
+        for (int x = 0; x < removeItems.size(); x++) {
+
+            cleanPhone = cleanPhone.replace(removeItems.get(x), "");
+        }
+
+        return cleanPhone;
     }
 
     /**
@@ -1104,6 +1136,7 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void pinTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinTextFocusGained
         pinText.setBackground(Color.white);
+        
     }//GEN-LAST:event_pinTextFocusGained
 
     // Create the print function to call.
@@ -1212,6 +1245,7 @@ public class SignInFront extends javax.swing.JFrame {
     // Global Client ID value to keep data entry consistent
 
     private void addNewClientButtActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addNewClientButtActionPerformed
+
         clearWasDone = -1;
         saveIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/happyIcon3.png"))); // NOI18N
         saveIcon.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1223,10 +1257,8 @@ public class SignInFront extends javax.swing.JFrame {
 
                 String firstName = fNameText.getText().replace("'", "''");
                 String lastName = lNameText.getText().replace("'", "''");
-                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
-                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
+                String phoneHome = stripPhone(phoneOneText.getText());
+                String phoneCell = stripPhone(cellPhoneText.getText());
 
                 String getClientID = "select client_id from clients where fname = '"
                         + firstName + "' and lname = '"
@@ -1404,10 +1436,8 @@ public class SignInFront extends javax.swing.JFrame {
 
                 String firstName = fNameText.getText().replace("'", "''");
                 String lastName = lNameText.getText().replace("'", "''");
-                String phoneHome = phoneOneText.getText().replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
-                String phoneCell = cellPhoneText.getText().replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
+                String phoneHome = stripPhone(phoneOneText.getText());
+                String phoneCell = stripPhone(cellPhoneText.getText());
 
                 String getClientID = "select client_id from clients where fname = '"
                         + firstName + "' and lname = '"
@@ -1598,10 +1628,8 @@ public class SignInFront extends javax.swing.JFrame {
                 Boolean charger = searchQ.getBoolean("charger");
                 String firstName = searchQ.getString("fname");
                 String lastName = searchQ.getString("lname");
-                String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
-                String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "")
-                        .replace("-", "");
+                String phoneNumber = stripPhone(searchQ.getString("phone"));
+                String cellNumber = stripPhone(searchQ.getString("phone2"));
                 String emailText = searchQ.getString("email");
                 String clientID = searchQ.getString("client_id");
                 String workDone = searchQ.getString("work_done");
@@ -1671,10 +1699,8 @@ public class SignInFront extends javax.swing.JFrame {
                     Boolean charger = searchQ.getBoolean("charger");
                     String firstName = searchQ.getString("fname");
                     String lastName = searchQ.getString("lname");
-                    String phoneNumber = searchQ.getString("phone").replace("(", "").replace(")", "").replace(" ", "")
-                            .replace("-", "");
-                    String cellNumber = searchQ.getString("phone2").replace("(", "").replace(")", "").replace(" ", "")
-                            .replace("-", "");
+                    String phoneNumber = stripPhone(searchQ.getString("phone"));
+                    String cellNumber = stripPhone(searchQ.getString("phone2"));
                     String emailText = searchQ.getString("email");
                     String otherEquip = searchQ.getString("other_equip");
                     String clientID = searchQ.getString("client_id");
