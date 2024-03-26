@@ -4,6 +4,8 @@
  */
 package digisigninform;
 
+import static digisigninform.manageTechs.activeCheck;
+import static digisigninform.manageTechs.techComboBox1;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,6 +45,8 @@ import org.krysalis.barcode4j.ChecksumMode;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import java.awt.Toolkit;
+import java.util.Collections;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -496,6 +500,7 @@ public class SignInFront extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("National Computer Resource Sign In");
@@ -506,6 +511,11 @@ public class SignInFront extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(700, 965));
         setPreferredSize(new java.awt.Dimension(710, 965));
         setSize(new java.awt.Dimension(700, 965));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setPreferredSize(new java.awt.Dimension(780, 927));
@@ -1096,6 +1106,19 @@ public class SignInFront extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem10);
 
+        jMenuItem1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenuItem1.setForeground(new java.awt.Color(0, 0, 0));
+        jMenuItem1.setText("Manage Techs");
+        jMenuItem1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jMenuItem1.setPreferredSize(new java.awt.Dimension(126, 26));
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
+
         topMenu.add(jMenu4);
 
         setJMenuBar(topMenu);
@@ -1136,8 +1159,38 @@ public class SignInFront extends javax.swing.JFrame {
 
     private void pinTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinTextFocusGained
         pinText.setBackground(Color.white);
-        
+
     }//GEN-LAST:event_pinTextFocusGained
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        manageTechs gui = new manageTechs();
+        gui.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+
+        try ( Connection connection = DriverManager.getConnection(connectionUrl);  Statement statement = connection.createStatement();) {
+
+            String populateList = "select tech_fname, left(tech_lname, 1) as lastInitial\n"
+                    + "from assigned_techs\n"
+                    + " where active = 1";
+            Vector<String> techList = new Vector<>();
+            ResultSet searchQ = statement.executeQuery(populateList);
+
+            while (searchQ.next()) {
+                String techFname = searchQ.getString("tech_fname");
+                String lastInitial = searchQ.getString("lastInitial");
+
+                Collections.addAll(techList, techFname + " " + lastInitial);
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(techList);
+            techComboBox.setModel(model);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PartsUsedFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowActivated
 
     // Create the print function to call.
     public static class Printer implements Printable {
@@ -1774,6 +1827,7 @@ public class SignInFront extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
