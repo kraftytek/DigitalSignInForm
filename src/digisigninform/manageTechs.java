@@ -77,16 +77,13 @@ public class manageTechs extends javax.swing.JFrame {
                 String techFname = searchQ.getString("tech_fname");
                 String lastInitial = searchQ.getString("lastInitial");
                 
-                Boolean isActive = searchQ.getBoolean("active");
-                
-                System.out.println(isActive);
+                Boolean isActive = searchQ.getBoolean("active");              
                 
                 if(isActive == true){
                     activeCheck.setSelected(isActive);
                 }else {
                     activeCheck.setSelected(false);
                 }
-                 
 
                 Collections.addAll(techList, techFname + ", " + lastInitial);
             }

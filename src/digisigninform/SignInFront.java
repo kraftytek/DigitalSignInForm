@@ -4,8 +4,6 @@
  */
 package digisigninform;
 
-import static digisigninform.manageTechs.activeCheck;
-import static digisigninform.manageTechs.techComboBox1;
 import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,7 +45,7 @@ import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import java.awt.Toolkit;
 import java.util.Collections;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.SwingUtilities;
+
 
 /**
  *
